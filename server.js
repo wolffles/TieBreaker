@@ -15,7 +15,13 @@ app.use(express.static(path.join(__dirname, 'public')));
 let numUsers = 0;
 let players = [];
 
+io.sockets.on('connect', function(socket) {
+  const sessionID = socket.id;
+  console.log('here is the socket id', sessionID);
+});
+
 io.on('connection', (socket) => {
+  console.log('here is the socKet', socket.id);
     var addedUser = false;
 
   // when the client emits 'new message', this listens and executes
@@ -30,7 +36,7 @@ io.on('connection', (socket) => {
   // when the client emits 'add user', this listens and executes
   socket.on('add user', (username) => {
     if (addedUser) return;
-
+    
     // we store the username in the socket session for this client
     if (players.indexOf(socket.username == -1)){
         socket.username = username;
@@ -64,7 +70,13 @@ io.on('connection', (socket) => {
       username: socket.username
     });
   });
+//updating new player with host information
 
+socket.on('update new player', (data) => {
+
+  io.to(data.username)
+
+});
   // when the user disconnects.. perform this
   socket.on('disconnect', () => {
     if (addedUser) {

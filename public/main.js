@@ -27,6 +27,8 @@ $(function() {
 
     // Prompt for setting a username
     var username;
+    var id;
+    var players = {};
     var connected = false;
     var typing = false;
     var lastTypingTime;
@@ -34,6 +36,13 @@ $(function() {
   
     var socket = io();
   
+    
+
+socket.on('connect', function() {
+  console.log('here is the socket id', socket.id);
+  id = socket.id;
+});
+
     const addParticipantsMessage = (data) => {
       var message = '';
       if (data.numUsers === 1) {
@@ -56,7 +65,7 @@ $(function() {
         $currentInput = $inputMessage.focus();
 
         // Tell the server your username
-        socket.emit('add user', username);
+        socket.emit('add user', {username:username, id:id});
       }
     }
   
@@ -249,10 +258,14 @@ $(function() {
         prepend: true
       });
       addParticipantsMessage(data);
+      addPlayerArea();
       if (data.numUsers = 1) {
-            console.log("I'm the host")
+            console.log("I'm the host");
+            host = true;
+            players[username] = {username: username,life:0};
+
       }else {
-            console.log("I'm not the host")
+            console.log("I'm not the host");
       }
       
     });
@@ -264,8 +277,14 @@ $(function() {
   
     // Whenever the server emits 'user joined', log it in the chat body
     socket.on('user joined', (data) => {
+
       log(data.username + ' joined');
       addParticipantsMessage(data);
+
+      players[data.username] = {username: data.username, life:0}
+      if (host === true){
+         socket.emit('update new player', {players:players, id: data.id});
+      }
     });
   
     // Whenever the server emits 'user left', log it in the chat body
@@ -292,7 +311,7 @@ $(function() {
     socket.on('reconnect', () => {
       log('you have been reconnected');
       if (username) {
-        socket.emit('add user', username);
+        socket.emit('add user', {username:username, id:id});
       }
     });
   
@@ -300,10 +319,14 @@ $(function() {
       log('attempt to reconnect has failed');
     });
   
-
+//player information that was received from host
+      socket.on('game data', (data) => {
+        players = data;
+      });
     //***************************************** Handling Player Area
 
     function addPlayerArea(){
       
     }
+
   });
