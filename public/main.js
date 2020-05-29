@@ -294,4 +294,10 @@ $(function() {
       log('attempt to reconnect has failed');
     });
   
+
+    //***************************************** Handling Player Area
+
+    function addPlayerArea(){
+      
+    }
   });
