@@ -13,6 +13,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 //Dashboard
 let numUsers = 0;
+let players = [];
 
 io.on('connection', (socket) => {
     var addedUser = false;
@@ -31,8 +32,14 @@ io.on('connection', (socket) => {
     if (addedUser) return;
 
     // we store the username in the socket session for this client
-    socket.username = username;
+    if (players.indexOf(socket.username == -1)){
+        socket.username = username;
+    }else{
+        socket.username = username+'_'
+    }
     ++numUsers;
+    players.push(socket.username);
+    
     addedUser = true;
     socket.emit('login', {
       numUsers: numUsers
@@ -62,7 +69,8 @@ io.on('connection', (socket) => {
   socket.on('disconnect', () => {
     if (addedUser) {
       --numUsers;
-
+      let idx = players.indexOf(socket.username);
+      players.splice(idx,1);
       // echo globally that this client has left
       socket.broadcast.emit('user left', {
         username: socket.username,

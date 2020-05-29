@@ -16,7 +16,7 @@ $(function() {
     var $loginPage = $('.login.page'); // The login page
     var $chatPage = $('.chat.page'); // The chatroom page
     var audio = document.getElementById('bell')
-    // var audio = new Audio('./assets/bell.m4a')
+    let host = false
   
     $("#bellbtn").click(function() {
         document.getElementById("bellbtn").style.display = "none";
@@ -249,6 +249,12 @@ $(function() {
         prepend: true
       });
       addParticipantsMessage(data);
+      if (data.numUsers = 1) {
+            console.log("I'm the host")
+      }else {
+            console.log("I'm not the host")
+      }
+      
     });
   
     // Whenever the server emits 'new message', update the chat body
