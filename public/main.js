@@ -79,7 +79,7 @@ $(function() {
   
     // Log a message
       const log = (message, options) => {
-      var $el = $('<li>').addClass('log').text(message);
+      var $el = $('<p>').addClass('log').text(message);
       addMessageElement($el, options);
     }
   
@@ -100,7 +100,7 @@ $(function() {
         .text(data.message);
   
       var typingClass = data.typing ? 'typing' : '';
-      var $messageDiv = $('<li class="message"/>')
+      var $messageDiv = $('<p class="message"/>')
         .data('username', data.username)
         .addClass(typingClass)
         .append($usernameDiv, $messageBodyDiv);

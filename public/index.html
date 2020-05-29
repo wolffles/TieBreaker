@@ -6,21 +6,21 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <ul class="pages">
-    <li class="chat page">
+  <div class="pages">
+    <div class="chat page">
     <button id="bellbtn">bell</button>
       <div class="chatArea">
-        <ul class="messages"></ul>
+        <div class="messages"></div>
       </div>
       <input class="inputMessage" placeholder="Type here..."/>
-    </li>
-    <li class="login page">
+    </div>
+    <div class="login page">
       <div id="entername" class="form" onsubmit="playForm" >
         <h3 class="title">What's your nickname?</h3>
         <input class="usernameInput" type="text" maxlength="14" />
       </div>
-    </li>
-  </ul>
+    </div>
+  </div>
 
   <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
   <script src="/socket.io/socket.io.js"></script>
