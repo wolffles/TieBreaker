@@ -34,14 +34,14 @@ io.on('connection', (socket) => {
   });
 
   // when the client emits 'add user', this listens and executes
-  socket.on('add user', (username) => {
+  socket.on('add user', (data) => {
     if (addedUser) return;
     
     // we store the username in the socket session for this client
     if (players.indexOf(socket.username == -1)){
-        socket.username = username;
+        socket.username = data.username;
     }else{
-        socket.username = username+'_'
+        socket.username = data.username+'_'
     }
     ++numUsers;
     players.push(socket.username);
@@ -53,7 +53,8 @@ io.on('connection', (socket) => {
     // echo globally (all clients) that a person has connected
     socket.broadcast.emit('user joined', {
       username: socket.username,
-      numUsers: numUsers
+      numUsers: numUsers,
+      id:data.id
     });
   });
 
@@ -73,8 +74,8 @@ io.on('connection', (socket) => {
 //updating new player with host information
 
 socket.on('update new player', (data) => {
-
-  io.to(data.username)
+  console.log('made it to update player');
+  io.to(data.id).emit('game data', data.players);
 
 });
   // when the user disconnects.. perform this

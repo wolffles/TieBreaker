@@ -322,6 +322,7 @@ socket.on('connect', function() {
 //player information that was received from host
       socket.on('game data', (data) => {
         players = data;
+        console.log('here is the player information', players);
       });
     //***************************************** Handling Player Area
 
