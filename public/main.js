@@ -62,7 +62,7 @@ socket.on('connect', function() {
         $loginPage.fadeOut();
         $chatPage.show();
         $loginPage.off('click');
-        $currentInput = $inputMessage.focus();
+        // $currentInput = $inputMessage.focus();
 
         // Tell the server your username
         socket.emit('add user', {username:username, id:id});
@@ -246,6 +246,17 @@ socket.on('connect', function() {
     $inputMessage.click(() => {
       $inputMessage.focus();
     });
+
+        document.getElementById('startGame').onclick = function(e){
+        e.preventDefault()
+        const life = document.getElementById('hp').value
+        console.log(life)
+        for (let player in players){
+            players[player].life = life
+        }
+        console.log(players)
+        socket.emit('update players', players)
+    }
   
     // Socket events
   
@@ -259,7 +270,7 @@ socket.on('connect', function() {
       });
       addParticipantsMessage(data);
       addPlayerArea();
-      if (data.numUsers = 1) {
+      if (data.numUsers == 1) {
             console.log("I'm the host");
             host = true;
             players[username] = {username: username,life:0};
@@ -319,11 +330,12 @@ socket.on('connect', function() {
       log('attempt to reconnect has failed');
     });
   
-//player information that was received from host
+    //player information that was received from host
       socket.on('game data', (data) => {
         players = data;
         console.log('here is the player information', players);
       });
+
     //***************************************** Handling Player Area
 
     function addPlayerArea(){

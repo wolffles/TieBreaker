@@ -71,13 +71,20 @@ io.on('connection', (socket) => {
       username: socket.username
     });
   });
+
 //updating new player with host information
-
 socket.on('update new player', (data) => {
-  console.log('made it to update player');
+  console.log(data.players)
   io.to(data.id).emit('game data', data.players);
-
 });
+
+// updating  all players with host information
+socket.on('update players', (data) => {
+  console.log("made it to update players")
+  console.log(data)
+  socket.broadcast.emit('game data', data);
+});
+
   // when the user disconnects.. perform this
   socket.on('disconnect', () => {
     if (addedUser) {
