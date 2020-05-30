@@ -269,12 +269,13 @@ socket.on('connect', function() {
       });
       addParticipantsMessage(data);
       console.log('calling player area');
-      addPlayerArea();
+
       if (data.numUsers == 1) {
             console.log("I'm the host");
             host = true;
             players[username] = {username: username,life:0};
-
+            //this is only called for the host. Other users have the player data addeded when they receive game data from the host in the 'new player data' emit handler
+            addPlayerArea();
       }else {
             console.log("I'm not the host");
       }
@@ -291,7 +292,7 @@ socket.on('connect', function() {
 
       log(data.username + ' joined');
       addParticipantsMessage(data);
-
+      addPlayerArea(data.username);
       players[data.username] = {username: data.username, life:0}
       if (host === true){
          socket.emit('update new player', {players:players, id: data.id});
@@ -337,24 +338,44 @@ socket.on('connect', function() {
         updatePlayerArea(players);
       });
 
+  //new user receiving game data
+      socket.on('new player data', (data) => {
+        players = data;
+        console.log('here is the player information', players);
+        addPlayerArea();
+      });
+
     //***************************************** Handling Player Area
 
-    function addPlayerArea(){
+    function createDiv(currentUsername,currentLife) {
       let newDiv = document.createElement("div");
+      newDiv.setAttribute('class',currentUsername);
       let nameDiv = document.createElement("div");
-      nameDiv.innerHTML = username;
+      nameDiv.innerHTML = currentUsername;
       let lifeDiv = document.createElement("div");
-      lifeDiv.innerHTML = 0;
-
+      lifeDiv.innerHTML = currentLife;
+      
       newDiv.appendChild(nameDiv);
       newDiv.appendChild(lifeDiv);
 
       playerArea.appendChild(newDiv);
+    }
+    
+    
+    function addPlayerArea(){
+      console.log('here is the players object', players);
+      for (var player in players) {
+        console.log('here is the player', player);
+        createDiv(players[player].username,players[player].life);
+      }
+
 
     }
 
+
+
     function updatePlayerArea(players){
-      
+
     }
 
   });

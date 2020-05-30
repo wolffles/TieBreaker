@@ -72,7 +72,7 @@ io.on('connection', (socket) => {
 
 //updating new player with host information
 socket.on('update new player', (data) => {
-  io.to(data.id).emit('game data', data.players);
+  io.to(data.id).emit('new player data', data.players);
 });
 
 // updating  all players with host information
