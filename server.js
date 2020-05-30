@@ -17,11 +17,9 @@ let players = [];
 
 io.sockets.on('connect', function(socket) {
   const sessionID = socket.id;
-  console.log('here is the socket id', sessionID);
 });
 
 io.on('connection', (socket) => {
-  console.log('here is the socKet', socket.id);
     var addedUser = false;
 
   // when the client emits 'new message', this listens and executes
@@ -74,14 +72,11 @@ io.on('connection', (socket) => {
 
 //updating new player with host information
 socket.on('update new player', (data) => {
-  console.log(data.players)
   io.to(data.id).emit('game data', data.players);
 });
 
 // updating  all players with host information
 socket.on('update players', (data) => {
-  console.log("made it to update players")
-  console.log(data)
   socket.broadcast.emit('game data', data);
 });
 

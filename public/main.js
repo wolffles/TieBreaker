@@ -8,6 +8,7 @@ $(function() {
     ];
 
     // Initialize variables
+    var playerArea = document.getElementById("playerArea");
     var $window = $(window);
     var $usernameInput = $('.usernameInput'); // Input for username
     var $messages = $('.messages'); // Messages area
@@ -39,7 +40,6 @@ $(function() {
     
 
 socket.on('connect', function() {
-  console.log('here is the socket id', socket.id);
   id = socket.id;
 });
 
@@ -250,11 +250,10 @@ socket.on('connect', function() {
         document.getElementById('startGame').onclick = function(e){
         e.preventDefault()
         const life = document.getElementById('hp').value
-        console.log(life)
         for (let player in players){
             players[player].life = life
         }
-        console.log(players)
+        updatePlayerArea(players);
         socket.emit('update players', players)
     }
   
@@ -269,6 +268,7 @@ socket.on('connect', function() {
         prepend: true
       });
       addParticipantsMessage(data);
+      console.log('calling player area');
       addPlayerArea();
       if (data.numUsers == 1) {
             console.log("I'm the host");
@@ -334,11 +334,26 @@ socket.on('connect', function() {
       socket.on('game data', (data) => {
         players = data;
         console.log('here is the player information', players);
+        updatePlayerArea(players);
       });
 
     //***************************************** Handling Player Area
 
     function addPlayerArea(){
+      let newDiv = document.createElement("div");
+      let nameDiv = document.createElement("div");
+      nameDiv.innerHTML = username;
+      let lifeDiv = document.createElement("div");
+      lifeDiv.innerHTML = 0;
+
+      newDiv.appendChild(nameDiv);
+      newDiv.appendChild(lifeDiv);
+
+      playerArea.appendChild(newDiv);
+
+    }
+
+    function updatePlayerArea(players){
       
     }
 
