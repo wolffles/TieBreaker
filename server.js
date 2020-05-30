@@ -20,6 +20,7 @@ io.sockets.on('connect', function(socket) {
 });
 
 io.on('connection', (socket) => {
+  socket.join('game1')
     var addedUser = false;
 
   // when the client emits 'new message', this listens and executes
@@ -77,8 +78,12 @@ socket.on('update new player', (data) => {
 
 // updating  all players with host information
 socket.on('update players', (data) => {
-  socket.broadcast.emit('game data', data);
+  socket.broadcast.emit('update player data', data);
 });
+
+socket.on('update all players', (data) => {
+  io.in('game1').emit('update player data' , data)
+})
 
   // when the user disconnects.. perform this
   socket.on('disconnect', () => {

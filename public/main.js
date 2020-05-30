@@ -253,8 +253,7 @@ socket.on('connect', function() {
         for (let player in players){
             players[player].life = life
         }
-        updatePlayerArea(players);
-        socket.emit('update players', players)
+        socket.emit('update all players', players)
     }
   
     // Socket events
@@ -292,8 +291,8 @@ socket.on('connect', function() {
 
       log(data.username + ' joined');
       addParticipantsMessage(data);
-      addPlayerArea(data.username);
       players[data.username] = {username: data.username, life:0}
+      createDiv(data.username,0)
       if (host === true){
          socket.emit('update new player', {players:players, id: data.id});
       }
@@ -332,10 +331,10 @@ socket.on('connect', function() {
     });
   
     //player information that was received from host
-      socket.on('game data', (data) => {
+      socket.on('update player data', (data) => {
         players = data;
         console.log('here is the player information', players);
-        updatePlayerArea(players);
+        updatePlayerArea();
       });
 
   //new user receiving game data
@@ -349,7 +348,7 @@ socket.on('connect', function() {
 
     function createDiv(currentUsername,currentLife) {
       let newDiv = document.createElement("div");
-      newDiv.setAttribute('class',currentUsername);
+      newDiv.setAttribute('id',currentUsername);
       let nameDiv = document.createElement("div");
       nameDiv.innerHTML = currentUsername;
       let lifeDiv = document.createElement("div");
@@ -360,6 +359,10 @@ socket.on('connect', function() {
 
       playerArea.appendChild(newDiv);
     }
+
+    function modifyDiv(currentUsername, currentLife) {
+        document.getElementById(currentUsername).children[1].innerHTML = currentLife;
+    }
     
     
     function addPlayerArea(){
@@ -368,14 +371,16 @@ socket.on('connect', function() {
         console.log('here is the player', player);
         createDiv(players[player].username,players[player].life);
       }
-
-
     }
 
+    function updateOwnArea(){
+        document.getElementById(username).children[1]
+    }
 
-
-    function updatePlayerArea(players){
-
+    function updatePlayerArea(){
+        for (var player in players) {
+            modifyDiv(players[player].username,players[player].life);
+          }
     }
 
   });
