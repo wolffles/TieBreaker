@@ -214,7 +214,7 @@ socket.on('connect', function() {
   
     // Keyboard events
   
-    $window.keydown(event => {
+    document.getElementById("pages").addEventListener("keydown",(event) => {
       // Auto-focus the current input when a key is typed
       if (!(event.ctrlKey || event.metaKey || event.altKey)) {
         $currentInput.focus();
@@ -229,6 +229,18 @@ socket.on('connect', function() {
           setUsername();
         }
       }
+    });
+
+    playerArea.addEventListener("change",(event) =>{
+      console.log('change worked', event);
+      let currentUsername = event.path[0].id.split(" ")[0];
+      let currentEvent = event.path[0].id.split(" ")[1];
+      console.log('here are the players', players);
+      console.log('here is the username', currentUsername);
+      players[currentUsername][currentEvent] = document.getElementById(event.path[0].id).value;
+      socket.emit('update players',players);
+      
+      
     });
 
     $inputMessage.on('input', () => {
@@ -343,16 +355,27 @@ socket.on('connect', function() {
         console.log('here is the player information', players);
         addPlayerArea();
       });
+//updates specific div element that was just changed, keeping for furture brain storming
+      socket.on('new specific data', (data) => {
+        players = data.players;
+        console.log('here is the player information', players);
+        modifyDiv(data.username,data.event);
+      });
 
     //***************************************** Handling Player Area
+
+  
 
     function createDiv(currentUsername,currentLife) {
       let newDiv = document.createElement("div");
       newDiv.setAttribute('id',currentUsername);
+
       let nameDiv = document.createElement("div");
+      nameDiv.setAttribute('id',currentUsername + " Area");
       nameDiv.innerHTML = currentUsername;
-      let lifeDiv = document.createElement("div");
-      lifeDiv.innerHTML = currentLife;
+      let lifeDiv = document.createElement("input");
+      lifeDiv.setAttribute('id',currentUsername + " life");
+      lifeDiv.value = currentLife;
       
       newDiv.appendChild(nameDiv);
       newDiv.appendChild(lifeDiv);
@@ -361,14 +384,12 @@ socket.on('connect', function() {
     }
 
     function modifyDiv(currentUsername, currentLife) {
-        document.getElementById(currentUsername).children[1].innerHTML = currentLife;
+        document.getElementById(currentUsername).children[1].value = currentLife;
     }
     
     
     function addPlayerArea(){
-      console.log('here is the players object', players);
       for (var player in players) {
-        console.log('here is the player', player);
         createDiv(players[player].username,players[player].life);
       }
     }
