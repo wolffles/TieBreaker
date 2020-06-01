@@ -231,17 +231,14 @@ socket.on('connect', function() {
       }
     });
 
-    playerArea.addEventListener("change",(event) =>{
-      console.log('change worked', event);
-      let currentUsername = event.path[0].id.split(" ")[0];
-      let currentEvent = event.path[0].id.split(" ")[1];
-      console.log('here are the players', players);
-      console.log('here is the username', currentUsername);
-      players[currentUsername][currentEvent] = document.getElementById(event.path[0].id).value;
-      socket.emit('update players',players);
-      
-      
-    });
+    // playerArea.addEventListener("change",(event) =>{
+    //   console.log('this is event', event)
+    //   console.log('change worked', event.path[0]);
+    //   let currentUsername = event.path[0].id.split(" ")[0];
+    //   let currentEvent = event.path[0].id.split(" ")[1];
+    //   players[currentUsername][currentEvent] = document.getElementById(event.path[0].id).value;
+    //   socket.emit('update players',players);
+    // });
 
     $inputMessage.on('input', () => {
       updateTyping();
@@ -300,13 +297,17 @@ socket.on('connect', function() {
   
     // Whenever the server emits 'user joined', log it in the chat body
     socket.on('user joined', (data) => {
-
+      
       log(data.username + ' joined');
       addParticipantsMessage(data);
-      players[data.username] = {username: data.username, life:0}
-      createDiv(data.username,0)
+      if(!data.reconnecting){
+        console.log('user is not reconnecting creating div for player')
+        players[data.username] = {username: data.username, life:0}
+        createDiv(data.username,0)
+      }
       if (host === true){
          socket.emit('update new player', {players:players, id: data.id});
+         console.log("I'm host sending info to new player")
       }
     });
   
@@ -373,24 +374,33 @@ socket.on('connect', function() {
       let nameDiv = document.createElement("div");
       nameDiv.setAttribute('id',currentUsername + " Area");
       nameDiv.innerHTML = currentUsername;
+      console.log("life")
       let lifeDiv = document.createElement("input");
       lifeDiv.setAttribute('id',currentUsername + " life");
       lifeDiv.value = currentLife;
-      
+
       newDiv.appendChild(nameDiv);
       newDiv.appendChild(lifeDiv);
 
       playerArea.appendChild(newDiv);
+      lifeDiv.addEventListener("change", function(){handleChange(event)})
+    }
+
+    function handleChange(event){
+      let currentUsername = event.path[0].id.split(" ")[0];
+      let currentEvent = event.path[0].id.split(" ")[1];
+      players[currentUsername][currentEvent] = document.getElementById(event.path[0].id).value;
+      socket.emit('update players',players);
     }
 
     function modifyDiv(currentUsername, currentLife) {
-        document.getElementById(currentUsername).children[1].value = currentLife;
+      document.getElementById(currentUsername).children[1].value = currentLife;
     }
     
     
     function addPlayerArea(){
       for (var player in players) {
-        createDiv(players[player].username,players[player].life);
+        createDiv(players[player].username, players[player].life);
       }
     }
 

@@ -35,25 +35,33 @@ io.on('connection', (socket) => {
   // when the client emits 'add user', this listens and executes
   socket.on('add user', (data) => {
     if (addedUser) return;
-    
+    let reconnecting = false
     // we store the username in the socket session for this client
-    if (players.indexOf(socket.username == -1)){
+    if(players.indexOf(data.username) != -1){
+      socket.username = data.username;
+      console.log ("this name exists in players")
+    }else if (players.indexOf(data.username) == -1){
         socket.username = data.username;
     }else{
         socket.username = data.username+'_'
     }
     ++numUsers;
-    players.push(socket.username);
-    
-    addedUser = true;
+    if(players.indexOf(data.username) == -1){
+      players.push(socket.username);
+      addedUser = true;
+    }else{ 
+      reconnecting = true
+    }
     socket.emit('login', {
       numUsers: numUsers
     });
+    console.log(reconnecting)
     // echo globally (all clients) that a person has connected
     socket.broadcast.emit('user joined', {
       username: socket.username,
       numUsers: numUsers,
-      id:data.id
+      id:data.id,
+      reconnecting:reconnecting
     });
   });
 
@@ -89,8 +97,8 @@ socket.on('update all players', (data) => {
   socket.on('disconnect', () => {
     if (addedUser) {
       --numUsers;
-      let idx = players.indexOf(socket.username);
-      players.splice(idx,1);
+      // let idx = players.indexOf(socket.username);
+      // players.splice(idx,1);
       // echo globally that this client has left
       socket.broadcast.emit('user left', {
         username: socket.username,
