@@ -274,7 +274,7 @@ socket.on('connect', function() {
     socket.on('login', (data) => {
       connected = true;
       // Display the welcome message
-      var message = "Welcome to Simpchapp the simple chat app– ";
+      var message = "Welcome to Tiebreaker";
       log(message, {
         prepend: true
       });

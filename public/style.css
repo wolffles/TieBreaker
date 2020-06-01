@@ -30,14 +30,22 @@
     list-style: none;
     word-wrap: break-word;
   }
-  
+   /* game section */
+
+  .dashboard {
+    overflow: hidden;
+  }
+
   /* Pages */
   
   .pages {
+    float:left;
     height: 100%;
     margin: 0;
     padding: 0;
-    width: 100%;
+    width: 25%;
+    border: 2;
+    overflow: hidden;
   }
   
   .page {
@@ -90,8 +98,11 @@
   
   .chat.page {
     display: none;
+    float: left;
+    width: 25%;
   }
   
+ 
   /* Font */
   
   .messages {
@@ -151,4 +162,5 @@
   #bellbtn {
       border: 10px solid #000;
       position: absolute;
+      display: none;
   }
