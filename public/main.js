@@ -17,13 +17,13 @@ $(function() {
     var $loginPage = $('.login.page'); // The login page
     var $chatPage = $('.chat.page'); // The chatroom page
     var audio = document.getElementById('bell')
-    let host = false
+    let host = false;
   
     $("#bellbtn").click(function() {
         document.getElementById("bellbtn").style.display = "none";
         audio.play(); // Play the empty element to get control
         setTimeout(function(){ audio.src = './assets/bell.m4a';  }, 3000);// Set the real audio source
-    })
+    });
         
 
     // Prompt for setting a username
@@ -70,21 +70,22 @@ socket.on('connect', function() {
     }
   
     // Sends a chat message
-    const sendMessage = () => {
+    const sendMessage = (event, result) => {
       var message = $inputMessage.val();
       // Prevent markup from being injected into the message
       message = cleanInput(message);
       // if there is a non-empty message and a socket connection
-      if (message && connected) {
+      if ((message || event) && connected) {
         $inputMessage.val('');
         addChatMessage({
-          username: username,
-          message: message
+          username: determineUsername({event:event,username:username}),
+          message: determineMessage({event:event,result:result, message:message,username:username})
         });
+      
         // tell server to execute 'new message' and send along one parameter
-        socket.emit('new message', message);
+        socket.emit('new message', {event:event,message:message, result:result});
       }
-    }
+    };
   
     // Log a message
       const log = (message, options) => {
@@ -101,12 +102,14 @@ socket.on('connect', function() {
         options.fade = false;
         $typingMessages.remove();
       }
+
   
+
       var $usernameDiv = $('<span class="username"/>')
-        .text(data.username)
+        .text(determineUsername(data))
         .css('color', getUsernameColor(data.username));
       var $messageBodyDiv = $('<span class="messageBody">')
-        .text(data.message);
+        .text(determineMessage(data));
   
       var typingClass = data.typing ? 'typing' : '';
       var $messageDiv = $('<p class="message"/>')
@@ -413,5 +416,89 @@ socket.on('connect', function() {
             modifyDiv(players[player].username,players[player].life);
           }
     }
+/// modal **********************************
+    // Get the modal
+var modal = document.getElementById("myModal");
+
+// Get the button that opens the modal
+var btn = document.getElementById("showDie");
+
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+
+
+var rollBtn = document.getElementById("rollBtn");
+
+// When the user clicks on the button, open the modal
+btn.onclick = function() {
+  modal.style.display = "block";
+};
+
+rollBtn.onclick = function() {
+  rollDie();
+};
+
+function rollDie (){
+  let number = Math.floor(Math.random() * 6);
+  console.log("here is the number", number);
+  switch(number) {
+    case 0:
+      document.getElementById("dice").style.transform = "rotateY(360deg)";
+      sendMessage('roll', 'one');
+      break;
+    case 1:
+    document.getElementById("dice").style.transform = "rotateY(-90deg)";
+    sendMessage('roll', 'five');
+    break;
+    case 2:
+    document.getElementById("dice").style.transform = "rotateY(180deg)";
+    sendMessage('roll', 'six');
+      break;
+    case 3:
+    document.getElementById("dice").style.transform = "rotateY(90deg)";
+    sendMessage('roll', 'two');
+      break;
+    case 4:
+    document.getElementById("dice").style.transform = "rotateX(-90deg)";
+    sendMessage('roll', 'four');
+      break;
+    case 5:
+    document.getElementById("dice").style.transform = "rotateX(90deg)";
+    sendMessage('roll', 'three');
+      break;
+  }
+}
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+  modal.style.display = "none";
+};
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+};
+
+  //determine chat message
+  function determineMessage(data) {
+    if (data.event == 'roll'){
+      return `${data.username} rolled a ${data.result}`;
+    } else {
+      return data.message;
+    }
+  }
+
+    //determine username
+    function determineUsername(data) {
+      if (data.event == 'roll'){
+        return `Tiebreaker Bot`;
+      } else {
+        return data.username;
+      }
+    }
 
   });
+
+

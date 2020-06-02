@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <title>TieBreaker</title>
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="modal.css">
+  <link rel="stylesheet" href="dice.css">
 </head>
 <body>
   <div class="pages" id="pages">
@@ -28,8 +30,40 @@
             <button id="startGame">press</button>  
         </form>
         <div id="playerArea"></div>
-    </div>
+        <button id="showDie">Show Die</button>
+
+<!-- The Modal -->
+<div id="myModal" class="modal">
+
+  <!-- Modal content -->
+  <div class="modal-content">
+      <span class="close">&times;</span>
+    <input type="radio" class="radio" name="roll" id="btnFront">
+    <input type="radio" class="radio" name="roll" id="btnRight">
+    <input type="radio" class="radio" name="roll" id="btnBack">
+    <input type="radio" class="radio" name="roll" id="btnLeft">
+    <input type="radio" class="radio" name="roll" id="btnTop">
+    <input type="radio" class="radio" name="roll" id="btnBottom">
+        <div id="view">
+            <div id="dice">
+                <div class="diceFace" id="front"><img class="dicePicture" src="/assets/one.png" /></div>
+                <div class="diceFace" id="right"><img class="dicePicture" src="/assets/five.png" /></div>
+                <div class="diceFace" id="back"><img class="dicePicture" src="/assets/six.png" /></div>
+                <div class="diceFace" id="left"><img class="dicePicture" src="/assets/two.png" /></div>
+                <div class="diceFace" id="top"><img class="dicePicture" src="/assets/four.png" /></div>
+                <div class="diceFace" id="bottom"><img class="dicePicture" src="/assets/three.png" /></div>
+            </div>
+
+        </div>
+        <button id="rollBtn">Roll Die</button>
+
+  </div>
+
+</div>
+
+  </div>
       
+
 
   <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
   <script src="/socket.io/socket.io.js"></script>
