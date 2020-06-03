@@ -371,15 +371,13 @@ socket.on('connect', function() {
   
 
     function createDiv(currentUsername,currentLife) {
-      let newDiv = document.createElement("div");
-      newDiv.setAttribute('id',currentUsername);
-
-      let nameDiv = document.createElement("div");
+      let newDiv = Object.assign(document.createElement("div"), {id: currentUsername, className: "player"});
+      newDiv.style.cssText = `background-color:${getUsernameColor(currentUsername)}`
+      let nameDiv = Object.assign(document.createElement("div"), {className: "nickname"});
       nameDiv.setAttribute('id',currentUsername + " Area");
       nameDiv.innerHTML = currentUsername;
-      console.log("life")
-      let lifeDiv = document.createElement("input");
-      lifeDiv.setAttribute('id',currentUsername + " life");
+      let lifeDiv = Object.assign(document.createElement("input"), {id: currentUsername + " life", className: "life"});
+      lifeDiv.style.cssText =  `background-color:${getUsernameColor(currentUsername)}`
       lifeDiv.value = currentLife;
 
       newDiv.appendChild(nameDiv);
@@ -407,15 +405,18 @@ socket.on('connect', function() {
       }
     }
 
-    function updateOwnArea(){
-        document.getElementById(username).children[1]
-    }
+    // function updateOwnArea(){
+    //     document.getElementById(username).children[1]
+    // }
 
     function updatePlayerArea(){
         for (var player in players) {
             modifyDiv(players[player].username,players[player].life);
           }
     }
+
+
+
 /// modal **********************************
     // Get the modal
 var modal = document.getElementById("myModal");

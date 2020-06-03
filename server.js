@@ -42,7 +42,6 @@ io.on('connection', (socket) => {
     // we store the username in the socket session for this client
     if(players.indexOf(data.username) != -1){
       socket.username = data.username;
-      console.log ("this name exists in players")
     }else if (players.indexOf(data.username) == -1){
         socket.username = data.username;
     }else{
@@ -58,7 +57,6 @@ io.on('connection', (socket) => {
     socket.emit('login', {
       numUsers: numUsers
     });
-    console.log(reconnecting)
     // echo globally (all clients) that a person has connected
     socket.broadcast.emit('user joined', {
       username: socket.username,

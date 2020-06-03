@@ -36,6 +36,35 @@
     overflow: hidden;
   }
 
+  #playerArea {
+
+  }
+
+  .player {
+    border: 5px, solid, black;
+    width: 100px;
+    text-align: center;
+    padding-bottom: 5px;
+  }
+
+  .nickname {
+    color: white;
+    font-size: 3rem;
+    font-weight: 700;
+  }
+
+  .life {
+    margin:auto;
+    width: 90%;
+    text-align:center;
+    font-weight: 600;
+    color: white;
+    outline: none;
+    border: 0;
+  }
+
+
+
   /* Pages */
   
   .pages {
