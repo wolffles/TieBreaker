@@ -17,6 +17,7 @@ $(function() {
     var $loginPage = $('.login.page'); // The login page
     var $chatPage = $('.chat.page'); // The chatroom page
     var audio = document.getElementById('bell')
+    audio.volume = 0.15;
     let host = false;
   
     $("#bellbtn").click(function() {
@@ -260,10 +261,10 @@ socket.on('connect', function() {
     });
 
         document.getElementById('startGame').onclick = function(e){
-        e.preventDefault()
-        const life = document.getElementById('hp').value
-        for (let player in players){
-            players[player].life = life
+          e.preventDefault()
+          const life = document.getElementById('hp').value
+          for (let player in players){
+              players[player].life = life
         }
         socket.emit('update all players', players)
     }
@@ -376,7 +377,7 @@ socket.on('connect', function() {
       let nameDiv = Object.assign(document.createElement("div"), {className: "nickname"});
       nameDiv.setAttribute('id',currentUsername + " Area");
       nameDiv.innerHTML = currentUsername;
-      let lifeDiv = Object.assign(document.createElement("input"), {id: currentUsername + " life", className: "life"});
+      let lifeDiv = Object.assign(document.createElement("input"), {id: currentUsername + " life", className: "life", type: "number"});
       lifeDiv.style.cssText =  `background-color:${getUsernameColor(currentUsername)}`
       lifeDiv.value = currentLife;
 
