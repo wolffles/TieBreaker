@@ -1,25 +1,22 @@
-import React from 'react';
-import logo from './logo.svg';
+import React,  { useState } from 'react';
+//import logo from './logo.svg';
 import './App.css';
+import { createContext } from 'react';
+import ShowData from './showData.js'
+import Chat from './chat.js';
+import Dashboard from './dashboard.js';
+import './style.css';
+
 
 function App() {
+  const UserContext = createContext({});
+  const [userInfo, setUserInfo] = useState('Felix');
+  //
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <UserContext.Provider value={[userInfo, setUserInfo]}>
+            <Chat/>
+            <Dashboard/>>
+        </UserContext.Provider>
   );
 }
 
