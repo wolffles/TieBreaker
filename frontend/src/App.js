@@ -15,9 +15,17 @@ function App() {
   let userContext = createContext({players:{},username:null});
   let [userInfo, setUserInfo] = useState(userContext);
   //
+
+  function dashboard(){
+    if (userInfo.username == null){
+    return <Gameboard context={userContext}/>;
+    } else{
+      return <Chat />;
+    }
+  }
   return (
     <userContext.Provider value={[userInfo, setUserInfo]}>
-        <Gameboard context={userContext}/>   
+       {dashboard()} 
     </userContext.Provider>
   );
 }

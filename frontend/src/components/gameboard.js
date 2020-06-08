@@ -53,7 +53,15 @@ export default function Gameboard({context}) {
     return (
       <div className="dashboard">
         <div id="playerArea"></div>
-        {dashboard()}
+        <div className="login page">
+        <form id="entername" className="form" onSubmit={handleSubmit}>
+            <label className="title">What's your nickname?</label>
+            {/* <label>
+              */}
+              <input className="usernameInput" type="text" maxLength="14" onChange={changeInput}/>
+            {/* </label> */}
+        </form>
+      </div>
       </div>
     );
   }
