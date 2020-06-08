@@ -12,7 +12,7 @@ import userContext from './context/players.js'
 
 
 function App() {
-  let userContext = createContext('word');
+  let userContext = createContext({players:{},username:null});
   let [userInfo, setUserInfo] = useState(userContext);
   //
   return (

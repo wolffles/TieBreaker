@@ -1,23 +1,36 @@
-import React, {useContext} from "react";
+import React, {useContext, createContext, useState, forceUpdate} from "react";
 // import '../style/login.css';
 import userContext from '../context/players.js'
 
 export default function Gameboard({context}) {
   
   let [userInfo, setUserInfo] = useContext(context);
-  console.log('this is user info before', userInfo)
-  setUserInfo("hello")
-  console.log('this is user info after', userInfo)
+
+  let inputContext = createContext('');
+  let [inputValue, setInputContext] = useState(inputContext);
+  
+  function changeInput(e){
+    e.preventDefault();
+    setInputContext(e.target.value);
+  }
+
+  function handleSubmit(e){
+    e.preventDefault();
+    let updatedState = Object.create(userInfo);
+    updatedState.username = inputValue;
+    setUserInfo(updatedState);
+  }
+
   function dashboard(){
-    if (false) {
+    if (userInfo.username == null) {
       return (<div className="login page">
-        <div id="entername" className="form">
-            <h3 className="title">What's your nickname?</h3>
+        <form id="entername" className="form" onSubmit={handleSubmit}>
+            <label className="title">What's your nickname?</label>
             {/* <label>
               */}
-              <input className="usernameInput" type="text" maxLength="14" />
+              <input className="usernameInput" type="text" maxLength="14" onChange={changeInput}/>
             {/* </label> */}
-        </div>
+        </form>
       </div>)
     }
     else{
