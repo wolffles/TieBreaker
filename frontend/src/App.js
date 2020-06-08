@@ -2,10 +2,11 @@ import React,  { useState } from 'react';
 //import logo from './logo.svg';
 import './App.css';
 import { createContext } from 'react';
-import ShowData from './showData.js'
-import Chat from './chat.js';
-import Dashboard from './dashboard.js';
-import './style.css';
+import ShowData from './components/showData.js'
+import Chat from './components/chat.js';
+import Dashboard from './components/dashboard.js';
+import Login from './components/login.js';
+import './style/style.css';
 
 
 function App() {
@@ -14,8 +15,14 @@ function App() {
   //
   return (
     <UserContext.Provider value={[userInfo, setUserInfo]}>
-            <Chat/>
-            <Dashboard/>>
+       <Switch>
+          <Route path="/">
+            <Login />
+          </Route>
+          <Route path="/dashboard">
+            <Users />
+          </Route>
+        </Switch>     
         </UserContext.Provider>
   );
 }
