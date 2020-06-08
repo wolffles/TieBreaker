@@ -5,18 +5,20 @@ import ShowData from './components/showData.js'
 import Chat from './components/chat.js';
 import Dashboard from './components/dashboard.js';
 import Gameboard from './components/gameboard.js';
+import userContext from './context/players.js'
+
 //import './style/style.css';
 //import './style/login.css';
 
 
 function App() {
-  const UserContext = createContext({});
-  const [userInfo, setUserInfo] = useState('Felix');
+  let userContext = createContext('word');
+  let [userInfo, setUserInfo] = useState(userContext);
   //
   return (
-    <UserContext.Provider value={[userInfo, setUserInfo]}>
-            <Gameboard />   
-        </UserContext.Provider>
+    <userContext.Provider value={[userInfo, setUserInfo]}>
+        <Gameboard context={userContext}/>   
+    </userContext.Provider>
   );
 }
 
