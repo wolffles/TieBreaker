@@ -1,6 +1,5 @@
 import React, {useContext} from "react";
-import './App.css';
-import './style.css';
+
 
 export default function Dashboard({ context }) {
     //const [userInfo, setUserInfo] = useContext(context);
