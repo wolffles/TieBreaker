@@ -17,7 +17,7 @@ export default function Chat({ context }) {
         let updatedState = Object.assign({},userInfo);
         console.log('userInfo', userInfo)
         console.log('updatedstate', updatedState)
-        updatedState.messages = updatedState.messages ? updatedState.messages.concat(message) : [message]
+        updatedState.messages = updatedState.messages ? [...updatedState.messages, ...message] : [message]
         setUserInfo(updatedState)
         console.log('updatedstate', updatedState)
     }
