@@ -22,8 +22,8 @@ function App() {
     } else{
       return (
         <div>
-          <Dashboard context={userContext}/>
           <Chat context={userContext}/>
+          <Dashboard context={userContext}/>
         </div>
       )
     }
