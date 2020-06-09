@@ -1,8 +1,12 @@
 import React, {useContext, useState, createContext, useEffect} from "react";
 import MessageList from './messageList.js';
+import {sendMessage, listenForMessage} from '../utility/socket.js';
+import openSocket from 'socket.io-client';
+const  socket = openSocket('http://localhost:3001');
 
 export default function Chat({ context }) {
     const [userInfo, setUserInfo] = useContext(context);
+
 
     let inputContext = createContext('')
     let [message, setMessage] = useState(inputContext);
@@ -14,12 +18,15 @@ export default function Chat({ context }) {
 
     function handleSubmit(e){
         e.preventDefault();
+        sendMessage([message, userInfo.username]);
         let updatedState = Object.assign({},userInfo);
         updatedState.messages = updatedState.messages ? updatedState.messages.concat([[message, userInfo.username]]) : [[message, userInfo.username]]
         setUserInfo(updatedState);
     }
-    useEffect(() => {
-        console.log('messages', userInfo.messages)
+    useEffect((e) => {
+        //console.log('message', userInfo.messages)
+        //this is the next thing that needs to be fixed. the event listener is called twice, so messages from the server is received multiple times
+        listenForMessage();
       });
 
       

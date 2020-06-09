@@ -1,0 +1,1 @@
+run with npm start or npx nodemon
