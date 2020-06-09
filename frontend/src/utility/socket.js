@@ -5,10 +5,5 @@ function sendMessage(message){
     socket.emit('message', message);
 }
 
-function listenForMessage(){
-    socket.on('message', (data) => {
-        console.log('here is the message', data);
-    });
-}
 
-export {sendMessage, listenForMessage};
+export {sendMessage, socket};
