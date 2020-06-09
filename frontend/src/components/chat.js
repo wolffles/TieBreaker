@@ -1,26 +1,44 @@
-import React, {useContext} from "react";
+import React, {useContext, useState, createContext, useEffect} from "react";
 
 export default function Chat({ context }) {
-   // const [userInfo, setUserInfo] = useContext(context);
-    
+    const [userInfo, setUserInfo] = useContext(context);
 
- 
+    let inputContext = createContext('')
+    let [message, setMessage] = useState(inputContext);
+
+    function changeInput(e){
+        e.preventDefault();
+        setMessage(e.target.value);
+    }
+
+    function handleSubmit(e){
+        debugger;
+        e.preventDefault();
+        let updatedState = Object.assign({},userInfo);
+        console.log('userInfo', userInfo)
+        console.log('updatedstate', updatedState)
+        updatedState.messages = updatedState.messages ? updatedState.messages.concat(message) : [message]
+        setUserInfo(updatedState)
+        console.log('updatedstate', updatedState)
+    }
+    useEffect(() => {
+        console.log('userInfo', userInfo);
+        console.log('messages', userInfo.messages)
+      });
 
     return (
         <div className="pages" id="pages">
         <div className="chat page">
             <button id="bellbtn">bell</button>
             <div className="chatArea">
-                <div className="messages"></div>
+                <div className="messages">
+                    {/* <Messages />  */}
+                </div>
             </div>
-            <input className="inputMessage" placeholder="Type here..."/>
+            <form className="form" onSubmit={handleSubmit}> 
+                <input className="inputMessage" placeholder="Type here..." onChange={changeInput} />
+            </form>
         </div>
-        <div className="login page">
-            <div id="entername" className="form" onsubmit="playForm" >
-                <h3 className="title">What's your nickname?</h3>
-                <input className="usernameInput" type="text" maxLength="14" />
-            </div>
-        </div> 
     </div>
       
     );
