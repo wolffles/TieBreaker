@@ -1,22 +1,22 @@
 import React, {useContext} from "react";
-
+import PlayerArea from './playerArea.js'
 
 export default function Dashboard({ context }) {
     const [userInfo, setUserInfo] = useContext(context);
 
+    
   
 
     return (
-        <div className="gameBoard">
-        <div className="menubar">
-          <form>
-              <input id="hp" type="number" maxLength="10" placeholder="lifepoints" />
-              <button hidden id="startGame"></button>  
-          </form>
-          <button id="showDie">Show Die</button>
-        </div>
-        <div id="playerArea">
-        </div> 
+        <div className="dashboard">
+          <div className="menubar">
+            <form>
+                <input id="hp" type="number" maxLength="10" placeholder="lifepoints" />
+                <button hidden id="startGame"></button>  
+            </form>
+            <button id="showDie">Show Die</button>
+          </div>
+          <PlayerArea players={userInfo.players} playersList={userInfo.playersList} />
       </div>
     );
-  }
+}
