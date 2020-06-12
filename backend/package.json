@@ -4,8 +4,10 @@
   "description": "backend server for mtg website",
   "main": "server.js",
   "scripts": {
+    "client": "npm start --prefix ../frontend",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "nodemon server.js",
+    "dev": "concurrently \"npm start\" \"npm run client\""
   },
   "author": "",
   "license": "ISC",
@@ -15,5 +17,8 @@
     "nodemon": "^2.0.4",
     "path": "^0.12.7",
     "socket.io": "^2.3.0"
+  },
+  "devDependencies": {
+    "concurrently": "^5.2.0"
   }
 }
