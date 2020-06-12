@@ -37,14 +37,16 @@ export default function Chat({ context }) {
         });
 
         socket.on('user joined', (data) => {
-      
-    
             addMessage(`${data.username} joined`, 'TieBreaker');
             if(!data.reconnecting){
-             // console.log('user is not reconnecting creating div for player')
-              let updatedState = Object.assign({},userInfo);
+            console.log('user is not reconnecting aka NEW PLAYER create div for player')
+            let updatedState = Object.assign({},userInfo);
+            if (!updatedState.players){
+                updatedState.players = {}
+              }
               updatedState.players[data.username] = {username: data.username, life:0};
               updatedState.playersList.push(data.username);
+              updatedState.username = data.username;
               setUserInfo(updatedState);           
             }
 
