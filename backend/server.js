@@ -29,21 +29,27 @@ io.on('connection', (socket) => {
       });
     socket.on('add user', (data) => {
         if (addedUser) return;
+        let reconnecting = false;
         if(players.indexOf(data.username) == -1){
-            socket.username = data.username;
+            //socket.username = data.username;
         }else if (players.indexOf(data.username) == -1){
-            socket.username = data.username;
+          //  socket.username = data.username;
         }else{
-            socket.username = data.username+'_'
+//socket.username = data.username+'_';
         }
         ++numUsers;
         if(players.indexOf(data.username) == -1){
             players.push(socket.username);
             addedUser = true;
+        }else{
+            reconnecting = true;
         }
+        console.log('made it to add user');
+
         socket.emit('login', {
             numUsers: numUsers
         });
+
         socket.broadcast.emit('user joined', {
             username: socket.username,
             numUsers: numUsers,
