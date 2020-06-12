@@ -6,7 +6,6 @@ import {sendMessage, socket} from '../utility/socket.js';
 
 export default function Chat({ context }) {
     const [userInfo, setUserInfo] = useContext(context);
-   
 
     let inputContext = createContext('')
     let [message, setMessage] = useState(inputContext);
