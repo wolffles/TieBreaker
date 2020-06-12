@@ -19,6 +19,15 @@ export default function Login({context}) {
     let updatedState = Object.assign({},userInfo);
     console.log('login', updatedState)
     updatedState.username = inputValue;
+    let username = inputValue
+    if (!updatedState.players){
+      updatedState.players = {}
+    }
+      updatedState.players[username] = {
+        username: username,
+        life: 0
+      }
+      updatedState.playersList = [username]
     setUserInfo(updatedState);
   }
 
