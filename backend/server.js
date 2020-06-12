@@ -50,6 +50,7 @@ io.on('connection', (socket) => {
             numUsers: numUsers
         });
 
+        console.log(numUsers)
         socket.broadcast.emit('user joined', {
             username: socket.username,
             numUsers: numUsers,
