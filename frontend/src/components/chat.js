@@ -2,6 +2,7 @@ import React, {useContext, useState, createContext, useEffect} from "react";
 import MessageList from './messageList.js';
 //inporting socket so application can have one instance of socket
 import {sendMessage, socket} from '../utility/socket.js';
+// import socketUtility from '../utility/socketUtility.js';
 
 
 export default function Chat({ context }) {
@@ -24,9 +25,9 @@ export default function Chat({ context }) {
     function handleSubmit(e){
         e.preventDefault();
         sendMessage([message, userInfo.username]);
-        //let updatedState = Object.assign({},userInfo);
-      //  updatedState.messages = updatedState.messages ? updatedState.messages.concat([[message, userInfo.username]]) : [[message, userInfo.username]]
-      //  setUserInfo(updatedState);
+        let updatedState = Object.assign({},userInfo);
+       updatedState.messages = updatedState.messages ? updatedState.messages.concat([[message, userInfo.username]]) : [[message, userInfo.username]]
+       setUserInfo(updatedState);
         addMessage([message,userInfo.username]);
     }
     useEffect(() => {
@@ -46,7 +47,7 @@ export default function Chat({ context }) {
             <button id="bellbtn">bell</button>
             <div className="chatArea">
                 <div className="messages">
-                    {/* <Messages />  */}   
+                    {/* <Messages />     */}
                 </div>
             </div>
             <form className="form" onSubmit={handleSubmit}> 

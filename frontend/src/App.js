@@ -6,7 +6,7 @@ import Chat from './components/chat.js';
 import Dashboard from './components/dashboard.js';
 import Login from './components/login.js';
 import userContext from './context/players.js'
-import SocketUtility from './utility/socketUtility.js'
+import SocketUtility from './utility/socket.js'
 
 //import './style/style.css';
 //import './style/login.css';
@@ -23,7 +23,7 @@ function App() {
     } else{
       return (
         <div>
-          <SocketUtility context={userContext} />
+          {/* <SocketUtility context={userContext} /> */}
           <Chat context={userContext}/>
           <Dashboard context={userContext}/>
         </div>
