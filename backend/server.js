@@ -31,11 +31,11 @@ io.on('connection', (socket) => {
         if (addedUser) return;
         let reconnecting = false;
         if(players.indexOf(data.username) == -1){
-            //socket.username = data.username;
+            socket.username = data.username;
         }else if (players.indexOf(data.username) == -1){
-          //  socket.username = data.username;
+            socket.username = data.username;
         }else{
-//socket.username = data.username+'_';
+            socket.username = data.username+'_';
         }
         ++numUsers;
         if(players.indexOf(data.username) == -1){
@@ -56,6 +56,10 @@ io.on('connection', (socket) => {
             id:data.id,
             reconnecting:reconnecting
         });
-    })
+    });
+
+    socket.on('update new player', (data) => {
+        io.to(data.id).emit('new player data', data);
+      });
       
 });

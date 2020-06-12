@@ -16,27 +16,47 @@ export default function Chat({ context }) {
         setMessage(e.target.value);
     }
 
-    function addMessage(data){
+    function addMessage(message, username){
         let updatedState = Object.assign({},userInfo);
-        updatedState.messages = updatedState.messages ? updatedState.messages.concat([[data[0], data[1]]]) : [[data[0], data[1]]]
+        updatedState.messages = updatedState.messages ? updatedState.messages.concat([[message, username]]) : [[message, username]];
         setUserInfo(updatedState);
     }
 
     function handleSubmit(e){
         e.preventDefault();
-        sendMessage([message, userInfo.username]);
+        sendMessage({message:message, username:userInfo.username});
         let updatedState = Object.assign({},userInfo);
        updatedState.messages = updatedState.messages ? updatedState.messages.concat([[message, userInfo.username]]) : [[message, userInfo.username]]
        setUserInfo(updatedState);
-        addMessage([message,userInfo.username]);
+        addMessage(message,userInfo.username);
     }
     useEffect(() => {
         socket.on('message', (data) =>{
-            addMessage(data);
+            addMessage(data.message,data.username);
             console.log('here is the message from the server',data);
         });
+
+        socket.on('user joined', (data) => {
+      
+    
+            addMessage(`${data.username} joined`, 'TieBreaker');
+            if(!data.reconnecting){
+             // console.log('user is not reconnecting creating div for player')
+              let updatedState = Object.assign({},userInfo);
+              updatedState.players[data.username] = {username: data.username, life:0};
+              updatedState.playersList.push(data.username);
+              setUserInfo(updatedState);           
+            }
+
+            if (userInfo.host === true){
+               socket.emit('update new player', {players:userInfo.players, playersList:userInfo.playersList, id: data.id});
+               console.log("I'm host sending info to new player")
+            }
+          });
+        
         return function cleanup() {
            socket.off('message');
+           socket.off('user joined');
           };
       });
 

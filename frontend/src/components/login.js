@@ -46,14 +46,16 @@ export default function Login({context}) {
 
     });
 
-    socket.on('user joined', (data) =>{
-     console.log('user joined');
-
+    socket.on('new player data', (data) =>{
+      let updatedState = Object.assign({},userInfo);
+      updatedState.players = data.players;
+      updatedState.playersList = data.playersList;
+      setUserInfo(updatedState);
   });
   
     return function cleanup() {
        socket.off('login');
-       socket.off('user joined');
+       socket.off('new player data');
       };
   });
 

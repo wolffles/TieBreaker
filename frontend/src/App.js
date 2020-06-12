@@ -5,7 +5,8 @@ import ShowData from './components/showData.js'
 import Chat from './components/chat.js';
 import Dashboard from './components/dashboard.js';
 import Login from './components/login.js';
-import userContext from './context/players.js'
+import userContext from './context/players.js';
+import './style/App.css';
 //import SocketUtility from './utility/socketUtility.js'
 
 //import './style/style.css';
@@ -18,17 +19,21 @@ function App() {
   //
 
   function app(){
-    if (userInfo.username == null){
-    return <Login context={userContext}/>;
-    } else{
+    let display = '';
+    if (userInfo.username){
+      display = 'hidden';
+    }
       return (
         <div>
+          <div className={display}>
+          <Login context={userContext} />
+          </div>
           {/* <SocketUtility context={userContext} /> */}
-          <Chat context={userContext}/>
+          <Chat context={userContext} />
           <Dashboard context={userContext}/>
         </div>
       )
-    }
+    
   }
   return (
     <userContext.Provider value={[userInfo, setUserInfo]}>
