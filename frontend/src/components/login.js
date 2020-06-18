@@ -1,5 +1,6 @@
 import React, {useContext, createContext, useState, useEffect} from "react";
-// import '../style/login.css';
+import '../style/login.css';
+import '../style/style.css';
 import userContext from '../context/players.js';
 import {socket} from '../utility/socket.js';
 
@@ -9,13 +10,15 @@ export default function Login({context}) {
 
   let inputContext = createContext('');
   let [inputValue, setInputContext] = useState(inputContext);
-  
+  let hidden = false
+  if (userInfo.username){
+    hidden = true
+  }
   function changeInput(e){
     e.preventDefault();
     setInputContext(e.target.value);
   }
 
-  
   function handleSubmit(e){
     e.preventDefault();
     let updatedState = Object.assign({},userInfo);
@@ -24,11 +27,11 @@ export default function Login({context}) {
     if (!updatedState.players){
       updatedState.players = {}
     }
-      updatedState.players[username] = {
-        username: username,
-        life: 0
-      }
-      updatedState.playersList = [username]
+    updatedState.players[username] = {
+      username: username,
+      life: 0
+    }
+    updatedState.playersList = [username]
     setUserInfo(updatedState);
     socket.emit('add user', {username: username,id: socket.id });
   }
@@ -43,16 +46,13 @@ export default function Login({context}) {
         }else{
             console.log("i am not the host");
         }
-
     });
-
     socket.on('new player data', (data) =>{
       let updatedState = Object.assign({},userInfo);
       updatedState.players = data.players;
       updatedState.playersList = data.playersList;
       setUserInfo(updatedState);
-  });
-  
+    });
     return function cleanup() {
        socket.off('login');
        socket.off('new player data');
@@ -60,13 +60,10 @@ export default function Login({context}) {
   });
 
     return (
-        <div className="login page">
+      <div className={`login page ${hidden ? "hidden" : ""}`}>
         <form id="entername" className="form" onSubmit={handleSubmit}>
             <label className="title">What's your nickname?</label>
-            {/* <label>
-              */}
               <input className="usernameInput" type="text" maxLength="14" onChange={changeInput}/>
-            {/* </label> */}
         </form>
       </div>
     );

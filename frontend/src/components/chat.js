@@ -1,5 +1,6 @@
 import React, {useContext, useState, createContext, useEffect} from "react";
 import MessageList from './messageList.js';
+import '../style/style.css';
 //inporting socket so application can have one instance of socket
 import {sendMessage, socket} from '../utility/socket.js';
 // import socketUtility from '../utility/socketUtility.js';
@@ -68,21 +69,17 @@ export default function Chat({ context }) {
 
       
     return (
-        <div className="pages" id="pages">
         <div className="chat page">
-            <button id="bellbtn">bell</button>
             <div className="chatArea">
                 <div className="messages">
-                    {/* <Messages />     */}
+                    <MessageList messages={userInfo.messages} />
                 </div>
             </div>
-            <form className="form" onSubmit={handleSubmit}> 
+            <form className="messageInput" onSubmit={handleSubmit}> 
                 <input className="inputMessage" placeholder="Type here..." onChange={changeInput} />
             </form>
-            <MessageList messages={userInfo.messages} />
 
         </div>
-    </div>
       
     );
   }
