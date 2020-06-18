@@ -33,26 +33,30 @@ export default function Chat({ context }) {
     useEffect(() => {
         socket.on('message', (data) =>{
             addMessage(data.message,data.username);
-            console.log('here is the message from the server',data);
+            //console.log('here is the message from the server',data);
         });
 
         socket.on('user joined', (data) => {
+            console.log('made it to user joined');
             addMessage(`${data.username} joined`, 'TieBreaker');
             if(!data.reconnecting){
-            console.log('user is not reconnecting aka NEW PLAYER create div for player')
+           // console.log('user is not reconnecting aka NEW PLAYER create div for player')
             let updatedState = Object.assign({},userInfo);
             if (!updatedState.players){
                 updatedState.players = {}
               }
+
+
               updatedState.players[data.username] = {username: data.username, life:0};
+
               updatedState.playersList.push(data.username);
               updatedState.username = data.username;
-              setUserInfo(updatedState);           
+              setUserInfo(updatedState);   
             }
 
             if (userInfo.host === true){
                socket.emit('update new player', {players:userInfo.players, playersList:userInfo.playersList, id: data.id});
-               console.log("I'm host sending info to new player")
+               //console.log("I'm host sending info to new player")
             }
           });
         
