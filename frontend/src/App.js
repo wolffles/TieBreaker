@@ -6,7 +6,8 @@ import Chat from './components/chat.js';
 import Dashboard from './components/dashboard.js';
 import Login from './components/login.js';
 import userContext from './context/players.js';
-import './style/App.css';
+// import './style/App.css';
+import './style/style.css';
 //import SocketUtility from './utility/socketUtility.js'
 
 //import './style/style.css';
@@ -19,15 +20,15 @@ function App() {
   //
 
   function app(){
-    let display = '';
-    if (userInfo.username){
-      display = 'hidden';
-    }
+    // let display = '';
+    // if (userInfo.username){
+    //   display = 'hidden';
+    // }
       return (
-        <div>
-          <div className={display}>
-          <Login context={userContext} />
-          </div>
+        <div className="pages">
+          {/* <div className={display}> */}
+            <Login context={userContext} />
+          {/* </div> */}
           {/* <SocketUtility context={userContext} /> */}
           <Chat context={userContext} />
           <Dashboard context={userContext}/>

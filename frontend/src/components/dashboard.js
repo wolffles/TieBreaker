@@ -1,5 +1,6 @@
 import React, {useContext} from "react";
 import PlayerArea from './playerArea.js'
+import '../style/style.css';
 
 export default function Dashboard({ context }) {
     const [userInfo, setUserInfo] = useContext(context);
@@ -16,7 +17,9 @@ export default function Dashboard({ context }) {
             </form>
             <button id="showDie">Show Die</button>
           </div>
-          <PlayerArea players={userInfo.players} playersList={userInfo.playersList} />
+          <div className="playerArea">
+            <PlayerArea players={userInfo.players} playersList={userInfo.playersList} />
+          </div>
       </div>
     );
 }
