@@ -53,9 +53,18 @@ export default function Login({context}) {
       updatedState.playersList = data.playersList;
       setUserInfo(updatedState);
     });
+
+    socket.on('user left', (data) =>{
+      let updatedState = Object.assign({},userInfo);
+            if(userInfo.username){
+             updatedState.messages = updatedState.messages ? updatedState.messages.concat([[`${data.username} left`, 'TieBreaker']]) : [[`${data.username} joined`, 'TieBreaker']];
+            }
+    });
+
     return function cleanup() {
        socket.off('login');
        socket.off('new player data');
+       socket.off('user left');
       };
   });
 

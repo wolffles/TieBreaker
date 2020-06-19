@@ -56,7 +56,9 @@ export default function Chat({ context }) {
                 updatedState.playersList = [];
               }
 
+            if (updatedState.playersList.indexOf(data.username) == -1){
               updatedState.playersList.push(data.username);
+            }
               setUserInfo(updatedState);   
             }
 
