@@ -27,9 +27,9 @@ export default function Chat({ context }) {
         e.preventDefault();
         sendMessage({message:message, username:userInfo.username});
         let updatedState = Object.assign({},userInfo);
-       updatedState.messages = updatedState.messages ? updatedState.messages.concat([[message, userInfo.username]]) : [[message, userInfo.username]]
-       setUserInfo(updatedState);
         addMessage(message,userInfo.username);
+      // console.log('here is the username', userInfo.username);
+       
     }
     useEffect(() => {
         socket.on('message', (data) =>{
@@ -38,20 +38,25 @@ export default function Chat({ context }) {
         });
 
         socket.on('user joined', (data) => {
-            console.log('made it to user joined');
-            addMessage(`${data.username} joined`, 'TieBreaker');
+            let updatedState = Object.assign({},userInfo);
+            if(userInfo.username){
+             updatedState.messages = updatedState.messages ? updatedState.messages.concat([[`${data.username} joined`, 'TieBreaker']]) : [[`${data.username} joined`, 'TieBreaker']];
+            }
+
             if(!data.reconnecting){
            // console.log('user is not reconnecting aka NEW PLAYER create div for player')
-            let updatedState = Object.assign({},userInfo);
+   
             if (!updatedState.players){
                 updatedState.players = {}
               }
 
-
               updatedState.players[data.username] = {username: data.username, life:0};
 
+              if (!updatedState.playersList){
+                updatedState.playersList = [];
+              }
+
               updatedState.playersList.push(data.username);
-              updatedState.username = data.username;
               setUserInfo(updatedState);   
             }
 
