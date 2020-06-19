@@ -26,12 +26,12 @@ html, body {
   padding: 0;
 }
 
-ul {
+.player ul {
   list-style: none;
   word-wrap: break-word;
 }
 
-li {
+.player.message {
   list-style:none;
   word-wrap: break-word;
 }

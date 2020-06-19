@@ -3,6 +3,9 @@ import '../style/login.css';
 import '../style/style.css';
 import userContext from '../context/players.js';
 import {socket} from '../utility/socket.js';
+import {getUsernameColor} from '../utility/playerMisc.js'
+
+
 
 export default function Login({context}) {
   
@@ -29,7 +32,8 @@ export default function Login({context}) {
     }
     updatedState.players[username] = {
       username: username,
-      life: 0
+      life: 0,
+      color: getUsernameColor(username)
     }
     updatedState.playersList = [username]
     setUserInfo(updatedState);
