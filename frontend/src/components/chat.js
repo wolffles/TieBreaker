@@ -4,6 +4,7 @@ import '../style/style.css';
 //inporting socket so application can have one instance of socket
 import {sendMessage, socket} from '../utility/socket.js';
 // import socketUtility from '../utility/socketUtility.js';
+import {getUsernameColor} from '../utility/playerMisc.js'
 
 
 export default function Chat({ context }) {
@@ -50,7 +51,7 @@ export default function Chat({ context }) {
                 updatedState.players = {}
               }
 
-              updatedState.players[data.username] = {username: data.username, life:0};
+              updatedState.players[data.username] = {username: data.username, life:0, color:getUsernameColor(data.username)};
 
               if (!updatedState.playersList){
                 updatedState.playersList = [];

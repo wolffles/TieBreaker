@@ -37,7 +37,7 @@ export default function Login({context}) {
     }
     updatedState.playersList = [username]
     setUserInfo(updatedState);
-    socket.emit('add user', {username: username,id: socket.id });
+    socket.emit('add user', {username: updatedState.username,id: socket.id });
   }
 
   useEffect(() => {

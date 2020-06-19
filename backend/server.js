@@ -29,8 +29,6 @@ io.on('connection', (socket) => {
 
       });
     socket.on('add user', (data) => {
-        console.log('new user', data);
-        console.log('here are the players', players);
         if (addedUser) return;
         let reconnecting = false;
         if(players.indexOf(data.username) == -1){
