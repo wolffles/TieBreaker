@@ -17,9 +17,7 @@ export default function Dashboard({ context }) {
             </form>
             <button id="showDie">Show Die</button>
           </div>
-          <div className="playerArea">
             <PlayerArea players={userInfo.players} playersList={userInfo.playersList} />
-          </div>
       </div>
     );
 }

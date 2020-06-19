@@ -6,11 +6,13 @@ export default function PlayersArea({ players, playersList }) {
     let playersArea
     if (players){
     playersArea = playersList.map((username, i) =>{
-        return <li className="player" key={i}>{username}: {players[username].life}</li>;
+        return <div className="player" style={{backgroundColor:players[username].color}} key={i}>{username}: {players[username].life}</div>;
         });
     }
 
   return (
-      <ul> {playersArea} </ul>
+    <div className="playerArea"> 
+      {playersArea} 
+    </div>
   );
 }
