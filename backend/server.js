@@ -34,11 +34,6 @@ io.on('connection', (socket) => {
 
       });
     socket.on('add user', (data) => {
-<<<<<<< HEAD
-=======
-        console.log('new user', data);
-        console.log('here are the connectedPlayersList', connectedPlayersList);
->>>>>>> updates host on host disconnect
         if (addedUser) return;
         let reconnecting = false;
         if(connectedPlayersList.indexOf(data.username) == -1){
