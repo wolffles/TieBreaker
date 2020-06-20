@@ -65,10 +65,20 @@ export default function Login({context}) {
             }
     });
 
+    socket.on('updating host',(data) => {
+      if(data.updatingHost == userInfo.username){
+        let updatedState = Object.assign({},userInfo);
+        updatedState.host = true;
+        console.log("I'm the host")
+        setUserInfo(updatedState);
+      }
+    })
+
     return function cleanup() {
        socket.off('login');
        socket.off('new player data');
        socket.off('user left');
+       socket.off('updating host')
       };
   });
 
