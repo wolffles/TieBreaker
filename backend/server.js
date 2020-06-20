@@ -62,6 +62,12 @@ io.on('connection', (socket) => {
         });
     });
 
+    // updating  all players with host information
+    socket.on('update players', (data) => {
+        socket.broadcast.emit('update player data', data);
+    });
+  
+
     socket.on('update new player', (data) => {
         io.to(data.id).emit('new player data', data);
       });

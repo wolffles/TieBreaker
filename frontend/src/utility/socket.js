@@ -10,4 +10,8 @@ export const addUser = (data) => {
     socket.emit('add user', data)
 }
 
+export const updatePlayers = (data) => {
+    socket.emit('update players', data)
+}
+
 //from server

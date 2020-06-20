@@ -85,10 +85,23 @@ html, body {
   align-content: center;
 }
 
+.playerholder{
+  width:90%;
+  height:90%;
+  display:flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+
+}
+
 .nickname {
   color: white;
   font-size: 4em;
   font-weight: 700;
+}
+
+::placeholder{
+  color:white;
 }
 
 .life {
@@ -198,7 +211,7 @@ html, body {
 }
 
 .message.typing .messageBody {
-  color: gray;
+  color: grey;
 }
 
 .username {
