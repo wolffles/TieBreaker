@@ -277,8 +277,9 @@ html, body {
   margin: 0px;
   font-weight:bold;
   font-size: 1em;
-  width: auto;
-  display: flex;
+  width: 100%;
+  text-align: center; 
+
 }
 
 .showDie{

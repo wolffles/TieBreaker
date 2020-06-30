@@ -50,8 +50,8 @@ export default function Dashboard({ context }) {
                 {/* <button id="startGame">Set Lifepoints</button>   */}
             </form>
             <div className="buttons">
-              <button className="button showDie">Roll Die</button>
-              <button className="button flipCoin">Flip Coin</button>
+              <button className="button showDie"> Roll Die </button>
+              <button className="button flipCoin"> Flip Coin </button>
               <button className="button chooser">Choose Player</button>
             </div>
           </div>
