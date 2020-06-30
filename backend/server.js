@@ -94,7 +94,7 @@ io.on('connection', (socket) => {
                 })
             }
             // echo globally that this client has left
-            socket.broadcast.emit('user left', {
+            broadcastData(socket,'user left', {
                 username: socket.username,
                 numUsers: numUsers
             });
