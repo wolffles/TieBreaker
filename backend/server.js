@@ -28,6 +28,9 @@ let whoIsHost = ''
 io.on('connection', (socket) => {
     socket.join('game1')
         let addedUser = false
+    socket.emit('send connectedPlayersList', {
+        connectedPlayersList: connectedPlayersList,
+    });
     socket.on('message', (data) => {
         console.log(data);
         socket.broadcast.emit('message', data);
@@ -51,6 +54,7 @@ io.on('connection', (socket) => {
         }else{
             reconnecting = true;
         }
+        console.log(numUsers, "numUsers")
         socket.emit('login', {
             numUsers: numUsers
         });
@@ -73,25 +77,29 @@ io.on('connection', (socket) => {
         io.to(data.id).emit('new player data', data);
       });
 
-      socket.on('disconnect', () => {
+    socket.on('disconnect', () => {
         if (addedUser) {
-          --numUsers;
-          let idx = connectedPlayersList.indexOf(socket.username);
-          connectedPlayersList.splice(idx,1);
-          //check to see if the logged out player was host and updates
-          if (socket.username == whoIsHost){
-            whoIsHost = connectedPlayersList.length > 0 ? connectedPlayersList[0] : ''
-            socket.broadcast.emit('updating host', {
-                updatingHost: whoIsHost
-              });
-          }
-          // echo globally that this client has left
-          socket.broadcast.emit('user left', {
-            username: socket.username,
-            numUsers: numUsers
-          });
+            --numUsers;
+            console.log("numUsers", numUsers)
+            let idx = connectedPlayersList.indexOf(socket.username);
+            connectedPlayersList.splice(idx,1);
+            //check to see if the logged out player was host and updates
+            if (socket.username == whoIsHost){
+                console.log(socket.username, "socket username check was hit")
+                whoIsHost = connectedPlayersList.length > 0 ? connectedPlayersList[0] : ''
+                console.log(whoIsHost)
+                broadcastData(socket, 'updating host', {
+                    connectedPlayersList: connectedPlayersList,
+                    updatingHost: whoIsHost
+                })
+            }
+            // echo globally that this client has left
+            socket.broadcast.emit('user left', {
+                username: socket.username,
+                numUsers: numUsers
+            });
         }
-      });
+    });
     
     // this will be called when we need to update any player
     socket.on('update players', (data) => {
@@ -100,3 +108,17 @@ io.on('connection', (socket) => {
         }
     })
 });
+
+// HELPER FUNCTIONS
+/**
+ * emitData sends information to the client listening or that requested information
+ * @param {Object} socket 
+ * @param {Object} dataObj 
+ */
+const emitData = (socket, listenString, dataObj) => {
+    socket.emit(listenString, dataObj)
+}
+
+const broadcastData = (socket, listenString, dataObj) => {
+    socket.broadcast.emit(listenString, dataObj)
+}

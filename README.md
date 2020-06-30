@@ -12,6 +12,7 @@ Useful tools for all for table top games
     UserInfo {
         Players: {},
         PlayersList: [],
+        connectedPlayersList: [],
         username: "",
         life: 0,
         host: boolean,

@@ -25,8 +25,14 @@ export default function Login({context}) {
   function handleSubmit(e){
     e.preventDefault();
     let updatedState = Object.assign({},userInfo);
+    let username;
+  if(updatedState.connectedPlayersList.indexOf(inputValue) == -1){
     updatedState.username = inputValue;
-    let username = inputValue;
+    username = inputValue;
+  } else{
+    updatedState.username = inputValue+'_';
+    username = inputValue+'_';
+  }
     if (!updatedState.players){
       updatedState.players = {}
     }
@@ -41,6 +47,7 @@ export default function Login({context}) {
   }
 
   useEffect(() => {
+
     socket.on('login', (data) =>{
         if (data.numUsers == 1) {
           console.log("I'm the host");
@@ -65,7 +72,15 @@ export default function Login({context}) {
             }
     });
 
+    socket.on('send connectedPlayersList', (data) => {
+      let updatedState = Object.assign({},userInfo);
+      updatedState.connectedPlayersList = data.connectedPlayersList
+      console.log(updatedState.connectedPlayersList, "players list")
+      setUserInfo(updatedState);
+    })
+
     socket.on('updating host',(data) => {
+      console.log(userInfo.username)
       if(data.updatingHost == userInfo.username){
         let updatedState = Object.assign({},userInfo);
         updatedState.host = true;
@@ -79,6 +94,7 @@ export default function Login({context}) {
        socket.off('new player data');
        socket.off('user left');
        socket.off('updating host')
+       socket.off('send connectedPlayersList')
       };
   });
 
