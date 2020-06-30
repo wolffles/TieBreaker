@@ -45,11 +45,15 @@ export default function Dashboard({ context }) {
     return (
         <div className="dashboard">
           <div className="menubar">
-            <form onSubmit={handleSubmit}>
-                <input id="hp" type="number" maxLength="10" placeholder="lifepoints" onChange={changeInput}/>
-                <button id="startGame">Set Lifepoints</button>  
+            <form className="hp" onSubmit={handleSubmit}>
+                <input type="number" maxLength="10" placeholder="Set Lifepoints" onChange={changeInput}/>
+                {/* <button id="startGame">Set Lifepoints</button>   */}
             </form>
-            <button id="showDie">Show Die</button>
+            <div className="buttons">
+              <button className="button showDie">Roll Die</button>
+              <button className="button flipCoin">Flip Coin</button>
+              <button className="button chooser">Choose Player</button>
+            </div>
           </div>
             <PlayerArea players={userInfo.players} playersList={userInfo.playersList} context={context}/>
       </div>

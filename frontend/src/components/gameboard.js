@@ -42,6 +42,8 @@ export default function Gameboard({context}) {
               <button hidden id="startGame"></button>  
           </form>
           <button id="showDie">Show Die</button>
+          <button id="showDie">Coin Flip</button>
+          <button id="showDie">Chooser</button>
         </div>
         <div id="playerArea">
         </div> 

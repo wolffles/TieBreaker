@@ -15,7 +15,7 @@ server.listen(port, () => {
 let numUsers = 0;
 let connectedPlayersList = [];
 let frontPlayers = [];
-let whoIsHost = ''
+let whoIsHost = '';
 
 // io.sockets.on('connect', function(socket) {
 //   const sessionID = socket.id;
