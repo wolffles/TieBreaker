@@ -43,7 +43,7 @@ io.on('connection', (socket) => {
         ++(rooms['game1']).numUsers;
         (rooms['game1']).connectedPlayersList.push(socket.username);
         socket.emit('update player state', rooms['game1'].savedPlayers[socket.username])
-        socket.emit('update game state', rooms['game1'] )
+        io.in('game1').emit('update game state', rooms['game1']);
 
         // might not need below
         // if ( (rooms['game1']).numUsers == 0 ){ whoIsHost = socket.username }
