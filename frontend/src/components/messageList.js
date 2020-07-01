@@ -5,8 +5,8 @@ export default function MessageList({ messages} ) {
 
   if (messages){
     messageList = messages.map((message, i) =>{
-      return <li className="player message"key={i}>
-        <div style={{color:getUsernameColor(message[1])}}>{message[1]}</div>: {message[0]}
+      return <li className="playerMessage"key={i}>
+        <span style={{color:getUsernameColor(message[1])}}>{message[1]}</span>: {message[0]}
         </li>;
       });
 
@@ -14,6 +14,6 @@ export default function MessageList({ messages} ) {
   }
 
   return (
-      <ul> {messageList} </ul>
+      <ul className="messageList"> {messageList} </ul>
   );
 }

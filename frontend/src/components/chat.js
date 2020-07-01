@@ -84,7 +84,7 @@ export default function Chat({ context }) {
                 </div>
             </div>
             <form className="messageInput" onSubmit={handleSubmit}> 
-                <input className="inputMessage" placeholder="Type here..." onChange={changeInput} />
+                <input id="inputMessage" autoFocus className="inputMessage" placeholder="Type here..." onChange={changeInput} />
             </form>
 
         </div>

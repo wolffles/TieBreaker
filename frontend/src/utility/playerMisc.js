@@ -5,8 +5,10 @@ const COLORS2 = [
   ];
 
   const COLORS = [
-    '#FBE8A6', '#F4976C', '#303C6C', '#B4DFE5', '#95F2F7'
+    '#1A1A1D', '#4E4E50', '#6F2232', '#950740', '#C3073F'
   ];
+
+  //colors corelate to #4 in following link: https://digitalsynopsis.com/design/website-color-schemes-palettes-combinations/
 
 // Gets the color of a username through our hash function
 const getUsernameColor = (username) => {

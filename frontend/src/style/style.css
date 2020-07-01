@@ -31,9 +31,11 @@ html, body {
   word-wrap: break-word;
 }
 
-.player.message {
+.playerMessage {
   list-style:none;
   word-wrap: break-word;
+  margin: 0;
+  margin-bottom: 1px;
 }
  /* Dashboard section */
 
@@ -45,7 +47,7 @@ html, body {
 
 
 .playerArea {
-  background-color: #BFB8B7;
+  background-color: #82828D;
   height: 95vh;
   padding: 2.5%;
   display:flex;
@@ -91,8 +93,8 @@ html, body {
   font-weight: 600;
   color: white;
   outline: none;
-  border: 0;
-  font-size: 5em
+  border: 2px solid white;
+  font-size: 5em;
 }
 
 
@@ -162,9 +164,7 @@ html, body {
 
 /* Font */
 
-.messages {
-  font-size: 150%;
-}
+
 
 .inputMessage {
   font-size: 100%;
@@ -179,15 +179,22 @@ html, body {
 
 /* Messages */
 
+.messageList {
+  padding: 0;
+}
+
 .chatArea {
   height: 100%;
   padding-bottom: 60px;
+  border: 8px solid #1A1A1D;
+  background-color: #CDCDD4;
 }
 
 .messages {
   margin: 0;
   overflow-y: scroll;
-  padding: 10px 20px 10px 20px;
+  padding: 0px 10px 0px 10px;
+  font-size: 150%;
 }
 
 .message.typing .messageBody {
@@ -202,12 +209,10 @@ html, body {
 }
 
 /* Input */
-.messageInput {
 
-}
 
 .messageInput .inputMessage {
-  border: 10px solid #000;
+  border: 8px solid #1A1A1D;
   bottom: 0;
   height: 60px;
   left: 0;
@@ -216,6 +221,14 @@ html, body {
   right: 0;
   position: fixed;
   width: 25%;
+  background-color: #4E4E50;
+  color: white;
+  font-weight: 600;
+
+}
+
+.messageInput:focus {
+  color: white;
 }
 
 
@@ -226,7 +239,7 @@ html, body {
 /* menu bar  */
 .menubar {
   overflow: hidden;
-  background-color: #121313;
+  background-color: #1A1A1D;
   width: 100%;
   display: flex;
   justify-content: space-between;
@@ -243,7 +256,7 @@ html, body {
   width: 150px;
   font-weight:bold;
   color: white;
-  background-color: #949A9A;
+  background-color: #4E4E50;
   padding: 0px;
   margin: 0px;
   border: 0px;
@@ -283,14 +296,31 @@ html, body {
 }
 
 .showDie{
-  background-color: #FBE8A6;
+  background-color: #6F2232;
+}
+
+.showDie:hover {
+  background-color: #6C343F;
+  cursor: pointer;
 }
 
 .flipCoin{
-  background-color: #F4976C;
+  background-color: #950740;
+}
+
+.flipCoin:hover{
+  background-color: #904161;
+  cursor: pointer;
+
 }
 
 .chooser{
-  background-color: #B4DFE5;
+  background-color: #C3073F;
+}
+
+.chooser:hover{
+  background-color: #BF466A;
+  cursor: pointer;
+
 }
 
