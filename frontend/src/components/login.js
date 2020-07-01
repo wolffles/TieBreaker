@@ -24,26 +24,15 @@ export default function Login({context}) {
 
   function handleSubmit(e){
     e.preventDefault();
-    let updatedState = Object.assign({},userInfo);
-    let username;
-  if(updatedState.connectedPlayersList.indexOf(inputValue) == -1){
-    updatedState.username = inputValue;
-    username = inputValue;
-  } else{
-    updatedState.username = inputValue+'_';
-    username = inputValue+'_';
-  }
-    if (!updatedState.players){
-      updatedState.players = {}
-    }
-    updatedState.players[username] = {
+    let username = inputValue;
+    let player = {}
+    player = {
+      id: socket.id,
       username: username,
       life: 0,
       color: getUsernameColor(username)
     }
-    updatedState.playersList = [username]
-    setUserInfo(updatedState);
-    socket.emit('add user', {username: updatedState.username,id: socket.id });
+    socket.emit('add user', player);
   }
 
   useEffect(() => {
@@ -72,13 +61,6 @@ export default function Login({context}) {
             }
     });
 
-    socket.on('send connectedPlayersList', (data) => {
-      let updatedState = Object.assign({},userInfo);
-      updatedState.connectedPlayersList = data.connectedPlayersList
-      console.log(updatedState.connectedPlayersList, "players list")
-      setUserInfo(updatedState);
-    })
-
     socket.on('updating host',(data) => {
       console.log(userInfo.username)
       if(data.updatingHost == userInfo.username){
@@ -89,12 +71,34 @@ export default function Login({context}) {
       }
     })
 
+    socket.on('update player state', (data) => {
+      let updatedState = Object.assign({},userInfo);
+      console.log('login.js 102', data.username)
+      updatedState.username = data.username
+      updatedState.life = data.life
+      updatedState.id = data.id
+      updatedState.color = data.color
+      console.log(updatedState)
+      setUserInfo(updatedState);
+    })
+
+    socket.on('update game state', (data) => {
+      let updatedState = Object.assign({},userInfo);
+      updatedState.connectedPlayersList = data.connectedPlayersList
+      updatedState.playersList = data.savedPlayersList
+      updatedState.players = data.savedPlayers
+      console.log(updatedState)
+      setUserInfo(updatedState);
+    })
+
+
     return function cleanup() {
        socket.off('login');
        socket.off('new player data');
        socket.off('user left');
        socket.off('updating host')
-       socket.off('send connectedPlayersList')
+       socket.off('update game state')
+       socket.off('update player state')
       };
   });
 

@@ -27,7 +27,6 @@ export default function Chat({ context }) {
     function handleSubmit(e){
         e.preventDefault();
         sendMessage({message:message, username:userInfo.username});
-        let updatedState = Object.assign({},userInfo);
         addMessage(message,userInfo.username);
       // console.log('here is the username', userInfo.username);
        

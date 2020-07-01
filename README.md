@@ -15,6 +15,8 @@ Useful tools for all for table top games
         connectedPlayersList: [],
         username: "",
         life: 0,
+        id: '',
+        color: '',
         host: boolean,
     }
 ```

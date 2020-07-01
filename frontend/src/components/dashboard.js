@@ -34,9 +34,21 @@ export default function Dashboard({ context }) {
           setUserInfo(updatedState);
       });
 
+
+    socket.on('update player state', (data) => {
+      let updatedState = Object.assign({},userInfo);
+      updatedState.username = data.username
+      updatedState.life = data.life
+      updatedState.id = data.id
+      updatedState.color = data.color
+      console.log(updatedState)
+      setUserInfo(updatedState);
+    })
+
      
       return function cleanup() {
          socket.off('update player data');
+         socket.off('update player state');
         };
     });
     
