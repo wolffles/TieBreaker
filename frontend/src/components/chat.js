@@ -32,6 +32,9 @@ export default function Chat({ context }) {
        
     }
     useEffect(() => {
+        var div = document.getElementById("messages");
+        div.scrollTop = div.scrollHeight - div.clientHeight;
+
         socket.on('message', (data) =>{
             addMessage(data.message,data.username);
             //console.log('here is the message from the server',data);
@@ -78,7 +81,7 @@ export default function Chat({ context }) {
     return (
         <div className="chat page">
             <div className="chatArea">
-                <div className="messages">
+                <div id="messages" className="messages">
                     <MessageList messages={userInfo.messages} />
                 </div>
             </div>
