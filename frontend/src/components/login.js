@@ -13,6 +13,10 @@ export default function Login({context}) {
 
   let inputContext = createContext('');
   let [inputValue, setInputContext] = useState(inputContext);
+
+  // let gameContext = createContext('');
+  // let [gameValue, setGameContext] = useState(gameContext);
+
   let hidden = false
   if (userInfo.username){
     hidden = true
@@ -22,8 +26,14 @@ export default function Login({context}) {
     setInputContext(e.target.value);
   }
 
+  // function changeGameInput(e){
+  //   e.preventDefault();
+  //   setGameContext(e.target.value);
+  // }
+
   function handleSubmit(e){
     e.preventDefault();
+    // if(inputValue.length > 0 || gameValue.length >0){
     let username = inputValue;
     let player = {}
     player = {
@@ -33,6 +43,9 @@ export default function Login({context}) {
       color: getUsernameColor(username)
     }
     socket.emit('add user', player);
+  // }else{
+  //   alert('Enter both a username and a game room name');
+  // }
   }
 
   useEffect(() => {
@@ -107,6 +120,9 @@ export default function Login({context}) {
         <form id="entername" className="form" onSubmit={handleSubmit}>
             <label className="title">What's your nickname?</label>
               <input className="usernameInput" type="text" maxLength="14" onChange={changeInput}/>
+              {/* <br/> */}
+              {/* <label className="title">Enter a game room name: </label> */}
+              {/* <input className="usernameInput" type="text" maxLength="14" onChange={changeGameInput}/> */}
         </form>
       </div>
     );

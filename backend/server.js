@@ -67,6 +67,7 @@ io.on('connection', (socket) => {
 
     // updating  all players with host information
     socket.on('update players', (data) => {
+        rooms['game1'].savedPlayers = data.players;
         socket.broadcast.emit('update player data', data);
     });
   
