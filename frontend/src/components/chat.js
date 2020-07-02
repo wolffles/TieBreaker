@@ -65,10 +65,10 @@ export default function Chat({ context }) {
               setUserInfo(updatedState);   
             }
 
-            if (userInfo.host === true){
-               socket.emit('update new player', {players:userInfo.players, playersList:userInfo.playersList, id: data.id});
-               //console.log("I'm host sending info to new player")
-            }
+            // if (userInfo.host === true){
+            //    socket.emit('update new player', {players:userInfo.players, playersList:userInfo.playersList, id: data.id});
+            //    //console.log("I'm host sending info to new player")
+            // }
           });
         
         return function cleanup() {

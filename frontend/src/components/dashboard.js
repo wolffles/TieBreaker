@@ -45,10 +45,19 @@ export default function Dashboard({ context }) {
       setUserInfo(updatedState);
     })
 
+    socket.on('update game state', (data) => {
+      let updatedState = Object.assign({},userInfo);
+      updatedState.connectedPlayersList = data.connectedPlayersList
+      updatedState.playersList = data.savedPlayersList
+      updatedState.players = data.savedPlayers
+      setUserInfo(updatedState);
+    })
+
      
       return function cleanup() {
          socket.off('update player data');
          socket.off('update player state');
+         socket.off('update game state')
         };
     });
     

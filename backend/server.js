@@ -5,7 +5,7 @@ const server = require('http').createServer(app);
 const io = require('socket.io')(server);
 const port = process.env.PORT || 3001;
 
-const { createGameRoom, createPlayerObj } = require('./gameRoom');
+const { addPlayerInRoom, createGameRoom, createPlayerObj } = require('./gameRoom');
 const { isUsernameUnique } = require('./sourceCheck');
 
 server.listen(port, () => {
@@ -37,9 +37,13 @@ io.on('connection', (socket) => {
         } else{
             socket.username = data.username+'_';
         }
-        let player = createPlayerObj(socket.username, data)
-        rooms['game1'].savedPlayers[socket.username] = player
-        rooms['game1'].savedPlayersList.push(socket.username)
+        if((rooms['game1']).savedPlayersList.indexOf(socket.username) == -1){
+            addedUser = true;
+            let player = createPlayerObj(socket.username, data)
+            rooms['game1'] = addPlayerInRoom(rooms['game1'], player, reconnecting)
+        }else{
+            reconnecting = true;
+        }
         ++(rooms['game1']).numUsers;
         (rooms['game1']).connectedPlayersList.push(socket.username);
         socket.emit('update player state', rooms['game1'].savedPlayers[socket.username])
@@ -47,15 +51,9 @@ io.on('connection', (socket) => {
 
         // might not need below
         // if ( (rooms['game1']).numUsers == 0 ){ whoIsHost = socket.username }
-        if((rooms['game1']).savedPlayersList.indexOf(socket.username) == -1){
-            (rooms['game1']).savedPlayersList.push(socket.username);       
-            addedUser = true;
-        }else{
-            reconnecting = true;
-        }
-        socket.emit('login', {
-            numUsers: (rooms['game1']).numUsers
-        });
+        // socket.emit('login', {
+        //     numUsers: (rooms['game1']).numUsers
+        // });
 
         socket.broadcast.emit('user joined', {
             username: socket.username,

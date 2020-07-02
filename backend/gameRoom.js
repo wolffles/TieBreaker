@@ -13,10 +13,16 @@ module.exports = {
     },
     createPlayerObj: function(username, data) {
         return {
-            username: data.username,
+            username: username,
             id: data.id ,
             life: data.life, 
             color: data.color
         }
     },
+    addPlayerInRoom: function(room,player){
+        room.savedPlayers[player.username] = player
+        room.savedPlayersList.push(player.username)
+        console.log(room)
+        return room
+    }
 };

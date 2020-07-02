@@ -86,23 +86,20 @@ export default function Login({context}) {
 
     socket.on('update player state', (data) => {
       let updatedState = Object.assign({},userInfo);
-      console.log('login.js 102', data.username)
       updatedState.username = data.username
       updatedState.life = data.life
       updatedState.id = data.id
       updatedState.color = data.color
-      console.log(updatedState)
       setUserInfo(updatedState);
     })
 
-    socket.on('update game state', (data) => {
-      let updatedState = Object.assign({},userInfo);
-      updatedState.connectedPlayersList = data.connectedPlayersList
-      updatedState.playersList = data.savedPlayersList
-      updatedState.players = data.savedPlayers
-      console.log(updatedState)
-      setUserInfo(updatedState);
-    })
+    // socket.on('update game state', (data) => {
+    //   let updatedState = Object.assign({},userInfo);
+    //   updatedState.connectedPlayersList = data.connectedPlayersList
+    //   updatedState.playersList = data.savedPlayersList
+    //   updatedState.players = data.savedPlayers
+    //   setUserInfo(updatedState);
+    // })
 
 
     return function cleanup() {
@@ -110,8 +107,8 @@ export default function Login({context}) {
        socket.off('new player data');
        socket.off('user left');
        socket.off('updating host')
-       socket.off('update game state')
        socket.off('update player state')
+       //  socket.off('update game state')
       };
   });
 

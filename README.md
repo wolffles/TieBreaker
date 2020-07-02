@@ -6,6 +6,19 @@ Useful tools for all for table top games
 * names
 
 ## Backend objects
+rooms {
+    roomName:{
+        connectedPlayersList:[],
+        savedPlayers: {
+            playerObj:{},
+            ...
+        },
+        savedPlayersList:['playernames'],
+        numUsers: 0,
+        
+
+    }
+}
 
 ## Frontend State
 ```

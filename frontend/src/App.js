@@ -27,7 +27,7 @@ function App() {
       return (
         <div className="pages">
           {/* <div className={display}> */}
-            <Login context={userContext} />
+          <Login context={userContext} />
           {/* </div> */}
           {/* <SocketUtility context={userContext} /> */}
           <Chat context={userContext} />
