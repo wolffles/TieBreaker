@@ -14,6 +14,9 @@ export default function Login({context}) {
   let inputContext = createContext('');
   let [inputValue, setInputContext] = useState(inputContext);
 
+  let gameContext = createContext('');
+  let [gameValue, setGameContext] = useState(gameContext);
+
   let hidden = false
   if (userInfo.username){
     hidden = true
@@ -23,23 +26,26 @@ export default function Login({context}) {
     setInputContext(e.target.value);
   }
 
-  // function changeGameInput(e){
-  //   e.preventDefault();
-  //   setGameContext(e.target.value);
-  // }
+  function changeGameInput(e){
+    e.preventDefault();
+    setGameContext(e.target.value);
+  }
 
   function handleSubmit(e){
     e.preventDefault();
     // if(inputValue.length > 0 || gameValue.length >0){
     let username = inputValue;
-    let player = {}
-    player = {
+    let gameName = gameValue;
+    let data = {}
+    data = {
       id: socket.id,
       username: username,
       life: 0,
-      color: getUsernameColor(username)
+      color: getUsernameColor(username),
+      gameName: gameName
     }
-    socket.emit('add user', player);
+
+    socket.emit('add user', data);
   // }else{
   //   alert('Enter both a username and a game room name');
   // }
@@ -57,12 +63,12 @@ export default function Login({context}) {
     //         console.log("i am not the host");
     //     }
     // });
-    socket.on('new player data', (data) =>{
-      let updatedState = Object.assign({},userInfo);
-      updatedState.players = data.players;
-      updatedState.playersList = data.playersList;
-      setUserInfo(updatedState);
-    });
+    // socket.on('new player data', (data) =>{
+    //   let updatedState = Object.assign({},userInfo);
+    //   updatedState.players = data.players;
+    //   updatedState.playersList = data.playersList;
+    //   setUserInfo(updatedState);
+    // });
 
     socket.on('user left', (data) =>{
       let updatedState = Object.assign({},userInfo);
@@ -93,7 +99,7 @@ export default function Login({context}) {
 
     return function cleanup() {
       //  socket.off('login');
-       socket.off('new player data');
+      // socket.off('new player data');
        socket.off('user left');
        socket.off('update player state')
        //  socket.off('update game state')
@@ -105,10 +111,13 @@ export default function Login({context}) {
         <form id="entername" className="form" onSubmit={handleSubmit}>
             <label className="title">What's your nickname?</label>
               <input className="usernameInput" type="text" maxLength="14" onChange={changeInput}/>
-              {/* <br/> */}
-              {/* <label className="title">Enter a game room name: </label> */}
-              {/* <input className="usernameInput" type="text" maxLength="14" onChange={changeGameInput}/> */}
         </form>
+        <br/>
+        <form id="entername" className="form2"  onSubmit={handleSubmit}>
+           <label className="title">Enter a game room name: </label> 
+               <input className="usernameInput" type="text" maxLength="14" onChange={changeGameInput}/> 
+          </form>
+
       </div>
     );
   }

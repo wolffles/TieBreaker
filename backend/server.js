@@ -20,59 +20,65 @@ let rooms = {}
 
 
 io.on('connection', (socket) => {
-    socket.join('game1')
+ //   socket.join('game1')
         // going to convert the code to have different rooms
-        if(!rooms['game1']){ rooms['game1'] = createGameRoom('game1') }
-        let addedUser = false
-    socket.emit('update game state', rooms['game1'])
+      //  if(!rooms['game1']){ rooms['game1'] = createGameRoom('game1') }
+      let addedUser = false
+   // socket.emit('update game state', rooms['game1'])
     socket.on('message', (data) => {
-        socket.broadcast.emit('message', data);
+        broadcastData(socket, socket.gameName,'message', data);
 
       });
+
     socket.on('add user', (data) => {
         if (addedUser) return;
+        let gameName = data.gameName;
+        socket.gameName = data.gameName;
+        if(!rooms[gameName]){ rooms[gameName] = createGameRoom(gameName) }
+        socket.join(gameName);
         let reconnecting = false;
-        if(isUsernameUnique(data.username, rooms['game1'])){
+        if(isUsernameUnique(data.username, rooms[gameName])){
             socket.username = data.username;
         } else{
             socket.username = data.username+'_';
         }
-        if((rooms['game1']).savedPlayersList.indexOf(socket.username) == -1){
+        if((rooms[gameName]).savedPlayersList.indexOf(socket.username) == -1){
             addedUser = true;
             let player = createPlayerObj(socket.username, data)
-            rooms['game1'] = addPlayerInRoom(rooms['game1'], player, reconnecting)
+            rooms[gameName] = addPlayerInRoom(rooms[gameName], player, reconnecting)
         }else{
             reconnecting = true;
         }
-        ++(rooms['game1']).numUsers;
-        (rooms['game1']).connectedPlayersList.push(socket.username);
-        socket.emit('update player state', rooms['game1'].savedPlayers[socket.username])
-        io.in('game1').emit('update game state', rooms['game1']);
+        ++(rooms[gameName]).numUsers;
+        (rooms[gameName]).connectedPlayersList.push(socket.username);
+        socket.emit('update player state', rooms[gameName].savedPlayers[socket.username])
+        io.in(gameName).emit('update game state', rooms[gameName]);
 
-        socket.broadcast.emit('user joined', {
+        socket.to(gameName).emit('user joined', {
             username: socket.username,
-            numUsers: (rooms['game1']).numUsers,
+            numUsers: (rooms[socket.gameName]).numUsers,
             id:data.id,
             reconnecting:reconnecting
         });
     });
   
 
-    socket.on('update new player', (data) => {
-        io.to(data.id).emit('new player data', data);
-      });
+    // socket.on('update new player', (data) => {
+    //     io.to(data.id).emit('new player data', data);
+    //   });
 
     socket.on('disconnect', () => {
+        let gameName = socket.gameName
         if (addedUser) {
-            --(rooms['game1']).numUsers;
-            console.log("numUsers", (rooms['game1']).numUsers)
-            let idx = (rooms['game1']).connectedPlayersList.indexOf(socket.username);
-            (rooms['game1']).connectedPlayersList.splice(idx,1);
+            --(rooms[gameName]).numUsers;
+            console.log("numUsers", (rooms[gameName]).numUsers)
+            let idx = (rooms[gameName]).connectedPlayersList.indexOf(socket.username);
+            (rooms[gameName]).connectedPlayersList.splice(idx,1);
 
             // echo globally that this client has left
-            broadcastData(socket,'user left', {
+            broadcastData(socket,gameName,'user left', {
                 username: socket.username,
-                numUsers: (rooms['game1']).numUsers
+                numUsers: (rooms[gameName]).numUsers
             });
         }
     });
@@ -80,7 +86,7 @@ io.on('connection', (socket) => {
     // this will be called when we need to update any player
     socket.on('update players', (data) => {
         if(data){
-            broadcastData(socket,'update game state', data)
+            broadcastData(socket,socket.gameName,'update game state', data)
         }
     })
 });
@@ -102,6 +108,12 @@ const emitData = (socket, listenString, dataObj) => {
  * @param {String} listenString 
  * @param {Object} dataObj 
  */
-const broadcastData = (socket, listenString, dataObj) => {
-    socket.broadcast.emit(listenString, dataObj)
+
+ //broad cast to all in room exluding sender
+const broadcastData = (socket, gameName, listenString, dataObj ) => {
+    socket.to(gameName).emit(listenString, dataObj)
 }
+
+//broad cast to all in room including sender
+const broadcastToRoom = (io, roomname, listenString, dataObj) => {   
+      io.in(roomname).emit(listenString, dataObj); }
