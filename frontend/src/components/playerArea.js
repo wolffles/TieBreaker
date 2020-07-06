@@ -1,7 +1,7 @@
 import React, {useContext} from "react";
 import {updatePlayers, socket} from '../utility/socket.js';
 
-export default function PlayersArea({ players, playersList, context }) {
+export default function PlayersArea({ players, gameName, playersList, context }) {
    // console.log('here is the playersList', playersList);
     let playersArea;
 
@@ -29,7 +29,6 @@ export default function PlayersArea({ players, playersList, context }) {
 
   return (
     <div className="playerArea">
-   
           {playersArea} 
         
     </div>

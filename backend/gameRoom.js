@@ -16,7 +16,8 @@ module.exports = {
             username: username,
             id: data.id ,
             life: data.life, 
-            color: data.color
+            color: data.color,
+            gameName: data.gameName
         }
     },
     addPlayerInRoom: function(room,player){

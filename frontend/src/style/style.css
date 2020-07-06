@@ -50,6 +50,7 @@ html, body {
   background-color: #82828D;
   height: 95vh;
   padding: 2.5%;
+  padding-top: 0;
   display:flex;
   flex-wrap: wrap;
   justify-content: space-evenly;
@@ -133,7 +134,7 @@ html, body {
 
 .form2 {
   height: 100px;
-  margin-top: -50px;
+  margin-top: -40px;
   position: absolute;
 
   text-align: center;
@@ -353,3 +354,11 @@ html, body {
 
 }
 
+.gameName {
+  display: block;
+  background-color: #82828D;
+  text-align: right;
+  font-weight: 700;
+  padding-right: 5px;
+  padding-top: 5px;
+}

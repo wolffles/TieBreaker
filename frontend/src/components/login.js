@@ -33,7 +33,7 @@ export default function Login({context}) {
 
   function handleSubmit(e){
     e.preventDefault();
-    // if(inputValue.length > 0 || gameValue.length >0){
+    if(inputValue.length > 0 && gameValue.length >0){
     let username = inputValue;
     let gameName = gameValue;
     let data = {}
@@ -46,9 +46,9 @@ export default function Login({context}) {
     }
 
     socket.emit('add user', data);
-  // }else{
-  //   alert('Enter both a username and a game room name');
-  // }
+  }else{
+    alert('Please enter both a username and a game room name');
+  }
   }
 
   useEffect(() => {
@@ -84,6 +84,7 @@ export default function Login({context}) {
       updatedState.life = data.life
       updatedState.id = data.id
       updatedState.color = data.color
+      updatedState.gameName = data.gameName
       setUserInfo(updatedState);
     })
 
@@ -108,12 +109,12 @@ export default function Login({context}) {
 
     return (
       <div className={`login page ${hidden ? "hidden" : ""}`}>
-        <form id="entername" className="form" onSubmit={handleSubmit}>
+        <form className="form" onSubmit={handleSubmit}>
             <label className="title">What's your nickname?</label>
               <input className="usernameInput" type="text" maxLength="14" onChange={changeInput}/>
         </form>
         <br/>
-        <form id="entername" className="form2"  onSubmit={handleSubmit}>
+        <form className="form2"  onSubmit={handleSubmit}>
            <label className="title">Enter a game room name: </label> 
                <input className="usernameInput" type="text" maxLength="14" onChange={changeGameInput}/> 
           </form>
