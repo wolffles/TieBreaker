@@ -14,9 +14,6 @@ export default function Login({context}) {
   let inputContext = createContext('');
   let [inputValue, setInputContext] = useState(inputContext);
 
-  // let gameContext = createContext('');
-  // let [gameValue, setGameContext] = useState(gameContext);
-
   let hidden = false
   if (userInfo.username){
     hidden = true
@@ -50,16 +47,16 @@ export default function Login({context}) {
 
   useEffect(() => {
 
-    socket.on('login', (data) =>{
-        if (data.numUsers == 1) {
-          console.log("I'm the host");
-          let updatedState = Object.assign({},userInfo);
-          updatedState.host = true;
-          setUserInfo(updatedState);
-        }else{
-            console.log("i am not the host");
-        }
-    });
+    // socket.on('login', (data) =>{
+    //     if (data.numUsers == 1) {
+    //       console.log("I'm the host");
+    //       let updatedState = Object.assign({},userInfo);
+    //       updatedState.host = true;
+    //       setUserInfo(updatedState);
+    //     }else{
+    //         console.log("i am not the host");
+    //     }
+    // });
     socket.on('new player data', (data) =>{
       let updatedState = Object.assign({},userInfo);
       updatedState.players = data.players;
@@ -74,15 +71,6 @@ export default function Login({context}) {
             }
     });
 
-    socket.on('updating host',(data) => {
-      console.log(userInfo.username)
-      if(data.updatingHost == userInfo.username){
-        let updatedState = Object.assign({},userInfo);
-        updatedState.host = true;
-        console.log("I'm the host")
-        setUserInfo(updatedState);
-      }
-    })
 
     socket.on('update player state', (data) => {
       let updatedState = Object.assign({},userInfo);
@@ -93,6 +81,7 @@ export default function Login({context}) {
       setUserInfo(updatedState);
     })
 
+    // moved to dashboard
     // socket.on('update game state', (data) => {
     //   let updatedState = Object.assign({},userInfo);
     //   updatedState.connectedPlayersList = data.connectedPlayersList
@@ -103,10 +92,9 @@ export default function Login({context}) {
 
 
     return function cleanup() {
-       socket.off('login');
+      //  socket.off('login');
        socket.off('new player data');
        socket.off('user left');
-       socket.off('updating host')
        socket.off('update player state')
        //  socket.off('update game state')
       };

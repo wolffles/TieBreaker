@@ -14,7 +14,7 @@ server.listen(port, () => {
 
 
 //Dashboard
-let whoIsHost = '';
+// let whoIsHost = '';
 
 let rooms = {}
 
@@ -49,24 +49,12 @@ io.on('connection', (socket) => {
         socket.emit('update player state', rooms['game1'].savedPlayers[socket.username])
         io.in('game1').emit('update game state', rooms['game1']);
 
-        // might not need below
-        // if ( (rooms['game1']).numUsers == 0 ){ whoIsHost = socket.username }
-        // socket.emit('login', {
-        //     numUsers: (rooms['game1']).numUsers
-        // });
-
         socket.broadcast.emit('user joined', {
             username: socket.username,
             numUsers: (rooms['game1']).numUsers,
             id:data.id,
             reconnecting:reconnecting
         });
-    });
-
-    // updating  all players with host information
-    socket.on('update players', (data) => {
-        rooms['game1'].savedPlayers = data.players;
-        socket.broadcast.emit('update player data', data);
     });
   
 
@@ -80,15 +68,7 @@ io.on('connection', (socket) => {
             console.log("numUsers", (rooms['game1']).numUsers)
             let idx = (rooms['game1']).connectedPlayersList.indexOf(socket.username);
             (rooms['game1']).connectedPlayersList.splice(idx,1);
-            //check to see if the logged out player was host and updates
-            if (socket.username == whoIsHost){
-                console.log(socket.username, "socket username check was hit")
-                whoIsHost = (rooms['game1']).connectedPlayersList.length > 0 ? (rooms['game1']).connectedPlayersList[0] : ''
-                broadcastData(socket, 'updating host', {
-                    connectedPlayersList: (rooms['game1']).connectedPlayersList,
-                    updatingHost: whoIsHost
-                })
-            }
+
             // echo globally that this client has left
             broadcastData(socket,'user left', {
                 username: socket.username,
@@ -100,21 +80,28 @@ io.on('connection', (socket) => {
     // this will be called when we need to update any player
     socket.on('update players', (data) => {
         if(data){
-
+            broadcastData(socket,'update game state', data)
         }
     })
 });
 
 // HELPER FUNCTIONS
 /**
- * emitData sends information to the client listening or that requested information
- * @param {Object} socket 
+ * emitData sends information to the client listening or that requested information, designed to go inside of a listener
+ * @param {socket} socket 
+ * @param {String} listenString 
  * @param {Object} dataObj 
  */
 const emitData = (socket, listenString, dataObj) => {
     socket.emit(listenString, dataObj)
 }
 
+/**
+ * 
+ * @param {Socket} socket 
+ * @param {String} listenString 
+ * @param {Object} dataObj 
+ */
 const broadcastData = (socket, listenString, dataObj) => {
     socket.broadcast.emit(listenString, dataObj)
 }

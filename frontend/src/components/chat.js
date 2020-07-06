@@ -65,10 +65,10 @@ export default function Chat({ context }) {
               setUserInfo(updatedState);   
             }
 
-            // if (userInfo.host === true){
-            //    socket.emit('update new player', {players:userInfo.players, playersList:userInfo.playersList, id: data.id});
-            //    //console.log("I'm host sending info to new player")
-            // }
+            if (userInfo.host === true){
+               socket.emit('update new player', {players:userInfo.players, playersList:userInfo.playersList, id: data.id});
+               //console.log("I'm host sending info to new player")
+            }
           });
         
         return function cleanup() {
@@ -82,6 +82,7 @@ export default function Chat({ context }) {
         <div className="chat page">
             <div className="chatArea">
                 <div id="messages" className="messages">
+                    <span className="server message">Welcome to TieBreaker</span>
                     <MessageList messages={userInfo.messages} />
                 </div>
             </div>
