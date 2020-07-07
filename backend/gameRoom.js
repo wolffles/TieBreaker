@@ -22,7 +22,7 @@ module.exports = {
             id: data.id ,
             life: data.life, 
             color: data.color,
-            gameName: data.gameName,
+            roomName: data.roomName,
             messages: [['Welcome To TieBreaker', undefined]]
         }
     },

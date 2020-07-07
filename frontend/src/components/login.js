@@ -35,14 +35,14 @@ export default function Login({context}) {
     e.preventDefault();
     if(inputValue.length > 0 && gameValue.length >0){
     let username = inputValue;
-    let gameName = gameValue;
+    let roomName = gameValue;
     let data = {}
     data = {
       id: socket.id,
       username: username,
       life: 0,
       color: getUsernameColor(username),
-      gameName: gameName
+      roomName: roomName
     }
 
     socket.emit('add user', data);
@@ -84,7 +84,7 @@ export default function Login({context}) {
       updatedState.life = data.life
       updatedState.id = data.id
       updatedState.color = data.color
-      updatedState.gameName = data.gameName
+      updatedState.roomName = data.roomName
       updatedState.messages = data.messages
       setUserInfo(updatedState);
     })

@@ -1,7 +1,7 @@
 import React, {useContext} from "react";
 import {updatePlayers, socket} from '../utility/socket.js';
 
-export default function PlayersArea({ players, gameName, playersList, context }) {
+export default function PlayersArea({ players, roomName, playersList, context }) {
    // console.log('here is the playersList', playersList);
     let playersArea;
 

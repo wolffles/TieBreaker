@@ -65,7 +65,7 @@ export default function Chat({ context }) {
         
         return function cleanup() {
            socket.off('message');
-           socket.off('user joined messages');
+           socket.off('server messages');
           };
       });
 

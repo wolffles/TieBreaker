@@ -77,9 +77,9 @@ io.on('connection', (socket) => {
     
     // this will be called when we need to update any player
     socket.on('update players', (data) => {
-        rooms[socket.gameName].savedPlayers = data.players;
+        rooms[socket.roomName].savedPlayers = data.players;
         if(data){
-            broadcastData(socket,socket.gameName,'update game state', rooms[socket.gameName])
+            broadcastData(socket,socket.roomName,'update game state', rooms[socket.roomName])
         }
     })
 });

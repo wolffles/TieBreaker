@@ -50,8 +50,10 @@ export default function Dashboard({ context }) {
       updatedState.connectedPlayersList = data.connectedPlayersList
       updatedState.playersList = data.savedPlayersList
       updatedState.players = data.savedPlayers
-      setUserInfo(updatedState);
+      setUserInfo(updatedState)
+      //sometimes updatedState is undefined? maybe asynchronous?
       socket.emit('request server messages', data)
+      
     })
 
      
@@ -77,7 +79,7 @@ export default function Dashboard({ context }) {
               <button className="button chooser">Choose Player</button>
             </div>
           </div>
-          <span className="gameName">Game Name: {userInfo.gameName}</span> 
+          <span className="roomName">Game Name: {userInfo.roomName}</span> 
             <PlayerArea players={userInfo.players} playersList={userInfo.playersList} context={context}/>
       </div>
     );
