@@ -20,15 +20,14 @@ export default function Chat({ context }) {
 
     function addMessage(message, username){
         let updatedState = Object.assign({},userInfo);
-        updatedState.messages = updatedState.messages ? updatedState.messages.concat([[message, username]]) : [[message, username]];
-        setUserInfo(updatedState);
+        updatedState.messages = updatedState.messages.concat([[message, username]]) 
+        setUserInfo(updatedState);   
     }
 
     function handleSubmit(e){
         e.preventDefault();
         sendMessage({message:message, username:userInfo.username});
         addMessage(message,userInfo.username);
-      // console.log('here is the username', userInfo.username);
        
     }
     useEffect(() => {
@@ -37,43 +36,36 @@ export default function Chat({ context }) {
 
         socket.on('message', (data) =>{
             addMessage(data.message,data.username);
-            //console.log('here is the message from the server',data);
         });
 
-        socket.on('user joined', (data) => {
+        socket.on('server messages', (data) => {
             let updatedState = Object.assign({},userInfo);
-            if(userInfo.username){
-             updatedState.messages = updatedState.messages ? updatedState.messages.concat([[`${data.username} joined`, 'TieBreaker']]) : [[`${data.username} joined`, 'TieBreaker']];
-            }
+            updatedState.messages.push(data.toBroadcast.userJoined)
+            updatedState.messages.push(data.toBroadcast.numUsers)
 
-            if(!data.reconnecting){
+            // if(!data.reconnecting){
            // console.log('user is not reconnecting aka NEW PLAYER create div for player')
    
-            if (!updatedState.players){
-                updatedState.players = {}
-              }
+            // if (!updatedState.players){
+            //     updatedState.players = {}
+            //   }
 
-              updatedState.players[data.username] = {username: data.username, life:0, color:getUsernameColor(data.username)};
+              // updatedState.players[data.username] = {username: data.username, life:0, color:getUsernameColor(data.username)};
 
-              if (!updatedState.playersList){
-                updatedState.playersList = [];
-              }
+              // if (!updatedState.playersList){
+              //   updatedState.playersList = [];
+              // }
 
-            if (updatedState.playersList.indexOf(data.username) == -1){
-              updatedState.playersList.push(data.username);
-            }
+            // if (updatedState.playersList.indexOf(updatedState.username) == -1){
+            //   updatedState.playersList.push(updatedState.username);
+            // }
+          // }
               setUserInfo(updatedState);   
-            }
-
-          //  if (userInfo.host === true){
-            //   socket.emit('update new player', {players:userInfo.players, playersList:userInfo.playersList, id: data.id});
-               //console.log("I'm host sending info to new player")
-          //  }
           });
         
         return function cleanup() {
            socket.off('message');
-           socket.off('user joined');
+           socket.off('user joined messages');
           };
       });
 
@@ -82,7 +74,6 @@ export default function Chat({ context }) {
         <div className="chat page">
             <div className="chatArea">
                 <div id="messages" className="messages">
-                    <span className="server message">Welcome to TieBreaker</span>
                     <MessageList messages={userInfo.messages} />
                 </div>
             </div>

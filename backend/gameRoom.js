@@ -1,14 +1,19 @@
 
 module.exports = {
-    createGameRoom: function(roomname) {
+    createGameRoom: function(roomName) {
         return {
             roomID: '',
-            roomname: roomname,
+            roomName: roomName,
             numUsers: 0,
             connectedPlayersList: [],
-            savedPlayersList : [],
             savedPlayers: {},
-            whoIsHost: ''
+            savedPlayersList : [],
+            toBroadcast: {
+                userJoined:"",
+                userLeft: "",
+                userRemoved: "",
+                numUsers: ""
+            }
         }
     },
     createPlayerObj: function(username, data) {
@@ -17,13 +22,19 @@ module.exports = {
             id: data.id ,
             life: data.life, 
             color: data.color,
-            gameName: data.gameName
+            gameName: data.gameName,
+            messages: [['Welcome To TieBreaker', undefined]]
         }
     },
-    addPlayerInRoom: function(room,player){
+    newPlayerInRoom: function(room,player){
         room.savedPlayers[player.username] = player
         room.savedPlayersList.push(player.username)
-        console.log(room)
+        return room
+    },
+    userConnectedToRoom: function(room, username){
+        room.connectedPlayersList.push(username);
+        room.toBroadcast.userJoined = [`New player, ${username} joined `, undefined]
+        room.toBroadcast.numUsers = [`There are ${room.connectedPlayersList.length} in the room`, undefined]
         return room
     }
 };

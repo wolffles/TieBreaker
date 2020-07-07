@@ -85,6 +85,7 @@ export default function Login({context}) {
       updatedState.id = data.id
       updatedState.color = data.color
       updatedState.gameName = data.gameName
+      updatedState.messages = data.messages
       setUserInfo(updatedState);
     })
 

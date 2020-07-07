@@ -35,15 +35,15 @@ export default function Dashboard({ context }) {
       });
 
 
-    socket.on('update player state', (data) => {
-      let updatedState = Object.assign({},userInfo);
-      updatedState.username = data.username
-      updatedState.life = data.life
-      updatedState.id = data.id
-      updatedState.color = data.color
-      console.log(updatedState)
-      setUserInfo(updatedState);
-    })
+    // socket.on('update player state', (data) => {
+    //   let updatedState = Object.assign({},userInfo);
+    //   updatedState.username = data.username
+    //   updatedState.life = data.life
+    //   updatedState.id = data.id
+    //   updatedState.color = data.color
+    //   console.log(updatedState)
+    //   setUserInfo(updatedState);
+    // })
 
     socket.on('update game state', (data) => {
       let updatedState = Object.assign({},userInfo);
@@ -51,6 +51,7 @@ export default function Dashboard({ context }) {
       updatedState.playersList = data.savedPlayersList
       updatedState.players = data.savedPlayers
       setUserInfo(updatedState);
+      socket.emit('request server messages', data)
     })
 
      

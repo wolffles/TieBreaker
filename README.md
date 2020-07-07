@@ -8,14 +8,20 @@ Useful tools for all for table top games
 ## Backend objects
 rooms {
     roomName:{
+        roomID: '',
+        roomName:""
+        numUsers: 0,
         connectedPlayersList:[],
         savedPlayers: {
             playerObj:{},
             ...
         },
         savedPlayersList:['playernames'],
-        numUsers: 0,
-        
+        toBroadcast: {
+            userJoined: "",
+            userLeft: "",
+            userRemoved: "",
+        }
 
     }
 }
@@ -23,6 +29,7 @@ rooms {
 ## Frontend State
 ```
     UserInfo {
+        messages: [],
         Players: {},
         PlayersList: [],
         connectedPlayersList: [],
