@@ -124,7 +124,7 @@ html, body {
 
 .login.page .form {
   height: 100px;
-  margin-top: -100px;
+  margin-top: -120px;
   position: absolute;
 
   text-align: center;
@@ -134,13 +134,26 @@ html, body {
 
 .form2 {
   height: 100px;
-  margin-top: -40px;
+  margin-top: -60px;
   position: absolute;
 
   text-align: center;
   top: 50%;
   width: 100%;
 }
+
+
+.form3 {
+  height: 100px;
+  margin-top: 0px;
+  position: absolute;
+
+  text-align: center;
+  top: 50%;
+  width: 100%;
+}
+
+
 
 .login.page .form .usernameInput {
   background-color: transparent;
@@ -153,6 +166,16 @@ html, body {
 }
 
 .form2 .usernameInput {
+  background-color: transparent;
+  border: none;
+  border-bottom: 2px solid #fff;
+  outline: none;
+  padding-bottom: 15px;
+  text-align: center;
+  width: 400px;
+}
+
+.form3 .usernameInput {
   background-color: transparent;
   border: none;
   border-bottom: 2px solid #fff;

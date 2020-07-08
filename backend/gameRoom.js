@@ -7,9 +7,10 @@ const clearToBroadcast = (room) => {
     }
 }
 module.exports = {
-    createGameRoom: function(roomName) {
+    createGameRoom: function(roomName, password) {
         return {
             roomID: '',
+            password: password,
             roomName: roomName,
             numUsers: 0,
             connectedPlayersList: [],

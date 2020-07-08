@@ -17,6 +17,9 @@ export default function Login({context}) {
   let gameContext = createContext('');
   let [gameValue, setGameContext] = useState(gameContext);
 
+  let passwordContext = createContext('');
+  let [passwordValue, setPasswordContext] = useState(passwordContext);
+
   let hidden = false
   if (userInfo.username){
     hidden = true
@@ -31,23 +34,30 @@ export default function Login({context}) {
     setGameContext(e.target.value);
   }
 
+  function changePasswordInput(e){
+    e.preventDefault();
+    setPasswordContext(e.target.value);
+  }
+
   function handleSubmit(e){
     e.preventDefault();
-    if(inputValue.length > 0 && gameValue.length >0){
+    if(inputValue.length > 0 && gameValue.length > 0 && passwordValue.length > 0){
     let username = inputValue;
     let roomName = gameValue;
+    let password = passwordValue;
     let data = {}
     data = {
       id: socket.id,
       username: username,
       life: 0,
       color: getUsernameColor(username),
-      roomName: roomName
+      roomName: roomName,
+      password: password
     }
 
     socket.emit('add user', data);
   }else{
-    alert('Please enter both a username and a game room name');
+    alert('Please enter a username, game room name, and password');
   }
   }
 
@@ -88,6 +98,10 @@ export default function Login({context}) {
       setUserInfo(updatedState);
     })
 
+    socket.on('wrong password',(roomName) =>{
+      alert(`You entered the wrong password for existing room "${roomName}". Please enter the correct password, or try entering a room with a different name`);
+    });
+
     // moved to dashboard
     // socket.on('update game state', (data) => {
     //   let updatedState = Object.assign({},userInfo);
@@ -103,6 +117,7 @@ export default function Login({context}) {
       // socket.off('new player data');
        socket.off('user left');
        socket.off('update player state')
+       socket.off('wrong password');
        //  socket.off('update game state')
       };
   });
@@ -118,6 +133,11 @@ export default function Login({context}) {
            <label className="title">Enter a game room name: </label> 
                <input className="usernameInput" type="text" maxLength="14" onChange={changeGameInput}/> 
           </form>
+          <br/>
+         <form className="form3"  onSubmit={handleSubmit}>
+           <label className="title">Enter Password: </label> 
+               <input className="usernameInput" type="text" maxLength="14" onChange={changePasswordInput}/> 
+         </form>
 
       </div>
     );

@@ -32,24 +32,30 @@ io.on('connection', (socket) => {
         if (addedUser) return;
         let roomName = data.roomName;
         socket.roomName = data.roomName;
-        if(!rooms[roomName]){ rooms[roomName] = createGameRoom(roomName) }
-        socket.join(roomName);
-        let reconnecting = false;
-        if(isUsernameUnique(data.username, rooms[roomName])){
-            socket.username = data.username;
-        } else{
-            socket.username = data.username+'_';
-        }
-        if((rooms[roomName]).savedPlayersList.indexOf(socket.username) == -1){
-            addedUser = true;
-            let player = createPlayerObj(socket.username, data)
-            rooms[roomName] = newPlayerInRoom(rooms[roomName], player, reconnecting)
-        }else{
-            reconnecting = true;
-        }
-        userConnectedToRoom(rooms[roomName], socket.username)
-        socket.emit('update player state', rooms[roomName].savedPlayers[socket.username])
-        broadcastToRoom(io,roomName,'update game state', rooms[roomName]);
+        if(!rooms[roomName]){ rooms[roomName] = createGameRoom(roomName, data.password) }
+
+        if(data.password == rooms[roomName].password){
+            socket.join(roomName);
+            let reconnecting = false;
+            if(isUsernameUnique(data.username, rooms[roomName])){
+                socket.username = data.username;
+            } else{
+                socket.username = data.username+'_';
+            }
+            if((rooms[roomName]).savedPlayersList.indexOf(socket.username) == -1){
+                addedUser = true;
+                let player = createPlayerObj(socket.username, data)
+                rooms[roomName] = newPlayerInRoom(rooms[roomName], player, reconnecting)
+            }else{
+                reconnecting = true;
+            }
+            userConnectedToRoom(rooms[roomName], socket.username)
+            socket.emit('update player state', rooms[roomName].savedPlayers[socket.username])
+            broadcastToRoom(io,roomName,'update game state', rooms[roomName]);
+    }else{
+        socket.emit('wrong password', roomName);
+    }
+
     });
 
     socket.on('request server messages', (data) => {
