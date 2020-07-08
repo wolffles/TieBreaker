@@ -35,6 +35,7 @@ export default function Chat({ context }) {
         div.scrollTop = div.scrollHeight - div.clientHeight;
 
         socket.on('message', (data) =>{
+          console.log('made it to message');
             addMessage(data.message,data.username);
         });
 
@@ -75,6 +76,7 @@ export default function Chat({ context }) {
         <div className="chat page">
             <div className="chatArea">
                 <div id="messages" className="messages">
+                    {/* <span className="server message">Welcome to TieBreaker</span> */}
                     <MessageList messages={userInfo.messages} />
                 </div>
             </div>
