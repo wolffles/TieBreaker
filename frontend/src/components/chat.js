@@ -40,11 +40,12 @@ export default function Chat({ context }) {
 
         socket.on('server messages', (data) => {
             let updatedState = Object.assign({},userInfo);
-            updatedState.messages.push(data.toBroadcast.userJoined)
-            updatedState.messages.push(data.toBroadcast.numUsers)
-
+            if(data.toBroadcast.userJoined){updatedState.messages.push(data.toBroadcast.userJoined)}
+            if(data.toBroadcast.userLeft){updatedState.messages.push(data.toBroadcast.userLeft)}
+            if(data.toBroadcast.numUsers){updatedState.messages.push(data.toBroadcast.numUsers)}
+            if(data.toBroadcast.userRemoved){}
             // if(!data.reconnecting){
-           // console.log('user is not reconnecting aka NEW PLAYER create div for player')
+            // console.log('user is not reconnecting aka NEW PLAYER create div for player')
    
             // if (!updatedState.players){
             //     updatedState.players = {}

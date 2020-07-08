@@ -23,7 +23,7 @@ export default function Dashboard({ context }) {
       }
 
       setUserInfo(updatedState);
-      updatePlayers({players:updatedState.players});
+      // updatePlayers({players:updatedState.players});
     }
 
 

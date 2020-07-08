@@ -12,7 +12,7 @@ export default function PlayersArea({ players, roomName, playersList, context })
 
       let updatedPlayers = Object.assign({}, players);
       updatedPlayers[username].life = life;
-      updatePlayers({players:updatedPlayers});
+      // updatePlayers({players:updatedPlayers});
 
     }
 

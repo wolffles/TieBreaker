@@ -5,13 +5,12 @@ const server = require('http').createServer(app);
 const io = require('socket.io')(server);
 const port = process.env.PORT || 3001;
 
-const { newPlayerInRoom, createGameRoom, createPlayerObj, userConnectedToRoom } = require('./gameRoom');
+const { newPlayerInRoom, createGameRoom, createPlayerObj, userConnectedToRoom, userDisconnected } = require('./gameRoom');
 const { isUsernameUnique } = require('./sourceCheck');
 
 server.listen(port, () => {
     console.log(`Server listening at port: ${port}`);
 });
-
 
 //Dashboard
 
@@ -25,7 +24,7 @@ io.on('connection', (socket) => {
       let addedUser = false
    // socket.emit('update game state', rooms['game1'])
     socket.on('message', (data) => {
-        broadcastData(socket, socket.roomName,'message', data);
+        broadcastRoomExcludeSender(socket, socket.roomName,'message', data);
 
       });
 
@@ -50,28 +49,21 @@ io.on('connection', (socket) => {
         }
         userConnectedToRoom(rooms[roomName], socket.username)
         socket.emit('update player state', rooms[roomName].savedPlayers[socket.username])
-        io.in(roomName).emit('update game state', rooms[roomName]);
+        broadcastToRoom(io,roomName,'update game state', rooms[roomName]);
     });
 
     socket.on('request server messages', (data) => {
         console.log('request server messages was hit')
-        broadcastToRoom(io, data.roomName, 'server messages', data)
+        emitDataToClient(socket, 'server messages', data)
     })
 
 
     socket.on('disconnect', () => {
         let roomName = socket.roomName
         if (addedUser) {
-            --(rooms[roomName]).numUsers;
-            // console.log("numUsers", (rooms[roomName]).numUsers)
-            let idx = (rooms[roomName]).connectedPlayersList.indexOf(socket.username);
-            (rooms[roomName]).connectedPlayersList.splice(idx,1);
-
+            userDisconnected(rooms[roomName],socket.username)
             // echo globally that this client has left
-            broadcastData(socket,roomName,'user left', {
-                username: socket.username,
-                numUsers: (rooms[roomName]).numUsers
-            });
+            broadcastRoomExcludeSender(socket,roomName,'update game state', rooms[roomName])
         }
     });
     
@@ -79,19 +71,19 @@ io.on('connection', (socket) => {
     socket.on('update players', (data) => {
         rooms[socket.roomName].savedPlayers = data.players;
         if(data){
-            broadcastData(socket,socket.roomName,'update game state', rooms[socket.roomName])
+            broadcastRoomExcludeSender(socket,socket.roomName,'update game state', rooms[socket.roomName])
         }
     })
 });
 
 // HELPER FUNCTIONS
 /**
- * emitData sends information to the client listening or that requested information, designed to go inside of a listener
+ * emitDataToClient sends information to the client listening or that requested information, designed to go inside of a listener
  * @param {socket} socket 
  * @param {String} listenString 
  * @param {Object} dataObj 
  */
-const emitData = (socket, listenString, dataObj) => {
+const emitDataToClient= (socket, listenString, dataObj) => {
     socket.emit(listenString, dataObj)
 }
 /**
@@ -100,7 +92,7 @@ const emitData = (socket, listenString, dataObj) => {
  * @param {String} listenString 
  * @param {Object} dataObj 
  */
-const broadcastData = (socket, roomName, listenString, dataObj ) => {
+const broadcastRoomExcludeSender = (socket, roomName, listenString, dataObj ) => {
     socket.to(roomName).emit(listenString, dataObj)
 }
 

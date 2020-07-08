@@ -1,4 +1,11 @@
-
+const clearToBroadcast = (room) => {
+    room.toBroadcast = {
+        userJoined:"",
+        userLeft: "",
+        userRemoved: "",
+        numUsers: ""
+    }
+}
 module.exports = {
     createGameRoom: function(roomName) {
         return {
@@ -33,8 +40,24 @@ module.exports = {
     },
     userConnectedToRoom: function(room, username){
         room.connectedPlayersList.push(username);
+        clearToBroadcast(room)
         room.toBroadcast.userJoined = [`New player, ${username} joined `, undefined]
-        room.toBroadcast.numUsers = [`There are ${room.connectedPlayersList.length} in the room`, undefined]
+        room.toBroadcast.numUsers = [`There's ${room.connectedPlayersList.length} participants`, undefined]
         return room
+    },
+    userDisconnected: function(room, username){
+        let idx = room.connectedPlayersList.indexOf(username);
+        room.connectedPlayersList.splice(idx,1);
+        clearToBroadcast(room)
+        room.toBroadcast.userLeft = [username + " left the room"]
+        room.toBroadcast.numUsers = [`There's ${room.connectedPlayersList.length} participants`, undefined]
+    },
+    clearToBroadcast: function(room){
+        room.toBroadcast = {
+            userJoined:"",
+            userLeft: "",
+            userRemoved: "",
+            numUsers: ""
+        }
     }
 };

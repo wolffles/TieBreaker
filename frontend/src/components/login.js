@@ -72,9 +72,7 @@ export default function Login({context}) {
 
     socket.on('user left', (data) =>{
       let updatedState = Object.assign({},userInfo);
-            if(userInfo.username){
-             updatedState.messages = updatedState.messages ? updatedState.messages.concat([[`${data.username} left`, 'TieBreaker']]) : [[`${data.username} joined`, 'TieBreaker']];
-            }
+      
     });
 
 
