@@ -60,5 +60,13 @@ module.exports = {
             userRemoved: "",
             numUsers: ""
         }
+
+    },
+    deleteRoom(rooms, room){
+        if (room.connectedPlayersList.length == 0){
+            delete rooms[room.roomName];
+            console.log('room deleted, here are the rooms', rooms);
+        }
     }
+
 };

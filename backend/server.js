@@ -5,7 +5,7 @@ const server = require('http').createServer(app);
 const io = require('socket.io')(server);
 const port = process.env.PORT || 3001;
 
-const { newPlayerInRoom, createGameRoom, createPlayerObj, userConnectedToRoom, userDisconnected } = require('./gameRoom');
+const { newPlayerInRoom, createGameRoom, createPlayerObj, userConnectedToRoom, userDisconnected, deleteRoom } = require('./gameRoom');
 const { isUsernameUnique } = require('./sourceCheck');
 
 server.listen(port, () => {
@@ -68,6 +68,10 @@ io.on('connection', (socket) => {
         let roomName = socket.roomName
         if (addedUser) {
             userDisconnected(rooms[roomName],socket.username)
+            if(rooms[roomName].connectedPlayersList.length == 0){
+                //deletes room after five minutes if no participant joined the room
+                setTimeout(() => deleteRoom(rooms, rooms[roomName]),300000);
+            }
             // echo globally that this client has left
             broadcastRoomExcludeSender(socket,roomName,'update game state', rooms[roomName])
         }
