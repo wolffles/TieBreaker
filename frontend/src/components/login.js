@@ -126,17 +126,17 @@ export default function Login({context}) {
       <div className={`login page ${hidden ? "hidden" : ""}`}>
         <form className="form" onSubmit={handleSubmit}>
             <label className="title">What's your nickname?</label>
-              <input className="usernameInput" type="text" maxLength="14" onChange={changeInput}/>
+              <input className="loginInput" type="text" maxLength="14" onChange={changeInput}/>
         </form>
         <br/>
         <form className="form2"  onSubmit={handleSubmit}>
            <label className="title">Enter a game room name: </label> 
-               <input className="usernameInput" type="text" maxLength="14" onChange={changeGameInput}/> 
+               <input className="loginInput" type="text" maxLength="14" onChange={changeGameInput}/> 
           </form>
           <br/>
          <form className="form3"  onSubmit={handleSubmit}>
-           <label className="title">Enter Password: </label> 
-               <input className="usernameInput" type="text" maxLength="14" onChange={changePasswordInput}/> 
+           <label className="title">Enter a Password: </label> 
+               <input className="loginInput" type="text" maxLength="14" onChange={changePasswordInput}/> 
          </form>
 
       </div>

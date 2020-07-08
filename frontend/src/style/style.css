@@ -116,7 +116,7 @@ html, body {
 
 .login.page {
   width: 100%;
-  height: 100%;
+  height: 104%;
   position: absolute;
   z-index: 10;
   background-color: #000;
@@ -124,9 +124,8 @@ html, body {
 
 .login.page .form {
   height: 100px;
-  margin-top: -120px;
+  margin-top: -220px;
   position: absolute;
-
   text-align: center;
   top: 50%;
   width: 100%;
@@ -134,9 +133,8 @@ html, body {
 
 .form2 {
   height: 100px;
-  margin-top: -60px;
+  margin-top: -110px;
   position: absolute;
-
   text-align: center;
   top: 50%;
   width: 100%;
@@ -147,7 +145,6 @@ html, body {
   height: 100px;
   margin-top: 0px;
   position: absolute;
-
   text-align: center;
   top: 50%;
   width: 100%;
@@ -155,7 +152,7 @@ html, body {
 
 
 
-.login.page .form .usernameInput {
+.loginInput {
   background-color: transparent;
   border: none;
   border-bottom: 2px solid #fff;
@@ -165,36 +162,19 @@ html, body {
   width: 400px;
 }
 
-.form2 .usernameInput {
-  background-color: transparent;
-  border: none;
-  border-bottom: 2px solid #fff;
-  outline: none;
-  padding-bottom: 15px;
-  text-align: center;
-  width: 400px;
-}
 
-.form3 .usernameInput {
-  background-color: transparent;
-  border: none;
-  border-bottom: 2px solid #fff;
-  outline: none;
-  padding-bottom: 15px;
-  text-align: center;
-  width: 400px;
-}
 
 .login.page .title {
   font-size: 200%;
+  display: block;
 }
 
-.login.page .usernameInput {
-  font-size: 200%;
+.login.page .loginInput {
+  font-size: 180%;
   letter-spacing: 3px;
 }
 
-.login.page .title, .login.page .usernameInput {
+.login.page .title, .login.page .loginInput {
   color: #fff;
   font-weight: 100;
 }
