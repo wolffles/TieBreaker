@@ -62,6 +62,14 @@ module.exports = {
         }
 
     },
+    removeUser: function(room, username){
+        delete room.savedPlayers[username];
+        let idx = room.savedPlayersList.indexOf(username);
+        room.savedPlayersList.splice(idx,1);
+        clearToBroadcast(room);
+        room.toBroadcast.userRemoved = [`${username}'s player area was removed.`, undefined]
+
+    },
     deleteRoom(rooms, room){
         if (room.connectedPlayersList.length == 0){
             delete rooms[room.roomName];

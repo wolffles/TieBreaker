@@ -5,7 +5,7 @@ const server = require('http').createServer(app);
 const io = require('socket.io')(server);
 const port = process.env.PORT || 3001;
 
-const { newPlayerInRoom, createGameRoom, createPlayerObj, userConnectedToRoom, userDisconnected, deleteRoom } = require('./gameRoom');
+const { newPlayerInRoom, createGameRoom, createPlayerObj, userConnectedToRoom, userDisconnected, deleteRoom, removeUser } = require('./gameRoom');
 const { isUsernameUnique } = require('./sourceCheck');
 
 server.listen(port, () => {
@@ -62,6 +62,11 @@ io.on('connection', (socket) => {
         console.log('request server messages was hit')
         emitDataToClient(socket, 'server messages', data)
     })
+
+    socket.on('remove player',(data) =>{
+       removeUser(rooms[data.roomName], data.username);
+       broadcastToRoom(io, data.roomName, 'update game state', rooms[data.roomName]);
+    });
 
 
     socket.on('disconnect', () => {

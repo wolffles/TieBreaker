@@ -46,6 +46,7 @@ export default function Dashboard({ context }) {
     // })
 
     socket.on('update game state', (data) => {
+      console.log('data in front end after change', data);
       let updatedState = Object.assign({},userInfo);
       updatedState.connectedPlayersList = data.connectedPlayersList
       updatedState.playersList = data.savedPlayersList
@@ -80,8 +81,8 @@ export default function Dashboard({ context }) {
               <button className="button chooser">Choose Player</button>
             </div>
           </div>
-          <span className="roomName">Game Name: {userInfo.roomName} | Password: {userInfo.roomName}</span> 
-            <PlayerArea players={userInfo.players} playersList={userInfo.playersList} context={context}/>
+          <span className="roomName">Username: {userInfo.username} | Game Name: {userInfo.roomName} | Password: {userInfo.roomName}</span> 
+            <PlayerArea players={userInfo.players} roomName={userInfo.roomName} playersList={userInfo.playersList} context={context}/>
       </div>
     );
 }
