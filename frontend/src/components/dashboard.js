@@ -52,6 +52,8 @@ export default function Dashboard({ context }) {
       updatedState.playersList = data.savedPlayersList
       updatedState.players = data.savedPlayers
       updatedState.password = data.password
+
+
       setUserInfo(updatedState)
       //sometimes updatedState is undefined? maybe asynchronous?
       socket.emit('request server messages', data)

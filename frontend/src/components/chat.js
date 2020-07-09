@@ -44,7 +44,7 @@ export default function Chat({ context }) {
             if(data.toBroadcast.userJoined){updatedState.messages.push(data.toBroadcast.userJoined)}
             if(data.toBroadcast.userLeft){updatedState.messages.push(data.toBroadcast.userLeft)}
             if(data.toBroadcast.numUsers){updatedState.messages.push(data.toBroadcast.numUsers)}
-            if(data.toBroadcast.userRemoved){}
+            if(data.toBroadcast.userRemoved){updatedState.messages.push(data.toBroadcast.userRemoved)}
             // if(!data.reconnecting){
             // console.log('user is not reconnecting aka NEW PLAYER create div for player')
    
