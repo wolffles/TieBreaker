@@ -20,17 +20,17 @@ export default function Login({context}) {
   let passwordContext = createContext('');
   let [passwordValue, setPasswordContext] = useState(passwordContext);
 
+  let [reconnectingValue, setReconnectingContext] = useState(false);
+
   let hidden = false
   if (userInfo.username){
     hidden = true
   }
   function changeInput(e){
-    e.preventDefault();
     setInputContext(e.target.value);
   }
 
   function changeGameInput(e){
-    e.preventDefault();
     setGameContext(e.target.value);
   }
 
@@ -39,9 +39,14 @@ export default function Login({context}) {
     setPasswordContext(e.target.value);
   }
 
+  function changeReconnecting(e){
+    setReconnectingContext(!reconnectingValue)
+  }
+
   function handleSubmit(e){
     e.preventDefault();
     if(inputValue.length > 0 && gameValue.length > 0 && passwordValue.length > 0){
+    let reconnecting = reconnectingValue
     let username = inputValue;
     let roomName = gameValue;
     let password = passwordValue;
@@ -52,13 +57,14 @@ export default function Login({context}) {
       life: 0,
       color: getUsernameColor(username),
       roomName: roomName,
-      password: password
+      password: password,
+      reconnecting: reconnecting
     }
 
     socket.emit('add user', data);
-  }else{
-    alert('Please enter a username, game room name, and password');
-  }
+    }else{
+      alert('Please enter a username, game room name, and password');
+    }
   }
 
   useEffect(() => {
@@ -125,20 +131,17 @@ export default function Login({context}) {
     return (
       <div className={`login page ${hidden ? "hidden" : ""}`}>
         <form className="form" onSubmit={handleSubmit}>
-            <label className="title">What's your nickname?</label>
+            <p className="title">What's your nickname?</p>
               <input className="loginInput" type="text" maxLength="14" onChange={changeInput}/>
-        </form>
-        <br/>
-        <form className="form2"  onSubmit={handleSubmit}>
-           <label className="title">Enter a game room name: </label> 
+            <p className="title">Enter a game room name: </p> 
                <input className="loginInput" type="text" maxLength="14" onChange={changeGameInput}/> 
-          </form>
-          <br/>
-         <form className="form3"  onSubmit={handleSubmit}>
-           <label className="title">Enter a Password: </label> 
+            <p className="title">Enter a Password: </p> 
                <input className="loginInput" type="text" maxLength="14" onChange={changePasswordInput}/> 
-         </form>
-
+            <p className="title">Are you a reconnecting user? </p> 
+               <input className="reconnecting"  type="checkbox" onClick={changeReconnecting}/>
+               <br/>
+               <input style={{display:"none"}}type="submit"></input>
+        </form>
       </div>
     );
   }

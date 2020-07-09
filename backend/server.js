@@ -6,7 +6,7 @@ const io = require('socket.io')(server);
 const port = process.env.PORT || 3001;
 
 const { newPlayerInRoom, createGameRoom, createPlayerObj, userConnectedToRoom, userDisconnected, deleteRoom, removeUser } = require('./gameRoom');
-const { isUsernameUnique } = require('./sourceCheck');
+const { isUsernameConnected, modifyUsername, isUsernameUnique } = require('./sourceCheck');
 
 server.listen(port, () => {
     console.log(`Server listening at port: ${port}`);
@@ -21,8 +21,11 @@ io.on('connection', (socket) => {
  //   socket.join('game1')
         // going to convert the code to have different rooms
       //  if(!rooms['game1']){ rooms['game1'] = createGameRoom('game1') }
-      let addedUser = false
    // socket.emit('update game state', rooms['game1'])
+
+   // these variables are global inside of an indivdual connection (I think)
+    let addedUser = false
+    let roomName = ""
     socket.on('message', (data) => {
         broadcastRoomExcludeSender(socket, socket.roomName,'message', data);
 
@@ -30,36 +33,33 @@ io.on('connection', (socket) => {
 
     socket.on('add user', (data) => {
         if (addedUser) return;
-        let roomName = data.roomName;
+        roomName = data.roomName;
         socket.roomName = data.roomName;
         if(!rooms[roomName]){ rooms[roomName] = createGameRoom(roomName, data.password) }
-
         if(data.password == rooms[roomName].password){
             socket.join(roomName);
-            let reconnecting = false;
-            if(isUsernameUnique(data.username, rooms[roomName])){
+            if (data.reconnecting){
                 socket.username = data.username;
-            } else{
-                socket.username = data.username+'_';
-            }
-            if((rooms[roomName]).savedPlayersList.indexOf(socket.username) == -1){
+            }else{
+                if(isUsernameUnique(data.username, rooms[roomName])){
+                    socket.username = data.username;
+                } else{
+                    socket.username = modifyUsername(data.username, rooms[roomName])
+                }
                 addedUser = true;
                 let player = createPlayerObj(socket.username, data)
-                rooms[roomName] = newPlayerInRoom(rooms[roomName], player, reconnecting)
-            }else{
-                reconnecting = true;
+                rooms[roomName] = newPlayerInRoom(rooms[roomName], player)
             }
             userConnectedToRoom(rooms[roomName], socket.username)
             socket.emit('update player state', rooms[roomName].savedPlayers[socket.username])
             broadcastToRoom(io,roomName,'update game state', rooms[roomName]);
-    }else{
-        socket.emit('wrong password', roomName);
-    }
-
+        }else{
+            socket.emit('wrong password', roomName);
+        }
     });
 
     socket.on('request server messages', (data) => {
-        console.log('request server messages was hit')
+        // console.log('request server messages was hit')
         emitDataToClient(socket, 'server messages', data)
     })
 
