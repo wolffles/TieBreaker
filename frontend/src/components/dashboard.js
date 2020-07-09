@@ -81,7 +81,7 @@ export default function Dashboard({ context }) {
               <button className="button chooser">Choose Player</button>
             </div>
           </div>
-          <span className="roomName">Username: {userInfo.username} | Game Name: {userInfo.roomName} | Password: {userInfo.roomName}</span> 
+          <span className="roomName">Username: {userInfo.username} | Game Name: {userInfo.roomName} | Password: {userInfo.password}</span>
             <PlayerArea players={userInfo.players} roomName={userInfo.roomName} playersList={userInfo.playersList} context={context}/>
       </div>
     );

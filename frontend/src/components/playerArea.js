@@ -8,12 +8,12 @@ export default function PlayersArea({ players, roomName, playersList, context })
 
     function handleChange(e){
       e.preventDefault();
-      let username = e.currentTarget.children[0].innerHTML;
+      let username = e.currentTarget.id;
       let life = e.target.value;
-
+      
       let updatedPlayers = Object.assign({}, players);
       updatedPlayers[username].life = life;
-      // updatePlayers({players:updatedPlayers});
+      updatePlayers({players:updatedPlayers});
 
     }
 
@@ -27,7 +27,7 @@ export default function PlayersArea({ players, roomName, playersList, context })
       console.log('here is the players list', playersList);
     playersArea = playersList.map((username, i) =>{
         return( 
-        <div className="player" onChange={handleChange} style={{backgroundColor:players[username].color}} key={i}>
+        <div className="player" id={username}  onChange={handleChange} style={{backgroundColor:players[username].color}} key={i}>
           <div className="nameHolder">
           <div className="nickname">{username}</div>
           <div name={username} className="delete" onClick={deletePlayer}><FaTrash  size="2em" /></div>
