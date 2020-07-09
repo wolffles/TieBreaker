@@ -39,17 +39,23 @@ io.on('connection', (socket) => {
         if(data.password == rooms[roomName].password){
             socket.join(roomName);
             if (data.reconnecting){
-                socket.username = data.username;
+                if(isUsernameUnique(data.username, rooms[roomName])){
+                    socket.username = data.username;
+                    let player = createPlayerObj(socket.username, data)
+                    rooms[roomName] = newPlayerInRoom(rooms[roomName], player)
+                } else{
+                    socket.username = data.username;
+                }
             }else{
                 if(isUsernameUnique(data.username, rooms[roomName])){
                     socket.username = data.username;
                 } else{
                     socket.username = modifyUsername(data.username, rooms[roomName])
                 }
-                addedUser = true;
                 let player = createPlayerObj(socket.username, data)
                 rooms[roomName] = newPlayerInRoom(rooms[roomName], player)
             }
+            addedUser = true;
             userConnectedToRoom(rooms[roomName], socket.username)
             socket.emit('update player state', rooms[roomName].savedPlayers[socket.username])
             broadcastToRoom(io,roomName,'update game state', rooms[roomName]);
