@@ -16,6 +16,7 @@ module.exports = {
             connectedPlayersList: [],
             savedPlayers: {},
             savedPlayersList : [],
+            broadcast: false,
             toBroadcast: {
                 userJoined:"",
                 userLeft: "",
@@ -42,6 +43,7 @@ module.exports = {
     userConnectedToRoom: function(room, username){
         room.connectedPlayersList.push(username);
         clearToBroadcast(room)
+        room.broadcast = true
         room.toBroadcast.userJoined = [`New player, ${username} joined `, undefined]
         room.toBroadcast.numUsers = [`There's ${room.connectedPlayersList.length} participants`, undefined]
         return room
@@ -50,6 +52,7 @@ module.exports = {
         let idx = room.connectedPlayersList.indexOf(username);
         room.connectedPlayersList.splice(idx,1);
         clearToBroadcast(room)
+        room.broadcast = true
         room.toBroadcast.userLeft = [username + " left the room"]
         room.toBroadcast.numUsers = [`There's ${room.connectedPlayersList.length} participants`, undefined]
     },
@@ -67,13 +70,13 @@ module.exports = {
         let idx = room.savedPlayersList.indexOf(username);
         room.savedPlayersList.splice(idx,1);
         clearToBroadcast(room);
+        room.broadcast = true
         room.toBroadcast.userRemoved = [`${username}'s player area was removed.`, undefined]
 
     },
     deleteRoom(rooms, room){
         if (room.connectedPlayersList.length == 0){
             delete rooms[room.roomName];
-            console.log('room deleted, here are the rooms', rooms);
         }
     }
 

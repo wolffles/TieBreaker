@@ -23,7 +23,7 @@ export default function Dashboard({ context }) {
       }
 
       setUserInfo(updatedState);
-      // updatePlayers({players:updatedState.players});
+      updatePlayers({players:updatedState.players});
     }
 
 
@@ -56,7 +56,10 @@ export default function Dashboard({ context }) {
 
       setUserInfo(updatedState)
       //sometimes updatedState is undefined? maybe asynchronous?
+      if(data.broadcast){
       socket.emit('request server messages', data)
+      }
+      
       
     })
 

@@ -66,6 +66,7 @@ io.on('connection', (socket) => {
 
     socket.on('request server messages', (data) => {
         // console.log('request server messages was hit')
+        rooms[data.roomName].broadcast = false;
         emitDataToClient(socket, 'server messages', data)
     })
 

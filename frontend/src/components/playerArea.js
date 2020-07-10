@@ -20,7 +20,7 @@ export default function PlayersArea({ players, roomName, playersList, context })
 
     function deletePlayer(e){
       e.preventDefault();
-      let username = e.target;
+      let username = e.currentTarget.parentElement.children[0].innerHTML; 
       socket.emit('remove player', {username:username, roomName: roomName});
     }
 
