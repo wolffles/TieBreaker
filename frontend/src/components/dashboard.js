@@ -1,5 +1,6 @@
 import React, {useContext, createContext, useState, useEffect} from "react";
 import PlayerArea from './playerArea.js'
+import DiceModal from './diceModal.js'
 import '../style/style.css';
 import {updatePlayers, socket} from '../utility/socket.js';
 
@@ -87,6 +88,7 @@ export default function Dashboard({ context }) {
             </div>
           </div>
           <span className="roomName">Username: {userInfo.username} | Game Name: {userInfo.roomName} | Password: {userInfo.password}</span>
+            <DiceModal/>
             <PlayerArea players={userInfo.players} roomName={userInfo.roomName} playersList={userInfo.playersList} context={context}/>
       </div>
     );

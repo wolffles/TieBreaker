@@ -10,7 +10,7 @@ export default function PlayersArea({ players, roomName, playersList, context })
       e.preventDefault();
       let username = e.currentTarget.id;
       let life = e.target.value;
-      
+
       let updatedPlayers = Object.assign({}, players);
   
       updatedPlayers[username].life = life;
@@ -20,7 +20,7 @@ export default function PlayersArea({ players, roomName, playersList, context })
 
     function deletePlayer(e){
       e.preventDefault();
-      let username = e.currentTarget.parentElement.children[0].innerHTML; 
+      let username = e.currentTarget.parentElement.children[0].innerHTML;
       socket.emit('remove player', {username:username, roomName: roomName});
     }
 
@@ -30,8 +30,8 @@ export default function PlayersArea({ players, roomName, playersList, context })
         return( 
         <div className="player" id={username}  onChange={handleChange} style={{backgroundColor:players[username].color}} key={i}>
           <div className="nameHolder">
-            <div className="nickname">{username}</div>
-            <div name={username} className="delete" onClick={deletePlayer}><FaTrash  size="2em" /></div>
+          <div className="nickname">{username}</div>
+          <div className="delete" onClick={deletePlayer}><FaTrash  size="2em" /></div>
           </div>         
            <input id={username} className="life" style={{backgroundColor:players[username].color}} placeholder={players[username].life}/>         
        </div>
