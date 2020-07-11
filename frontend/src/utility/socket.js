@@ -1,5 +1,5 @@
 import openSocket from 'socket.io-client';
-export const  socket = openSocket('http://localhost:3001');
+export const  socket = openSocket('https://tie-breaker.herokuapp.com/');
 
 // to server
 export const sendMessage = (data) => {
