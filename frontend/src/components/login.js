@@ -130,13 +130,13 @@ export default function Login({context}) {
 
     return (
       <div className={`login page ${hidden ? "hidden" : ""}`}>
-        <form className="form" onSubmit={handleSubmit}>
+        <form id="loginForm" className="form" onSubmit={handleSubmit}>
             <p className="title">What's your nickname?</p>
-              <input className="loginInput" type="text" maxLength="14" onChange={changeInput}/>
+              <input id="nicknameInput" className="loginInput" type="text" maxLength="14" onChange={changeInput}/>
             <p className="title">Enter a game room name: </p> 
-               <input className="loginInput" type="text" maxLength="14" onChange={changeGameInput}/> 
+               <input id="gameInput" className="loginInput" type="text" maxLength="14" onChange={changeGameInput}/> 
             <p className="title">Enter a Password: </p> 
-               <input className="loginInput" type="text" maxLength="14" onChange={changePasswordInput}/> 
+               <input id="passwordInput" className="loginInput" type="text" maxLength="14" onChange={changePasswordInput}/> 
             <p className="title">Are you a reconnecting user? </p> 
                <input className="reconnecting"  type="checkbox" onClick={changeReconnecting}/>
                <br/>

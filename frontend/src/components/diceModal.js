@@ -56,6 +56,7 @@ export default function DiceModal({ context }) {
 
     return (
       <div className="modal">
+        <butto n>close</butto>
         <button className="button dice" onClick={rollDice}> 4 </button>
         <button className="button dice" onClick={rollDice}> 6 </button>
         <button className="button dice" onClick={rollDice}> 8 </button>

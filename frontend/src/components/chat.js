@@ -32,7 +32,10 @@ export default function Chat({ context }) {
     }
     useEffect(() => {
         var div = document.getElementById("messages");
-        div.scrollTop = div.scrollHeight - div.clientHeight;
+
+        if(!!div){
+         div.scrollTop = div.scrollHeight - div.clientHeight;
+        }
 
         socket.on('message', (data) =>{
           console.log('made it to message');
