@@ -33,7 +33,7 @@ export default function SocketUtility({ context }) {
     useEffect(() => {
         socket.on('message', (data) =>{
             addMessage(data);
-            console.log('here is the message from the server',data);
+            // console.log('here is the message from the server',data);
         });
         return function cleanup() {
            socket.off('message');

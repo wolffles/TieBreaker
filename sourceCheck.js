@@ -10,7 +10,7 @@ module.exports = {
         return roomData.connectedPlayersList.indexOf(username) == -1
     },
     modifyUsername: (username, roomData) => {
-        console.log('in modifyUserName')
+        // console.log('in modifyUserName')
         let reg = /\d+$/
         let sub = username.match(reg)
         // if substring doesn't have any numbers(null) else add on to it
@@ -20,6 +20,15 @@ module.exports = {
             username = username.replace(reg,(Number(sub)+1))
         }
         return username 
-    }
+    },
+    diceToss: (sides) => {
+        let array = [];
+        while (array.length < 13){
+          let num = Math.floor(Math.random() * sides) + 1
+          array.push(num)
+        }
+        return array
+      }
+
 
 };

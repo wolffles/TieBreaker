@@ -8,14 +8,9 @@ export default function Dashboard({ context }) {
     const [userInfo, setUserInfo] = useContext(context);
     let inputContext = createContext('');
     let [inputValue, setInputContext] = useState(inputContext);
-    let [showDice, setShowDice] = useState(false);
 
-    function showDiceModal(e){    
-        e.preventDefault();     
-        setShowDice(!showDice);
-        //this console.log is a lie? its almost like its asychonous because on click it's still false but the value is true and shows dice modal
-        console.log('showDice', showDice);
-        }
+    let [showDice, setShowDice] = useState(false);
+    let [diceFace, setDiceFace] = useState('');
 
     function changeInput(e){
       e.preventDefault();
@@ -24,17 +19,29 @@ export default function Dashboard({ context }) {
 
     function handleSubmit(e){
       e.preventDefault();
-
       let updatedState = Object.assign({}, userInfo);
-
       for (let username in updatedState.players){
         updatedState.players[username].life = inputValue;
       }
-
       setUserInfo(updatedState);
       updatePlayers({players:updatedState.players});
     }
 
+    //this is the dice code
+    function showDiceModal(e){    
+      e.preventDefault();     
+      setShowDice(!showDice);
+      //this console.log is a lie? its almost like its asychonous because on click it's still false but the value is true and shows dice modal
+      console.log('showDice', showDice);
+      }
+
+    function rollingDice(roll) {
+      roll.forEach((face, i) => {
+        setTimeout(() => {
+          setDiceFace(face)
+        }, i*i*10);
+      });
+    }
 
     useEffect(() => {
       socket.on('update player data', (data) =>{
@@ -43,9 +50,11 @@ export default function Dashboard({ context }) {
           setUserInfo(updatedState);
       });
 
-    socket.on('dice is rolling', (data) => {
+    socket.on('dice is rolling', roll =>{
       if(!showDice){setShowDice(true)};
-    })
+      rollingDice(roll);
+    });
+
 
 
     socket.on('update game state', (data) => {
@@ -62,16 +71,13 @@ export default function Dashboard({ context }) {
       if(data.broadcast){
       socket.emit('request server messages', data)
       }
-      
-      
     })
 
      
       return function cleanup() {
-         socket.off('update player data');
-         socket.off('update player state');
-         socket.off('update game state')
-         socket.off('dice is rolling')
+          socket.off('dice is rolling');
+          socket.off('update player data');
+          socket.off('update game state')
         };
     });
     
@@ -91,7 +97,7 @@ export default function Dashboard({ context }) {
             </div>
           </div>
           <span className="roomName">Username: {userInfo.username} | Game Name: {userInfo.roomName} | Password: {userInfo.password}</span>
-            <DiceModal showDice={showDice}/>
+            <DiceModal showDice={showDice} diceFace={diceFace}/>
             <PlayerArea players={userInfo.players} roomName={userInfo.roomName} playersList={userInfo.playersList} context={context}/>
       </div>
     );

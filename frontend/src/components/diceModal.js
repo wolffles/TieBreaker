@@ -1,20 +1,15 @@
 import React, {useState, useEffect} from "react";
 import {sendMessage, socket} from '../utility/socket.js';
 
-export default function DiceModal({ context, showDice, setShowDice }) {
+export default function DiceModal({ context, showDice, diceFace, }) {
 
-  let [diceFace, setDiceFace] = useState('');
+  // let [diceFace, setDiceFace] = useState('');
 
-  
-
-  let dice;
 
   function rollDice(e){
     e.preventDefault();
     let diceType = e.target.innerHTML
-    let roll = diceToss(diceType);
     console.log(diceType)
-    console.log(roll);
     // for(let i = 0; roll.length > i; i++){
     //   setTimeout(() => {
     //     console.log('this is the index', i)
@@ -27,7 +22,7 @@ export default function DiceModal({ context, showDice, setShowDice }) {
     //     setDiceModal(face)
     //   }, i*i*10);
 
-      socket.emit('roll dice', roll);
+      socket.emit('roll dice', diceType);
     
 
 
@@ -51,34 +46,34 @@ export default function DiceModal({ context, showDice, setShowDice }) {
     // }, 5000);
   } 
   
-  function rollingDice(roll) {
-      
-    roll.forEach((face, i) => {
-      setTimeout(() => {
-        console.log('this is the index', i)
-        setDiceFace(face)
-      }, i*i*10);
+  // function rollingDice(roll) {
+  //   roll.forEach((face, i) => {
+  //     setTimeout(() => {
+  //       console.log('this is the index', i)
+  //       setDiceFace(face)
+  //     }, i*i*10);
 
-  });
-}
+  // });
+// }
 
-  function diceToss(sides) {
-    let array = [];
-    while (array.length < 13){
-      let num = Math.floor(Math.random() * sides) + 1
-      array.push(num)
-    }
-    return array
-  }
+  // function diceToss(sides) {
+  //   let array = [];
+  //   while (array.length < 13){
+  //     let num = Math.floor(Math.random() * sides) + 1
+  //     array.push(num)
+  //   }
+  //   return array
+  // }
 
   useEffect(() =>{
 
-    socket.on('dice is rolling', roll =>{
-      rollingDice(roll);
-    });
+    // socket.on('dice is rolling', roll =>{
+    //   console.log('hit')
+    //   rollingDice(roll);
+    // });
 
     return function cleanup(){
-      socket.off('dice is rolling');
+      // socket.off('dice is rolling');
     }
   });
 

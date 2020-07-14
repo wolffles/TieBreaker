@@ -38,7 +38,7 @@ export default function Chat({ context }) {
         }
 
         socket.on('message', (data) =>{
-          console.log('made it to message');
+        //   console.log('made it to message');
             addMessage(data.message,data.username);
         });
 

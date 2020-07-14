@@ -5,7 +5,7 @@ import { FaTrash } from 'react-icons/fa';
 export default function PlayersArea({ players, roomName, playersList, context }) {
    // console.log('here is the playersList', playersList);
     let playersArea;
-  console.log('here are the players', players);
+  // console.log('here are the players', players);
     function handleChange(e){
       e.preventDefault();
       let username = e.currentTarget.id;
@@ -25,7 +25,7 @@ export default function PlayersArea({ players, roomName, playersList, context })
     }
 
     if (players){
-      console.log('here is the players list', playersList);
+      // console.log('here is the players list', playersList);
     playersArea = playersList.map((username, i) =>{
         return( 
         <div className="player" id={username}  onChange={handleChange} style={{backgroundColor:players[username].color}} key={i}>
