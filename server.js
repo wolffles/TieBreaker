@@ -107,6 +107,11 @@ io.on('connection', (socket) => {
             broadcastRoomExcludeSender(socket,socket.roomName,'update game state', rooms[socket.roomName])
         }
     })
+
+    socket.on('roll dice', (data) => {
+       broadcastToRoom(io, socket.roomName, "dice is rolling", data)
+
+    })
 });
 
 // HELPER FUNCTIONS
