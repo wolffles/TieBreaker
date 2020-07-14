@@ -65,17 +65,17 @@ export default function DiceModal({ context, showDice, diceFace, }) {
   //   return array
   // }
 
-  useEffect(() =>{
+  //useEffect(() =>{
 
     // socket.on('dice is rolling', roll =>{
     //   console.log('hit')
     //   rollingDice(roll);
     // });
 
-    return function cleanup(){
+   // return function cleanup(){
       // socket.off('dice is rolling');
-    }
-  });
+  //  }
+  //});
 
     return (
       <div className={`modal dice ${showDice ? "" : "hidden"}`}>

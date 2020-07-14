@@ -52,7 +52,7 @@ export default function Dashboard({ context }) {
 
     socket.on('dice is rolling', roll =>{
       if(!showDice){setShowDice(true)};
-      rollingDice(roll);
+      rollingDice(roll)
     });
 
 

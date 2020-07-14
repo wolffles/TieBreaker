@@ -82,10 +82,6 @@ io.on('connection', (socket) => {
     });
 
 
-    socket.on('roll dice', roll => {
-        console.log('made it to server roll');
-        broadcastToRoom(io, socket.roomName, 'dice is rolling', roll);
-    });
 
     socket.on('disconnect', () => {
         let roomName = socket.roomName
