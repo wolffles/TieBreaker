@@ -8,17 +8,13 @@ export default function Dashboard({ context }) {
     const [userInfo, setUserInfo] = useContext(context);
     let inputContext = createContext('');
     let [inputValue, setInputContext] = useState(inputContext);
-
-    let diceContext = createContext(false)
-    let [showDice, setShowDice] = useState(diceContext);
+    let [showDice, setShowDice] = useState(false);
 
     function showDiceModal(e){    
-      console.log('made it to show dice modal'); 
         e.preventDefault();     
-        setShowDice(true);
-
+        setShowDice(!showDice);
+        //this console.log is a lie? its almost like its asychonous because on click it's still false but the value is true and shows dice modal
         console.log('showDice', showDice);
-         
         }
 
     function changeInput(e){
@@ -47,16 +43,10 @@ export default function Dashboard({ context }) {
           setUserInfo(updatedState);
       });
 
+    socket.on('dice is rolling', (data) => {
+      if(!showDice){setShowDice(true)};
+    })
 
-    // socket.on('update player state', (data) => {
-    //   let updatedState = Object.assign({},userInfo);
-    //   updatedState.username = data.username
-    //   updatedState.life = data.life
-    //   updatedState.id = data.id
-    //   updatedState.color = data.color
-    //   console.log(updatedState)
-    //   setUserInfo(updatedState);
-    // })
 
     socket.on('update game state', (data) => {
       console.log('data in front end after change', data);
@@ -81,6 +71,7 @@ export default function Dashboard({ context }) {
          socket.off('update player data');
          socket.off('update player state');
          socket.off('update game state')
+         socket.off('dice is rolling')
         };
     });
     
@@ -94,13 +85,13 @@ export default function Dashboard({ context }) {
                 {/* <button id="startGame">Set Lifepoints</button>   */}
             </form>
             <div className="buttons">
-              <button onClick={showDiceModal} className="button showDie"> Roll Die </button>
+              <button  onClick={showDiceModal} className="button showDie"> Roll Die </button>
               <button className="button flipCoin"> Flip Coin </button>
               <button className="button chooser">Choose Player</button>
             </div>
           </div>
           <span className="roomName">Username: {userInfo.username} | Game Name: {userInfo.roomName} | Password: {userInfo.password}</span>
-            <DiceModal/>
+            <DiceModal showDice={showDice}/>
             <PlayerArea players={userInfo.players} roomName={userInfo.roomName} playersList={userInfo.playersList} context={context}/>
       </div>
     );

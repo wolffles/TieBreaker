@@ -3,7 +3,7 @@ import {sendMessage, socket} from '../utility/socket.js';
 
 export default function DiceModal({ context, showDice, setShowDice }) {
 
-  let [diceModal, setDiceModal] = useState('');
+  let [diceFace, setDiceFace] = useState('');
 
   
 
@@ -56,7 +56,7 @@ export default function DiceModal({ context, showDice, setShowDice }) {
     roll.forEach((face, i) => {
       setTimeout(() => {
         console.log('this is the index', i)
-        setDiceModal(face)
+        setDiceFace(face)
       }, i*i*10);
 
   });
@@ -83,14 +83,20 @@ export default function DiceModal({ context, showDice, setShowDice }) {
   });
 
     return (
-      <div className={`modal ${showDice ? "" : "hidden"}`}>
-        <button className="button dice" onClick={rollDice}> 4 </button>
-        <button className="button dice" onClick={rollDice}> 6 </button>
-        <button className="button dice" onClick={rollDice}> 8 </button>
-        <button className="button dice" onClick={rollDice}> 10 </button>
-        <button className="button dice" onClick={rollDice}> 12 </button>
-        <button className="button dice" onClick={rollDice}> 20 </button>
-        <h1>{diceModal}</h1>
+      <div className={`modal dice ${showDice ? "" : "hidden"}`}>
+        <div className="dice divider outside">
+          <button className="button dice" onClick={rollDice}> 4 </button>
+          <button className="button dice" onClick={rollDice}> 6 </button>
+          <button className="button dice" onClick={rollDice}> 8 </button>
+        </div>
+        <div className="dice divider middle">
+          <h1>{diceFace}</h1>
+        </div>
+        <div className="dice divider outside">
+          <button className="button dice" onClick={rollDice}> 10 </button>
+          <button className="button dice" onClick={rollDice}> 12 </button>
+          <button className="button dice" onClick={rollDice}> 20 </button>
+        </div>
       </div>
   );
 }
