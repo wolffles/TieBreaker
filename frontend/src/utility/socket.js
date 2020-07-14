@@ -1,5 +1,8 @@
 import openSocket from 'socket.io-client';
-export const  socket = openSocket('https://tie-breaker.herokuapp.com/');
+
+let host = window.origin == "http://localhost:3000" ? "http://localhost:3001" : "https://tie-breaker.herokuapp.com/" 
+
+export const  socket = openSocket(host);
 
 // to server
 export const sendMessage = (data) => {

@@ -1,9 +1,12 @@
 import React, {useState, useEffect} from "react";
 import {sendMessage, socket} from '../utility/socket.js';
 
-export default function DiceModal({ context }) {
+export default function DiceModal({ context, showDice, setShowDice }) {
 
   let [diceModal, setDiceModal] = useState('');
+
+  
+
   let dice;
 
   function rollDice(e){
@@ -18,12 +21,16 @@ export default function DiceModal({ context }) {
     //     setDiceModal(roll[i])
     //   }, i*750);
     // }
-    roll.forEach((face, i) => {
-      setTimeout(() => {
-        console.log('this is the index', i)
-        setDiceModal(face)
-      }, i*i*10);
-    });
+    // roll.forEach((face, i) => {
+    //   setTimeout(() => {
+    //     console.log('this is the index', i)
+    //     setDiceModal(face)
+    //   }, i*i*10);
+
+      socket.emit('roll dice', roll);
+    
+
+
     // let i = 0
    
     // while (i < roll.length){
@@ -44,6 +51,16 @@ export default function DiceModal({ context }) {
     // }, 5000);
   } 
   
+  function rollingDice(roll) {
+      
+    roll.forEach((face, i) => {
+      setTimeout(() => {
+        console.log('this is the index', i)
+        setDiceModal(face)
+      }, i*i*10);
+
+  });
+}
 
   function diceToss(sides) {
     let array = [];
@@ -54,8 +71,19 @@ export default function DiceModal({ context }) {
     return array
   }
 
+  useEffect(() =>{
+
+    socket.on('dice is rolling', roll =>{
+      rollingDice(roll);
+    });
+
+    return function cleanup(){
+      socket.off('dice is rolling');
+    }
+  });
+
     return (
-      <div className="modal">
+      <div className={`modal ${showDice ? "" : "hidden"}`}>
         <button className="button dice" onClick={rollDice}> 4 </button>
         <button className="button dice" onClick={rollDice}> 6 </button>
         <button className="button dice" onClick={rollDice}> 8 </button>

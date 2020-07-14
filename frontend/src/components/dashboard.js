@@ -9,6 +9,18 @@ export default function Dashboard({ context }) {
     let inputContext = createContext('');
     let [inputValue, setInputContext] = useState(inputContext);
 
+    let diceContext = createContext(false)
+    let [showDice, setShowDice] = useState(diceContext);
+
+    function showDiceModal(e){    
+      console.log('made it to show dice modal'); 
+        e.preventDefault();     
+        setShowDice(true);
+
+        console.log('showDice', showDice);
+         
+        }
+
     function changeInput(e){
       e.preventDefault();
       setInputContext(e.target.value);
@@ -82,7 +94,7 @@ export default function Dashboard({ context }) {
                 {/* <button id="startGame">Set Lifepoints</button>   */}
             </form>
             <div className="buttons">
-              <button className="button showDie"> Roll Die </button>
+              <button onClick={showDiceModal} className="button showDie"> Roll Die </button>
               <button className="button flipCoin"> Flip Coin </button>
               <button className="button chooser">Choose Player</button>
             </div>
