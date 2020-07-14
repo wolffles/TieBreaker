@@ -74,6 +74,7 @@ export default function DiceModal({ context, showDice, setShowDice }) {
   useEffect(() =>{
 
     socket.on('dice is rolling', roll =>{
+      console.log('made it to dice modal dice roll');
       rollingDice(roll);
     });
 
