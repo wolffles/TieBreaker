@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 const path = require('path');
 const server = require('http').createServer(app);
-const io = require('socket.io')(server);
+const io = require('socket.io')(server, {pingTimeout: 30000});
 const port = process.env.PORT || 3001;
 
 const { newPlayerInRoom, createGameRoom, createPlayerObj, userConnectedToRoom, userDisconnected, deleteRoom, removeUser } = require('./gameRoom');
@@ -96,7 +96,7 @@ io.on('connection', (socket) => {
             if(rooms[roomName] && rooms[roomName].connectedPlayersList.length == 0){
                 //deletes room after five minutes if no participant joined the room
                 console.log('deleting room');
-                setTimeout(() => deleteRoom(rooms, rooms[roomName]),5000);
+                setTimeout(() => deleteRoom(rooms, rooms[roomName]),300000);
             }
             // echo globally that this client has left
             broadcastRoomExcludeSender(socket,roomName,'update game state', rooms[roomName])
