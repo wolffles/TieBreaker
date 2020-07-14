@@ -6,7 +6,7 @@ const io = require('socket.io')(server, {pingTimeout: 30000});
 const port = process.env.PORT || 3001;
 
 const { newPlayerInRoom, createGameRoom, createPlayerObj, userConnectedToRoom, userDisconnected, deleteRoom, removeUser } = require('./gameRoom');
-const { isUsernameConnected, modifyUsername, isUsernameUnique } = require('./sourceCheck');
+const { diceToss, modifyUsername, isUsernameUnique } = require('./sourceCheck');
 
 server.listen(port, () => {
     console.log(`Server listening at port: ${port}`);
@@ -111,9 +111,12 @@ io.on('connection', (socket) => {
         }
     })
 
-    socket.on('roll dice', (data) => {
-       broadcastToRoom(io, socket.roomName, "dice is rolling", data)
-
+    socket.on('roll dice', (side) => {
+        let array = diceToss(side)
+        broadcastToRoom(io, socket.roomName, "dice is rolling", array)
+    // console.log('hit')
+        // emitDataToClient(socket, "dice is rolling", data)
+        // broadcastRoomExcludeSender(socket, roomName,'someone rolling dice',data)
     })
 });
 
