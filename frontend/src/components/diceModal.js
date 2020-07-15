@@ -9,10 +9,6 @@ export default function DiceModal({ context, showDice, diceFace, }) {
     socket.emit('roll dice', diceType);
   }
 
-  useEffect(() =>{
-    return function cleanup(){
-    }
-  });
 
     return (
       <div className={`${showDice ? "modal" : "hidden"}`}>

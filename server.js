@@ -87,11 +87,8 @@ io.on('connection', (socket) => {
         let roomName = socket.roomName
         if (addedUser) {
             userDisconnected(rooms[roomName],socket.username)
-            console.log('here is the username', socket.username);
-            console.log('here is the roomName', roomName);
             if(rooms[roomName] && rooms[roomName].connectedPlayersList.length == 0){
                 //deletes room after five minutes if no participant joined the room
-                console.log('deleting room');
                 setTimeout(() => deleteRoom(rooms, rooms[roomName]),300000);
             }
             // echo globally that this client has left
