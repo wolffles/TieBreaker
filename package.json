@@ -6,8 +6,9 @@
   "scripts": {
     "client": "npm start --prefix ./frontend",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon server.js",
-    "dev": "concurrently \"npm start\" \"npm run client\"",
+    "start": "node server.js",
+    "nodemon": "nodemon server.js",
+    "dev": "concurrently \"npm run nodemon\" \"npm run client\"",
     "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix frontend && npm run build --prefix frontend"
   },
   "repository": {
