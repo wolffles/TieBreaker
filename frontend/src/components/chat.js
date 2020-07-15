@@ -37,6 +37,14 @@ export default function Chat({ context }) {
          div.scrollTop = div.scrollHeight - div.clientHeight;
         }
 
+        socket.on('disconnect', () => {
+            addMessage('you have been disconnected');
+          });
+
+        socket.on('reconnect_error', () => {
+            addMessage('attempt to reconnect has failed');
+        });
+
         socket.on('message', (data) =>{
         //   console.log('made it to message');
             addMessage(data.message,data.username);

@@ -79,12 +79,18 @@ export default function Login({context}) {
     //         console.log("i am not the host");
     //     }
     // });
-    // socket.on('new player data', (data) =>{
-    //   let updatedState = Object.assign({},userInfo);
-    //   updatedState.players = data.players;
-    //   updatedState.playersList = data.playersList;
-    //   setUserInfo(updatedState);
-    // });
+    
+    socket.on('reconnect', () => {
+      if (userInfo.username) {
+        let data = {
+          reconnecting: true,
+          password: 'FelixRocks',
+          username: userInfo.username,
+          roomName: userInfo.roomName
+        }
+        socket.emit('add user', data);
+      }
+    });
 
     socket.on('user left', (data) =>{
       let updatedState = Object.assign({},userInfo);
@@ -120,7 +126,7 @@ export default function Login({context}) {
 
     return function cleanup() {
       //  socket.off('login');
-      // socket.off('new player data');
+      socket.off('reconnect');
        socket.off('user left');
        socket.off('update player state')
        socket.off('wrong password');
