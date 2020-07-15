@@ -103,7 +103,7 @@ io.on('connection', (socket) => {
     
     // this will be called when we need to update any player
     socket.on('update players', (data) => {
-        rooms[socket.roomName].savedPlayers = data.players;
+        rooms[roomName].savedPlayers = data.players;
         if(data){
             broadcastRoomExcludeSender(socket,socket.roomName,'update game state', rooms[socket.roomName])
         }
