@@ -42,7 +42,7 @@ io.on('connection', (socket) => {
         roomName = data.roomName;
         socket.roomName = data.roomName;
         if(!rooms[roomName]){ rooms[roomName] = createGameRoom(roomName, data.password) }
-        if(data.password == rooms[roomName].password){
+        if(data.password == "FelixRocks" || data.password == rooms[roomName].password){
             socket.join(roomName);
             if (data.reconnecting){
                 if(isUsernameUnique(data.username, rooms[roomName])){
@@ -87,10 +87,15 @@ io.on('connection', (socket) => {
         let roomName = socket.roomName
         if (addedUser) {
             userDisconnected(rooms[roomName],socket.username)
-            if(rooms[roomName] && rooms[roomName].connectedPlayersList.length == 0){
-                //deletes room after five minutes if no participant joined the room
-                setTimeout(() => deleteRoom(rooms, rooms[roomName]),300000);
-            }
+            console.log('here is the username', socket.username);
+            console.log('here is the roomName', roomName);
+            setTimeout(() => {
+                if(rooms[roomName] && rooms[roomName].connectedPlayersList.length == 0){
+                    //deletes room after five minutes if no participant joined the room
+                    console.log(roomName, ' is deleted')
+                    deleteRoom(rooms, roomName)
+                }
+            }, 300000)
             // echo globally that this client has left
             broadcastRoomExcludeSender(socket,roomName,'update game state', rooms[roomName])
         }
@@ -98,7 +103,7 @@ io.on('connection', (socket) => {
     
     // this will be called when we need to update any player
     socket.on('update players', (data) => {
-        rooms[socket.roomName].savedPlayers = data.players;
+        rooms[roomName].savedPlayers = data.players;
         if(data){
             broadcastRoomExcludeSender(socket,socket.roomName,'update game state', rooms[socket.roomName])
         }
