@@ -74,9 +74,9 @@ module.exports = {
         room.toBroadcast.userRemoved = [`${username}'s player area was removed.`, undefined]
 
     },
-    deleteRoom(rooms, room){
-        if (room.connectedPlayersList.length == 0){
-            delete rooms[room.roomName];
+    deleteRoom(rooms, roomName){
+        if (rooms[roomName].connectedPlayersList.length == 0){
+            delete rooms[roomName];
         }
     }
 
