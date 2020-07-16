@@ -40,10 +40,12 @@ export default function Chat({ context }) {
         }
 
         socket.on('disconnect', () => {
+            console.log("you've been disconnected")
             addMessage('you have been disconnected');
           });
 
         socket.on('reconnect_error', () => {
+            console.log("reconnecting has failed")
             addMessage('attempt to reconnect has failed');
         });
 

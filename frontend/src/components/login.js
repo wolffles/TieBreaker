@@ -81,6 +81,7 @@ export default function Login({context}) {
     // });
     
     socket.on('reconnect', () => {
+      console.log("reconnecting is happening")
       if (userInfo.username) {
         let data = {
           reconnecting: true,
