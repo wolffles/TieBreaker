@@ -107,7 +107,7 @@ export default function Login({context}) {
       updatedState.id = data.id
       updatedState.color = data.color
       updatedState.roomName = data.roomName
-      updatedState.messages = data.messages
+      updatedState.messages = updatedState.messages ? updatedState.messages.concat(data.messages) : data.messages
       setUserInfo(updatedState);
     })
 
