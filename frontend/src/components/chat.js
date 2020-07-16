@@ -20,8 +20,10 @@ export default function Chat({ context }) {
 
     function addMessage(message, username){
         let updatedState = Object.assign({},userInfo);
+        if(updatedState.messages){
         updatedState.messages = updatedState.messages.concat([[message, username]]) 
         setUserInfo(updatedState);   
+        }
     }
 
     function handleSubmit(e){
@@ -79,6 +81,8 @@ export default function Chat({ context }) {
         return function cleanup() {
            socket.off('message');
            socket.off('server messages');
+           socket.off('reconnect_error');
+           socket.off('disconnect')
           };
       });
 
