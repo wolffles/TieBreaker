@@ -3,8 +3,6 @@ import MessageList from './messageList.js';
 import '../style/style.css';
 //inporting socket so application can have one instance of socket
 import {sendMessage, socket} from '../utility/socket.js';
-// import socketUtility from '../utility/socketUtility.js';
-import {getUsernameColor} from '../utility/playerMisc.js'
 
 
 export default function Chat({ context }) {
@@ -38,6 +36,21 @@ export default function Chat({ context }) {
         if(!!div){
          div.scrollTop = div.scrollHeight - div.clientHeight;
         }
+
+        socket.on('reconnect', () => {
+            console.log("you've auto reconnected")
+            if (userInfo.username) {
+              let data = {
+                reconnecting: true,
+                password: userInfo.password,
+                life: userInfo.life,
+                username: userInfo.username,
+                roomName: userInfo.roomName
+              }
+              socket.emit('add user', data);
+              addMessage("you have auto reconnected");
+            }
+          });
 
         socket.on('disconnect', () => {
             console.log("you've been disconnected")
@@ -81,10 +94,11 @@ export default function Chat({ context }) {
           });
         
         return function cleanup() {
-           socket.off('message');
-           socket.off('server messages');
-           socket.off('reconnect_error');
-           socket.off('disconnect')
+            socket.off('reconnect');    
+            socket.off('message');
+            socket.off('server messages');
+            socket.off('reconnect_error');
+            socket.off('disconnect')
           };
       });
 

@@ -1,3 +1,8 @@
+/*
+if this code ever changes you need to also change the gameroom.js code in the backend.
+this code only effects the messageList colors in chat.
+**/
+
 const COLORS2 = [
     '#e21400', '#91580f', '#f8a700', '#f78b00',
     '#58dc00', '#287b00', '#a8f07a', '#4ae8c4',

@@ -1,9 +1,7 @@
 import React, {useContext, createContext, useState, useEffect} from "react";
 import '../style/login.css';
 import '../style/style.css';
-import userContext from '../context/players.js';
-import {socket} from '../utility/socket.js';
-import {getUsernameColor} from '../utility/playerMisc.js'
+import { socket} from '../utility/socket.js';
 
 
 
@@ -55,7 +53,6 @@ export default function Login({context}) {
       id: socket.id,
       username: username,
       life: 0,
-      color: getUsernameColor(username),
       roomName: roomName,
       password: password,
       reconnecting: reconnecting
@@ -78,25 +75,7 @@ export default function Login({context}) {
     //     }else{
     //         console.log("i am not the host");
     //     }
-    // });
-    
-    socket.on('reconnect', () => {
-      console.log("reconnecting is happening")
-      if (userInfo.username) {
-        let data = {
-          reconnecting: true,
-          password: 'FelixRocks',
-          username: userInfo.username,
-          roomName: userInfo.roomName
-        }
-        socket.emit('add user', data);
-      }
-    });
-
-    socket.on('user left', (data) =>{
-      let updatedState = Object.assign({},userInfo);
-      
-    });
+    // });    
 
 
     socket.on('update player state', (data) => {
@@ -127,8 +106,6 @@ export default function Login({context}) {
 
     return function cleanup() {
       //  socket.off('login');
-      socket.off('reconnect');
-       socket.off('user left');
        socket.off('update player state')
        socket.off('wrong password');
        //  socket.off('update game state')

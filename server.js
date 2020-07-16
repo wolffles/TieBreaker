@@ -19,9 +19,7 @@ app.get('*', (req, res) => {
 });
   
 //Dashboard
-
 let rooms = {}
-
 
 io.on('connection', (socket) => {
  //   socket.join('game1')
@@ -34,9 +32,8 @@ io.on('connection', (socket) => {
     let roomName = ""
     socket.on('message', (data) => {
         broadcastRoomExcludeSender(socket, socket.roomName,'message', data);
-
-      });
-
+    });
+ 
     socket.on('add user', (data) => {
         if (addedUser) return;
         roomName = data.roomName;

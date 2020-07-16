@@ -28,7 +28,7 @@ module.exports = {
           array.push(num)
         }
         return array
-      }
+    }
 
 
 };

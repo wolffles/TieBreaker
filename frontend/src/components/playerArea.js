@@ -25,16 +25,15 @@ export default function PlayersArea({ players, roomName, playersList, context })
     }
 
     if (players){
-      // console.log('here is the players list', playersList);
     playersArea = playersList.map((username, i) =>{
         return( 
-        <div className="player" id={username}  onChange={handleChange} style={{backgroundColor:players[username].color}} key={i}>
-          <div className="nameHolder">
-          <div className="nickname">{username}</div>
-          <div className="delete" onClick={deletePlayer}><FaTrash  size="2em" /></div>
-          </div>         
-           <input id={username} className="life" style={{backgroundColor:players[username].color}} placeholder={players[username].life}/>         
-       </div>
+          <div className="player" id={username}  onChange={handleChange} style={{backgroundColor:players[username].color}} key={i}>
+            <div className="nameHolder">
+            <div className="nickname">{username}</div>
+            <div className="delete" onClick={deletePlayer}><FaTrash  size="2em" /></div>
+            </div>         
+            <input id={username} className="life" style={{backgroundColor:players[username].color}} placeholder={players[username].life}/>         
+          </div>
           );
         });
     }
