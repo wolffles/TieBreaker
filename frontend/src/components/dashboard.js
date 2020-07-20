@@ -33,6 +33,7 @@ export default function Dashboard({ context }) {
     //this is the dice code
     function showEventModal(e, newType){    
       e.preventDefault();
+      setEventValue('');
       setModalType(newType);
       setShowEvent(true);
 
@@ -62,7 +63,6 @@ export default function Dashboard({ context }) {
 
       if (showEvent && event.target == modalElement) {
           setShowEvent(false)
-          setEventValue('')
         }
       }
 
@@ -93,7 +93,6 @@ export default function Dashboard({ context }) {
 
 
     socket.on('update game state', (data) => {
-      console.log('data in front end after change', data);
       let updatedState = Object.assign({},userInfo);
       updatedState.connectedPlayersList = data.connectedPlayersList
       updatedState.playersList = data.savedPlayersList

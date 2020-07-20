@@ -24,7 +24,6 @@ export default function DiceModal({ context, showEvent, eventValue, modalType}) 
 
 
   function modalRender(){
-    console.log('here is the modal type', modalType);
     if(modalType == 'dice') {
       return (
         <div className={`${showEvent ? "modal" : "hidden"}`}>
