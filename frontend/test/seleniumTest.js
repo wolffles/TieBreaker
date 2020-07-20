@@ -89,22 +89,24 @@
 const { Builder, By, Key, until } = require('selenium-webdriver');
 const { expect } = require('chai');
 
-describe('DefaultTest', () => {
-    const driver = new Builder().forBrowser('chrome').build();
+describe('DefaultTest', (done) => {
+  const driver = new Builder().forBrowser('chrome').build();
+  beforeEach((done) => {
+    driver.get('https://tie-breaker.herokuapp.com')
+    .then(() => driver.findElement(By.css("#nicknameInput")).sendKeys("wolf",Key.TAB, 'room', Key.TAB, 'a'))
+    .then(() => driver.sleep(500))
+    .then(() => driver.findElement(By.css("#passwordInput")).sendKeys(Key.ENTER))
+    done()
+  })
 
-    it('login as wolf in room and see if player area exist', async (done) => {
-        await driver.get('https://tie-breaker.herokuapp.com');
+  it('login as wolf in room and see if player area exist',  () => {
+    driver.wait(until.elementLocated(By.id('wolf')))
+    .then(() => {
+      return expect(driver.findElement(By.id('wolf')).to.eventually.be.true)
+    }).catch(console.log("doesn't work"))
+  });
 
-        await driver.findElement(By.css("#nicknameInput")).sendKeys("wolf",Key.TAB, 'room', Key.TAB, 'a');
-        (await driver).sleep(500)
-        await driver.findElement(By.css("#passwordInput")).sendKeys(Key.ENTER)
-        await driver.wait(until.elementLocated(By.id('wolf')))
-        const wolf = await driver.findElement(By.id('wolf'))
-        expect(!!wolf).to.be.true;
-        done()
-    });
-
-  //   it('should go to nehalist.io and check social icon links', async () => {
+  //   it('should go to nehalist.io and check social icon links',  () => {
   //     await driver.get('https://nehalist.io');
   //     const twitterLink = await driver.findElement(By.className('social-link-twitter')).getAttribute('href');
   //     const githubLink  = await driver.findElement(By.className('social-link-github')).getAttribute('href');
@@ -113,5 +115,6 @@ describe('DefaultTest', () => {
   //     expect(githubLink).to.equal('https://github.com/nehalist');
   // });
 
-    after(async () => driver.quit());
+    afterEach( () => driver.quit());
+
 });
