@@ -28,6 +28,39 @@ module.exports = {
           array.push(num)
         }
         return array
+    }, coinToss: () => {
+        let flip = Math.floor(Math.random() * 2) + 1;
+        let array = [];
+        while (array.length < 13){
+          array.push(flip)
+          if(flip == 1){
+              flip = 2
+          } else {
+              flip = 1
+          }
+        }
+        return array
+    }, choosePlayer: (playersList) => {
+        let array = [];
+       if(playersList.length >= 3){
+        while (array.length < 13){
+            let num = Math.floor(Math.random() * playersList.length)
+            array.push(playersList[num])
+          }
+       } else if (playersList.length == 2) {
+           let num = Math.floor(Math.random() * 2);
+        while (array.length < 13){
+            array.push(playersList[num])
+            if(num == 1){
+                num = 0
+            } else {
+                num = 1
+            }
+          }  
+       }else {
+           array = playersList;
+       }
+       return array;
     }
 
 

@@ -1,6 +1,6 @@
 import React, {useContext, createContext, useState, useEffect} from "react";
 import PlayerArea from './playerArea.js'
-import DiceModal from './diceModal.js'
+import EventModal from './eventModal.js'
 import '../style/style.css';
 import {updatePlayers, socket} from '../utility/socket.js';
 
@@ -9,8 +9,11 @@ export default function Dashboard({ context }) {
     let inputContext = createContext('');
     let [inputValue, setInputContext] = useState(inputContext);
 
-    let [showDice, setShowDice] = useState(false);
-    let [diceFace, setDiceFace] = useState('');
+    let [showEvent, setShowEvent] = useState(false);
+
+    let [eventValue, setEventValue] = useState('');
+
+    let [modalType, setModalType] = useState('');
 
     function changeInput(e){
       e.preventDefault();
@@ -28,22 +31,41 @@ export default function Dashboard({ context }) {
     }
 
     //this is the dice code
-    function showDiceModal(e){    
-      e.preventDefault();     
-      setShowDice(!showDice);
-      //this console.log is a lie? its almost like its asychonous because on click it's still false but the value is true and shows dice modal
-      console.log('showDice', showDice);
-      }
+    function showEventModal(e, newType){    
+      e.preventDefault();
+      setModalType(newType);
+      setShowEvent(true);
 
-    function rollingDice(roll) {
+      }
+  
+      
+
+    function displayingEvent(roll, type) {
       roll.forEach((face, i) => {
+        let side;
+        if(type == 'flip') {
+          side = face == 1 ? 'Heads' : 'Tails'
+        }else{
+          side = face
+        }
         setTimeout(() => {
-          setDiceFace(face)
+          setEventValue(side)
         }, i*i*10);
       });
     }
 
     useEffect(() => {
+
+      window.onclick = function(event) {
+
+      let modalElement = document.getElementById('modalBackground');
+
+      if (showEvent && event.target == modalElement) {
+          setShowEvent(false)
+          setEventValue('')
+        }
+      }
+
       socket.on('update player data', (data) =>{
           let updatedState = Object.assign({}, userInfo);
           updatedState.players = data.players;
@@ -51,8 +73,21 @@ export default function Dashboard({ context }) {
       });
 
     socket.on('dice is rolling', roll =>{
-      if(!showDice){setShowDice(true)};
-      rollingDice(roll)
+      if(!showEvent){setShowEvent(true)};
+      setModalType('dice');
+      displayingEvent(roll)
+    });
+
+    socket.on('coin is flipping', flip =>{
+      if(!showEvent){setShowEvent(true)};
+      setModalType('flip');
+      displayingEvent(flip, 'flip')
+    });
+
+    socket.on('choosing player', flip =>{
+      if(!showEvent){setShowEvent(true)};
+      setModalType('choose');
+      displayingEvent(flip, 'choose')
     });
 
 
@@ -77,7 +112,9 @@ export default function Dashboard({ context }) {
       return function cleanup() {
           socket.off('dice is rolling');
           socket.off('update player data');
-          socket.off('update game state')
+          socket.off('update game state');
+          socket.off('coin is flipping');
+          socket.off('choosing player');
         };
     });
     
@@ -91,13 +128,13 @@ export default function Dashboard({ context }) {
                 {/* <button id="startGame">Set Lifepoints</button>   */}
             </form>
             <div className="buttons">
-              <button  onClick={showDiceModal} className="button showDie"> Roll Die </button>
-              <button className="button flipCoin"> Flip Coin </button>
-              <button className="button chooser">Choose Player</button>
+              <button  onClick={(e) => showEventModal(e, 'dice')} className="button showDie"> Roll Die </button>
+              <button onClick={(e) => showEventModal(e,'flip')} className="button flipCoin"> Flip Coin </button>
+              <button onClick={(e) => showEventModal(e, 'choose')} className="button chooser">Choose Player</button>
             </div>
           </div>
           <span className="roomName">Username: {userInfo.username} | Game Name: {userInfo.roomName} | Password: {userInfo.password}</span>
-            <DiceModal showDice={showDice} diceFace={diceFace}/>
+            <EventModal showEvent={showEvent} eventValue={eventValue} modalType={modalType}/>
             <PlayerArea players={userInfo.players} roomName={userInfo.roomName} playersList={userInfo.playersList} context={context}/>
       </div>
     );
