@@ -92,26 +92,26 @@ const { expect } = require('chai');
 describe('DefaultTest', () => {
     const driver = new Builder().forBrowser('chrome').build();
 
-    it('login as wolf in room and see if player area exist', async (done) => {
-        await driver.get('https://tie-breaker.herokuapp.com');
-
-        await driver.findElement(By.css("#nicknameInput")).sendKeys("wolf",Key.TAB, 'room', Key.TAB, 'a');
-        (await driver).sleep(500)
-        await driver.findElement(By.css("#passwordInput")).sendKeys(Key.ENTER)
-        await driver.wait(until.elementLocated(By.id('wolf')))
-        const wolf = await driver.findElement(By.id('wolf'))
-        expect(!!wolf).to.be.true;
-        done()
+    it('login as wolf in room and see if player area exist', async () => {
+      await driver.get('https://tie-breaker.herokuapp.com');
+      
+      await driver.findElement(By.css("#nicknameInput")).sendKeys("wolf",Key.TAB, 'room', Key.TAB, 'a');
+      // await driver.sleep(30000)
+      await driver.findElement(By.css("#passwordInput")).sendKeys(Key.ENTER)
+      await driver.wait(until.elementLocated(By.id('wolf')))
+      const wolf = await driver.findElement(By.id('wolf'))
+      expect(!!wolf).to.be.true;
     });
 
-  //   it('should go to nehalist.io and check social icon links', async () => {
-  //     await driver.get('https://nehalist.io');
-  //     const twitterLink = await driver.findElement(By.className('social-link-twitter')).getAttribute('href');
-  //     const githubLink  = await driver.findElement(By.className('social-link-github')).getAttribute('href');
+    it('should go to nehalist.io and check social icon links', async () => {
+      await driver.get('https://nehalist.io');
+      const twitterLink = await driver.findElement(By.className('social-link-twitter')).getAttribute('href');
+      const githubLink  = await driver.findElement(By.className('social-link-github')).getAttribute('href');
       
-  //     expect(twitterLink).to.equal('https://twitter.com/nehalist');
-  //     expect(githubLink).to.equal('https://github.com/nehalist');
-  // });
+      expect(twitterLink).to.equal('https://twitter.com/nehalist');
+      expect(githubLink).to.equal('https://github.com/nehalist');
+  });
 
     after(async () => driver.quit());
+
 });
