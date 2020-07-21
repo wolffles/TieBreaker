@@ -17,11 +17,11 @@ describe('DefaultTest', () => {
       expect(!!wolf).to.be.true;
     });
 
-    it('sets the life total to 40', async () => {
-      (await driver).findElement(By.css(".setLife.input")).sendKeys('40', Key.ENTER)
-      await driver.wait(until.elementLocated(By.className('wolf life')))
-      const lifeChange = await (await driver.findElement(By.className('wolf life'))).getAttribute('placeholder')
-      assert(lifeChange, 40, "was not 40 as expect")
+    it('sets the score total to 40', async () => {
+      (await driver).findElement(By.css(".setPoints.input")).sendKeys('40', Key.ENTER)
+      await driver.wait(until.elementLocated(By.className('wolf score')))
+      const scoreChange = await (await driver.findElement(By.className('wolf score'))).getAttribute('placeholder')
+      assert(scoreChange, 40, "was not 40 as expect")
     });
 
     // it('new player logs and sends chat message', async () => {

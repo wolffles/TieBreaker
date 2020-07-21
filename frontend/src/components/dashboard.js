@@ -33,7 +33,7 @@ export default function Dashboard({ context }) {
       }
 
       for (let username in updatedState.players){
-        updatedState.players[username].life = input;
+        updatedState.players[username].score = input;
       }
       setUserInfo(updatedState);
       updatePlayers({players:updatedState.players});
@@ -131,9 +131,8 @@ export default function Dashboard({ context }) {
     return (
         <div className="dashboard">
           <div className="menubar">
-            <form className="setLife" onSubmit={handleSubmit}>
-                <input className="setLife input"type="number" maxLength="10" placeholder="Set Lifepoints" onChange={changeInput}/>
-                {/* <button id="startGame">Set Lifepoints</button>   */}
+            <form className="setPoints" onSubmit={handleSubmit}>
+                <input className="setPoints input"type="number" maxLength="10" placeholder="Set Points" onChange={changeInput}/>
             </form>
             <div className="buttons">
               <button  onClick={(e) => showEventModal(e, 'dice')} className="button showDie"> Roll Die </button>

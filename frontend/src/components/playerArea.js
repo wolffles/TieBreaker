@@ -10,11 +10,11 @@ export default function PlayersArea({ players, roomName, playersList }) {
     function handleChange(e){
       e.preventDefault();
       let username = e.currentTarget.id;
-      let life = e.target.value;
+      let score = e.target.value;
 
       let updatedPlayers = Object.assign({}, players);
   
-      updatedPlayers[username].life = life;
+      updatedPlayers[username].score = score;
       updatePlayers({players:updatedPlayers});
 
     }
@@ -33,7 +33,7 @@ export default function PlayersArea({ players, roomName, playersList }) {
             <div className="nickname">{username}</div>
             <div className="delete" onClick={deletePlayer}><FaTrash  size="2em" /></div>
             </div>         
-            <input className={`${username} life`} style={{backgroundColor:players[username] ? players[username].color : getUsernameColor(username)}} placeholder={players[username] ? players[username].life : 0}/>         
+            <input className={`${username} score`} style={{backgroundColor:players[username] ? players[username].color : getUsernameColor(username)}} placeholder={players[username] ? players[username].score : 0}/>         
           </div>
           );
         });

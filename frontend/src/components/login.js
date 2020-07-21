@@ -52,7 +52,7 @@ export default function Login({context}) {
     data = {
       id: socket.id,
       username: username,
-      life: 0,
+      score: 0,
       roomName: roomName,
       password: password,
       reconnecting: reconnecting
@@ -82,7 +82,7 @@ export default function Login({context}) {
       // console.log('made it to update player state')
       let updatedState = Object.assign({},userInfo);
       updatedState.username = data.username
-      updatedState.life = data.life
+      updatedState.score = data.score
       updatedState.id = data.id
       updatedState.color = data.color
       updatedState.roomName = data.roomName

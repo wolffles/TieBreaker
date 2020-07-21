@@ -43,7 +43,7 @@ export default function Chat({ context }) {
               let data = {
                 reconnecting: true,
                 password: userInfo.password,
-                life: userInfo.life,
+                score: userInfo.score,
                 username: userInfo.username,
                 roomName: userInfo.roomName
               }
@@ -101,8 +101,6 @@ export default function Chat({ context }) {
             <form className="messageInput" onSubmit={handleSubmit}> 
                 <input id="inputMessage" autoFocus className="inputMessage" placeholder="Type here..." onChange={changeInput} />
             </form>
-
         </div>
-      
     );
   }
