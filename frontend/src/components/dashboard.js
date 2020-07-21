@@ -33,7 +33,7 @@ export default function Dashboard({ context }) {
       }
 
       for (let username in updatedState.players){
-        updatedState.players[username].life = input;
+        updatedState.players[username].score = input;
       }
       setUserInfo(updatedState);
       updatePlayers({players:updatedState.players});
@@ -108,7 +108,6 @@ export default function Dashboard({ context }) {
       updatedState.players = data.savedPlayers
       updatedState.password = data.password
 
-
       setUserInfo(updatedState)
       //sometimes updatedState is undefined? maybe asynchronous?
       if(data.broadcast){
@@ -132,7 +131,7 @@ export default function Dashboard({ context }) {
         <div className="dashboard">
           <div className="menubar">
             <form className="setLife" onSubmit={handleSubmit}>
-                <input className="setLife input"type="number" maxLength="10" placeholder="Set Lifepoints" onChange={changeInput}/>
+                <input className="setLife input"type="number" maxLength="10" placeholder="Set Score" onChange={changeInput}/>
                 {/* <button id="startGame">Set Lifepoints</button>   */}
             </form>
             <div className="buttons">

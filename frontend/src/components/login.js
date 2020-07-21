@@ -82,7 +82,8 @@ export default function Login({context}) {
       // console.log('made it to update player state')
       let updatedState = Object.assign({},userInfo);
       updatedState.username = data.username
-      updatedState.life = data.life
+      updatedState.score = data.score
+      updatedState.score2 = data.score2
       updatedState.id = data.id
       updatedState.color = data.color
       updatedState.roomName = data.roomName

@@ -78,9 +78,10 @@ html, body {
 
 }
 
-.nameHolder{
+.player-area-header{
   display: flex;
   justify-content: space-between;
+  flex-direction: row;
 }
 
 .nickname {
@@ -90,10 +91,26 @@ html, body {
   margin-left: 15px;
 }
 
+.player-area-buttons{
+  display: flex;
+  justify-content: space-between;
+}
+
+.add-subtract{
+  color: white;
+  margin: 15px 15px 0px 0px;
+
+}
+
+.add-subtract:hover{
+  cursor: pointer;
+  color: #CDCDD4
+}
+
 .delete {
 color: white;
-margin: 10px 10px 0px 0px;
-height: 32px
+margin: 15px 10px 0px 0px;
+
 }
 
 .delete:hover {
@@ -101,6 +118,10 @@ height: 32px
   color: #CDCDD4
   }
 
+.input-holder {
+  display: flex;
+  margin: auto;
+  }
 
 
 ::placeholder{

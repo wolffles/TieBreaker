@@ -55,7 +55,9 @@ module.exports = {
         return {
             username: username,
             id: data.id ,
-            life: 0,
+            score: 0,
+            score2: 0,
+            secondInput: false,
             password: data.password, 
             color: getUsernameColor(username),
             roomName: data.roomName,
