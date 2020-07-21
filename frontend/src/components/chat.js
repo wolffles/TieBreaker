@@ -89,8 +89,12 @@ export default function Chat({ context }) {
     return (
         <div className="chat page">
             <div className="chatArea">
+                <div className="roomName">
+                    Username: {userInfo.username}<br/>
+                    Room Name: {userInfo.roomName}<br/>
+                    Password: {userInfo.password}<br/>
+                </div>
                 <div id="messages" className="messages">
-                    {/* <span className="server message">Welcome to TieBreaker</span> */}
                     <MessageList messages={userInfo.messages} />
                 </div>
             </div>

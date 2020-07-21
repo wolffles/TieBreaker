@@ -11,7 +11,7 @@ export default function MessageList({ messages} ) {
         </li>;
       }else {
        return <li className="playerMessage"key={i}>
-          <span className="serverMessage">{message[0]}</span>
+          <div className="serverMessage">{message[0]}</div>
         </li>;
       }
       });
