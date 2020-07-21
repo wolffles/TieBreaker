@@ -131,8 +131,8 @@ export default function Dashboard({ context }) {
     return (
         <div className="dashboard">
           <div className="menubar">
-            <form className="hp" onSubmit={handleSubmit}>
-                <input type="number" maxLength="10" placeholder="Set Lifepoints" onChange={changeInput}/>
+            <form className="setLife" onSubmit={handleSubmit}>
+                <input className="setLife input"type="number" maxLength="10" placeholder="Set Lifepoints" onChange={changeInput}/>
                 {/* <button id="startGame">Set Lifepoints</button>   */}
             </form>
             <div className="buttons">

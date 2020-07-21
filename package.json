@@ -5,7 +5,7 @@
   "main": "notexporting.js",
   "scripts": {
     "client": "npm start --prefix ./frontend",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "npm run test --prefix ./frontend",
     "start": "node server.js",
     "nodemon": "nodemon server.js",
     "dev": "concurrently \"npm run nodemon\" \"npm run client\"",

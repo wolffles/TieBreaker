@@ -3,7 +3,7 @@ import {updatePlayers, socket} from '../utility/socket.js';
 import { FaTrash } from 'react-icons/fa';
 import { getUsernameColor } from "../utility/playerMisc.js";
 
-export default function PlayersArea({ players, roomName, playersList, context }) {
+export default function PlayersArea({ players, roomName, playersList }) {
    // console.log('here is the playersList', playersList);
     let playersArea;
     console.log('here are the players', )
@@ -34,7 +34,7 @@ export default function PlayersArea({ players, roomName, playersList, context })
             <div className="nickname">{username}</div>
             <div className="delete" onClick={deletePlayer}><FaTrash  size="2em" /></div>
             </div>         
-            <input id={username} className="life" style={{backgroundColor:players[username] ? players[username].color : getUsernameColor(username)}} placeholder={players[username] ? players[username].life : 0}/>         
+            <input className={`${username} life`} style={{backgroundColor:players[username] ? players[username].color : getUsernameColor(username)}} placeholder={players[username] ? players[username].life : 0}/>         
           </div>
           );
         });
