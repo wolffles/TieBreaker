@@ -27,7 +27,19 @@ const getUsernameColor = (username) => {
   return COLORS[index];
 }
 
+const isLink = (string) => {
+  let url;
+
+  try {
+    url = new URL(string);
+  } catch (_) {
+    return false;  
+  }
+
+  return true
+}
+
 
 export{
-    getUsernameColor
+    getUsernameColor, isLink
 }

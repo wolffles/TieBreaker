@@ -245,6 +245,7 @@ height: 32px
   font-size: 150%;
   float: left;
   overflow-y: scroll;
+  word-break: break-word;
   height: 95vh;
   padding-bottom: 40px;
   margin: 0;

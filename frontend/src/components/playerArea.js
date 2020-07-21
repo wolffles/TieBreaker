@@ -6,6 +6,7 @@ import { getUsernameColor } from "../utility/playerMisc.js";
 export default function PlayersArea({ players, roomName, playersList, context }) {
    // console.log('here is the playersList', playersList);
     let playersArea;
+    console.log('here are the players', )
   // console.log('here are the players', players);
     function handleChange(e){
       e.preventDefault();
