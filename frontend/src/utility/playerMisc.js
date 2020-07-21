@@ -10,7 +10,10 @@ const COLORS2 = [
   ];
 
   const COLORS = [
-    '#1A1A1D', '#4E4E50', '#6F2232', '#950740', '#C3073F'
+    '#1A1A1D', '#4E4E50', '#6F2232', '#950740',
+    '#C3073F', '#226d2b', '#226d5a', '#079732',
+    '#07977a', '#c507a5', '#2707c5',
+    '#07b8c5', '#07c559', '#c2c507', '#1d07c5'
   ];
 
   //colors corelate to #4 in following link: https://digitalsynopsis.com/design/website-color-schemes-palettes-combinations/
