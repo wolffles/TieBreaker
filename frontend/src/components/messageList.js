@@ -7,7 +7,7 @@ export default function MessageList({ messages} ) {
     messageList = messages.map((message, i) =>{
       if(isLink(message[0])){
       return <li className="playerMessage"key={i}>
-        <span className="spanMessage" style={{color:getUsernameColor(message[1])}}>{message[1]}</span>: <a href={message[0]}>{message[0]}</a>
+        <span className="spanMessage" style={{color:getUsernameColor(message[1])}}>{message[1]}</span>: <a target="_blank" href={message[0]}>{message[0]}</a>
         </li>;
       }else if (message[1]){
         return <li className="playerMessage"key={i}>
@@ -15,7 +15,7 @@ export default function MessageList({ messages} ) {
         </li>;
       }else {
        return <li className="playerMessage"key={i}>
-          <span className="serverMessage">{message[0]}</span>
+          <div className="serverMessage">{message[0]}</div>
         </li>;
       }
       });

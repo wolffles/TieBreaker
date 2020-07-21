@@ -2,7 +2,7 @@
 Useful tools for all for table top games
 
 ## features
-* game unit counter ie: life/point/score display
+* game unit counter ie: score/point/score display
 * names
 
 
@@ -27,7 +27,7 @@ rooms {
             playerObj:{
             username: "",
             id: "",
-            life: 0,
+            score: 0,
             password: "", 
             color: getUsernameColor(username),
             roomName: "",
@@ -53,7 +53,7 @@ rooms {
         PlayersList: [],
         connectedPlayersList: [],
         username: "",
-        life: 0,
+        score: 0,
         id: '',
         color: '',
         host: boolean,

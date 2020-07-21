@@ -52,7 +52,7 @@ export default function Login({context}) {
     data = {
       id: socket.id,
       username: username,
-      life: 0,
+      score: 0,
       roomName: roomName,
       password: password,
       reconnecting: reconnecting

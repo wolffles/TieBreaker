@@ -130,9 +130,8 @@ export default function Dashboard({ context }) {
     return (
         <div className="dashboard">
           <div className="menubar">
-            <form className="setLife" onSubmit={handleSubmit}>
-                <input className="setLife input"type="number" maxLength="10" placeholder="Set Score" onChange={changeInput}/>
-                {/* <button id="startGame">Set Lifepoints</button>   */}
+            <form className="setPoints" onSubmit={handleSubmit}>
+                <input className="setPoints input"type="number" maxLength="10" placeholder="Set Points" onChange={changeInput}/>
             </form>
             <div className="buttons">
               <button  onClick={(e) => showEventModal(e, 'dice')} className="button showDie"> Roll Die </button>
@@ -140,7 +139,7 @@ export default function Dashboard({ context }) {
               <button onClick={(e) => showEventModal(e, 'choose')} className="button chooser">Choose Player</button>
             </div>
           </div>
-          <span className="roomName">Username: {userInfo.username} | Game Name: {userInfo.roomName} | Password: {userInfo.password}</span>
+          {/* <span className="roomName">Username: {userInfo.username} | Game Name: {userInfo.roomName} | Password: {userInfo.password}</span> */}
             <EventModal showEvent={showEvent} eventValue={eventValue} modalType={modalType}/>
             <PlayerArea players={userInfo.players} roomName={userInfo.roomName} playersList={userInfo.playersList} context={context}/>
       </div>

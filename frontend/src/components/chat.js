@@ -43,7 +43,7 @@ export default function Chat({ context }) {
               let data = {
                 reconnecting: true,
                 password: userInfo.password,
-                life: userInfo.life,
+                score: userInfo.score,
                 username: userInfo.username,
                 roomName: userInfo.roomName
               }
@@ -89,16 +89,18 @@ export default function Chat({ context }) {
     return (
         <div className="chat page">
             <div className="chatArea">
+                <div className="roomName">
+                    Username: {userInfo.username}<br/>
+                    Room Name: {userInfo.roomName}<br/>
+                    Password: {userInfo.password}<br/>
+                </div>
                 <div id="messages" className="messages">
-                    {/* <span className="server message">Welcome to TieBreaker</span> */}
                     <MessageList messages={userInfo.messages} />
                 </div>
             </div>
             <form className="messageInput" onSubmit={handleSubmit}> 
                 <input id="inputMessage" autoFocus className="inputMessage" placeholder="Type here..." onChange={changeInput} />
             </form>
-
         </div>
-      
     );
   }

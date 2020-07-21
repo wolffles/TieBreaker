@@ -44,12 +44,12 @@ export default function PlayersArea({ context, players, roomName, playersList })
       if(secondInput){
         return (
           <div className="input-holder">
-            <input id="score" className={`${username} life`} style={{backgroundColor:players[username] ? players[username].color : getUsernameColor(username)}} placeholder={players[username] ? players[username].score : 0}/>         
-            <input id="score2" className={`${username} life`} style={{backgroundColor:players[username] ? players[username].color : getUsernameColor(username)}} placeholder={players[username] ? players[username].score2 : 0}/>  
+            <input id="score" className={`${username} score`} style={{backgroundColor:players[username] ? players[username].color : getUsernameColor(username)}} placeholder={players[username] ? players[username].score : 0}/>         
+            <input id="score2" className={`${username} score`} style={{backgroundColor:players[username] ? players[username].color : getUsernameColor(username)}} placeholder={players[username] ? players[username].score2 : 0}/>  
           </div>       
         );
       }else{
-        return <input id="score" className={`${username} life`} style={{backgroundColor:players[username] ? players[username].color : getUsernameColor(username)}} placeholder={players[username] ? players[username].score : 0}/>;         
+        return <input id="score" className={`${username} score`} style={{backgroundColor:players[username] ? players[username].color : getUsernameColor(username)}} placeholder={players[username] ? players[username].score : 0}/>;         
       }
     }
 
