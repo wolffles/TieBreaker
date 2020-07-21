@@ -6,7 +6,9 @@ import {updatePlayers, socket} from '../utility/socket.js';
 
 export default function Dashboard({ context }) {
     const [userInfo, setUserInfo] = useContext(context);
+
     let inputContext = createContext('');
+
     let [inputValue, setInputContext] = useState(inputContext);
 
     let [showEvent, setShowEvent] = useState(false);
@@ -23,8 +25,15 @@ export default function Dashboard({ context }) {
     function handleSubmit(e){
       e.preventDefault();
       let updatedState = Object.assign({}, userInfo);
+      let input = inputValue;
+
+      if (typeof inputValue === 'object'){ 
+        input = '0';
+        setInputContext(input);
+      }
+
       for (let username in updatedState.players){
-        updatedState.players[username].life = inputValue;
+        updatedState.players[username].life = input;
       }
       setUserInfo(updatedState);
       updatePlayers({players:updatedState.players});
