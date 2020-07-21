@@ -79,13 +79,10 @@ io.on('connection', (socket) => {
     });
 
 
-
     socket.on('disconnect', () => {
         let roomName = socket.roomName
         if (addedUser) {
             userDisconnected(rooms[roomName],socket.username)
-            console.log('here is the username', socket.username);
-            console.log('here is the roomName', roomName);
             setTimeout(() => {
                 if(rooms[roomName] && rooms[roomName].connectedPlayersList.length == 0){
                     //deletes room after five minutes if no participant joined the room
@@ -114,7 +111,7 @@ io.on('connection', (socket) => {
         // broadcastRoomExcludeSender(socket, roomName,'someone rolling dice',data)
     })
 
-    socket.on('flip coin', (side) => {
+    socket.on('flip coin', () => {
         let array = coinToss(rooms[roomName].connectedPlayers)
         broadcastToRoom(io, socket.roomName, "coin is flipping", array)
     // console.log('hit')
@@ -122,7 +119,7 @@ io.on('connection', (socket) => {
         // broadcastRoomExcludeSender(socket, roomName,'someone rolling dice',data)
     })
 
-    socket.on('choose player', (side) => {
+    socket.on('choose player', () => {
         let array = choosePlayer(rooms[roomName].savedPlayersList)
         broadcastToRoom(io, socket.roomName, "choosing player", array)
     // console.log('hit')

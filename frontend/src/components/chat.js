@@ -73,23 +73,6 @@ export default function Chat({ context }) {
             if(data.toBroadcast.userLeft){updatedState.messages.push(data.toBroadcast.userLeft)}
             if(data.toBroadcast.numUsers){updatedState.messages.push(data.toBroadcast.numUsers)}
             if(data.toBroadcast.userRemoved){updatedState.messages.push(data.toBroadcast.userRemoved)}
-            // if(!data.reconnecting){
-            // console.log('user is not reconnecting aka NEW PLAYER create div for player')
-   
-            // if (!updatedState.players){
-            //     updatedState.players = {}
-            //   }
-
-              // updatedState.players[data.username] = {username: data.username, life:0, color:getUsernameColor(data.username)};
-
-              // if (!updatedState.playersList){
-              //   updatedState.playersList = [];
-              // }
-
-            // if (updatedState.playersList.indexOf(updatedState.username) == -1){
-            //   updatedState.playersList.push(updatedState.username);
-            // }
-          // }
               setUserInfo(updatedState);   
           });
         
