@@ -24,7 +24,15 @@ rooms {
         numUsers: 0,
         connectedPlayersList:[],
         savedPlayers: {
-            playerObj:{},
+            playerObj:{
+            username: "",
+            id: "",
+            life: 0,
+            password: "", 
+            color: getUsernameColor(username),
+            roomName: "",
+            messages: [['Welcome To TieBreaker', undefined]]
+            },
             ...
         },
         savedPlayersList:['playernames'],
