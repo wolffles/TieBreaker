@@ -53,9 +53,8 @@ export default function PlayersArea({ context, players, roomName, playersList })
       }
     }
 
-    function deletePlayer(e){
+    function deletePlayer(e, username){
       e.preventDefault();
-      let username = e.currentTarget.parentElement.children[0].innerHTML;
       socket.emit('remove player', {username:username, roomName: roomName});
     }
 
@@ -77,7 +76,7 @@ export default function PlayersArea({ context, players, roomName, playersList })
               <div className="nickname">{username}</div>
               <div className="player-area-buttons">
                 {addButtonRender(username, players[username].secondInput)}
-                <div className="delete" onClick={deletePlayer}><FaTrash  size="2em" /></div>
+                <div className="delete" onClick={(e) => deletePlayer(e, username)}><FaTrash  size="2em" /></div>
               </div>
             </div>   
             {inputs(username, players[username].secondInput)}      
