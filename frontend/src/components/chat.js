@@ -11,6 +11,11 @@ export default function Chat({ context }) {
     let inputContext = createContext('')
     let [message, setMessage] = useState(inputContext);
 
+    let hidden = true
+  if (userInfo.username){
+    hidden = false
+  }
+
     function changeInput(e){
         e.preventDefault();
         setMessage(e.target.value);
@@ -87,7 +92,7 @@ export default function Chat({ context }) {
 
       
     return (
-        <div className="chat page">
+        <div className={`chat page ${hidden ? "hidden" : ""}`}>
             <div className="chatArea">
                 <div className="roomName">
                     Username: {userInfo.username}<br/>
