@@ -23,6 +23,24 @@
     background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
 }
 
+.modal-button{
+    font-weight:bold;
+    font-size: 5vw;
+    width: 100%;
+    text-align: center; 
+    background-color: #5085A5;
+}
+
+.modal-button.dice{
+    border-radius: 10%;
+    height:100%;
+}
+
+.modal-button:hover{
+background-color: #8FC1E3;
+cursor: pointer;
+}
+
 .modal-background:hover {
     cursor: pointer; 
 }
@@ -39,15 +57,16 @@
 .dice.middle{
     border-top:2rem solid black;
     border-bottom:2rem solid black;
-    font-size: 5em;
+    font-size: 8vw;
     font-weight: bold;
     background-color: white;
+    border-radius: 10%;
 }
 
 .divider {
     display: flex;
     flex-direction: column;
-    background-color: aliceblue;
+    background-color: none;
     justify-content: space-evenly ;
     align-items: center;
     height: 100%;
@@ -62,7 +81,7 @@
 
 /* ********************* coin flip  ************** */
 
-.coin-modal{
+.column.modal{
     position: fixed;
     display: flex;
     flex-direction: column;
@@ -76,17 +95,14 @@
     padding: 0px;
 }
 
-.coin-display {
+.tool-display {
     height: 80%;
     display: flex;
     justify-content: space-around;
     flex-direction: column;
-}
-
-.coin-display div {
     margin: auto;
     font-weight: 700;
-    font-size: 60px;
+    font-size: 5vw;  
 }
 
 .coin-display:hover{

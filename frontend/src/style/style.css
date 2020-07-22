@@ -1,5 +1,18 @@
 /* Fix user-agent */
 
+/*
+master style guide
+colors: 
+  #F7F9FB light grey
+  #8FC1E3 sky blue
+  #5085A5 pastel blue
+  #31708E navy/water blue
+  #687864 camo green
+  ##3e423d darkmode
+  #4E4E50 dark grey
+*/
+
+
 * {
   box-sizing: border-box;
 }
@@ -47,7 +60,7 @@ html, body {
 
 
 .playerArea {
-  background-color: #f7f9fb;
+  background-color: #3e423d;
   height: 95vh;
   padding: 2.5%;
   padding-top: 0;
@@ -263,7 +276,7 @@ margin: 15px 10px 0px 0px;
 .chatArea {
   height: 100%;
   padding-bottom: 60px;
-  border: 8px solid #1A1A1D;
+  border-right: 8px solid #1A1A1D;
   background-color: #CDCDD4;
 }
 
@@ -278,6 +291,10 @@ margin: 15px 10px 0px 0px;
   height: 95%;
   padding-bottom: 40px;
   margin: 0;
+}
+
+.messages::-webkit-scrollbar {
+  display: none;
 }
 
 .message.typing .messageBody {
@@ -322,12 +339,10 @@ margin: 15px 10px 0px 0px;
 /* menu bar  */
 .menubar {
   overflow: hidden;
-  background-color: #1A1A1D;
+  background-color: #31708E;
   width: 100%;
   display: flex;
   justify-content: space-between;
-  padding-top: 5px;
-  padding-bottom:5px;
   height: 5vh;
   padding: 0px;
 }
@@ -337,8 +352,8 @@ margin: 15px 10px 0px 0px;
   text-align: center;
   width: 150px;
   font-weight:bold;
-  color: white;
-  background-color: #4E4E50;
+  color: F7F9FB;
+  background-color: #5085A5;
   padding: 0px;
   margin: 0px;
   border: 0px;
@@ -347,6 +362,7 @@ margin: 15px 10px 0px 0px;
 .menubar *{
   height: 100%;
   align-items: center;
+  color: #F7F9FB;
 } 
 
 .hp {
@@ -373,40 +389,17 @@ margin: 15px 10px 0px 0px;
   font-size: 1em;
   width: 100%;
   text-align: center; 
-
+  background-color: #5085A5;
 }
 
-.showDie{
-  background-color: #6F2232;
-}
-
-.showDie:hover {
-  background-color: #6C343F;
+.button:hover{
+  background-color: #8FC1E3;
   cursor: pointer;
-}
-
-.flipCoin{
-  background-color: #950740;
-}
-
-.flipCoin:hover{
-  background-color: #904161;
-  cursor: pointer;
-
-}
-
-.chooser{
-  background-color: #C3073F;
-}
-
-.chooser:hover{
-  background-color: #BF466A;
-  cursor: pointer;
-
 }
 
 .roomName {
-  background-color: #82828D;
+  background-color: #1A1A1D;
+  color: white;
   text-align: center;
   font-weight: 700;
   width:100%;
