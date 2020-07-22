@@ -82,6 +82,19 @@ html, body {
   border-radius: 25px;
 }
 
+.player2 {
+  display:flex;
+  /* border: 5px, solid, black;  this border isn't set up correctly*/
+  width: 40%;
+  text-align: center;
+  flex-basis: 20%;
+  margin:2.5%;
+  flex-direction: column;
+  align-content: center;
+  border-radius: 25px;
+  margin: 5px 0px 5px 0px;
+}
+
 .playerholder{
   width:90%;
   height:90%;
@@ -99,7 +112,7 @@ html, body {
 
 .nickname {
   color:white;
-  font-size: 4em;
+  font-size: 300%;
   font-weight: 700;
   margin-left: 15px;
 }
@@ -111,7 +124,7 @@ html, body {
 
 .add-subtract{
   color: white;
-  margin: 15px 15px 0px 0px;
+  margin: 15px 15px 0px 10px;
 
 }
 

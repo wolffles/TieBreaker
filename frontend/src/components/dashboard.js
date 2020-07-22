@@ -108,6 +108,7 @@ export default function Dashboard({ context }) {
       updatedState.players = data.savedPlayers
       updatedState.password = data.password
 
+      console.log('getting update from server',  `${new Date().getMinutes()}` + ":" + `${new Date().getSeconds()}` + ":"  + `${new Date().getMilliseconds()}`);
       setUserInfo(updatedState)
       //sometimes updatedState is undefined? maybe asynchronous?
       if(data.broadcast){
