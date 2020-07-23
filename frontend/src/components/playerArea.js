@@ -17,7 +17,7 @@ export default function PlayersArea({ context, players, roomName, playersList })
   
       let updatedPlayers = Object.assign({}, players);
 
-      if(valueType == "score"){
+      if(valueType === "score"){
         updatedPlayers[username].score = newValue;
       }else{
         updatedPlayers[username].score2 = newValue;
@@ -30,33 +30,28 @@ export default function PlayersArea({ context, players, roomName, playersList })
 
     function adjustInputs(e, username){
       e.preventDefault();
-      console.log('pressed input button',  `${new Date().getMinutes()}` + ":" + `${new Date().getSeconds()}` + ":"  + `${new Date().getMilliseconds()}`);
-
       let updatedState = Object.assign({}, userInfo);
-      //console.log('here is the updated state', updatedState);
-     // console.log('here is the given username', username)
+
       updatedState.players[username].secondInput = !updatedState.players[username].secondInput
 
-      //setUserInfo(updatedState);
-      updatePlayers({players:updatedState.players});
+      setUserInfo(updatedState);
+      updatePlayers({players:updatedState.players, noRender: true});
       
     }
 
     function inputs(username, secondInput, i){
       if(secondInput){
-        console.log('moving to second input',  `${new Date().getMinutes()}` + ":" + `${new Date().getSeconds()}` + ":"  + `${new Date().getMilliseconds()}`);
 
         return (
           <div className="input-holder">
             {/*  */}
-            <input onChange={(e) => handleChange(e, username, 'score')} className="score" style={{backgroundColor:players[username] ? players[username].color : getUsernameColor(username)}} placeholder={players[username] ? players[username].score : 69}/>         
-            <input onChange={(e) => handleChange(e, username, 'score2')} className="score" style={{backgroundColor:players[username] ? players[username].color : getUsernameColor(username)}} placeholder={players[username] ? players[username].score2 : 69}/>  
+            <input maxLength="4" onChange={(e) => handleChange(e, username, 'score')} className="score" style={{backgroundColor:players[username] ? players[username].color : getUsernameColor(username)}} placeholder={players[username] ? players[username].score : 69}/>         
+            <input maxLength="4" onChange={(e) => handleChange(e, username, 'score2')} className="score" style={{backgroundColor:players[username] ? players[username].color : getUsernameColor(username)}} placeholder={players[username] ? players[username].score2 : 69}/>  
           </div>       
         );
       }else{
-        console.log('moving to one input',  `${new Date().getMinutes()}` + ":" + `${new Date().getSeconds()}` + ":"  + `${new Date().getMilliseconds()}`);
 
-        return <input onChange={(e) => handleChange(e, username, 'score')} className="score" style={{backgroundColor:players[username] ? players[username].color : getUsernameColor(username)}} placeholder={players[username] ? players[username].score : 69}/>;         
+        return <input maxLength="4" onChange={(e) => handleChange(e, username, 'score')} className="score" style={{backgroundColor:players[username] ? players[username].color : getUsernameColor(username)}} placeholder={players[username] ? players[username].score : 69}/>;         
       }
     }
 
@@ -83,14 +78,10 @@ export default function PlayersArea({ context, players, roomName, playersList })
       }
     }
 
-    useEffect( () =>{
-      console.log('use effect was called',  `${new Date().getMinutes()}` + ":" + `${new Date().getSeconds()}` + ":"  + `${new Date().getMilliseconds()}`);
-    });
-
     if (players){
     playersArea = playersList.map((username, i) =>{
         return( 
-          <div className={setClass()} id={username} style={{backgroundColor:players[username] ? players[username].color : getUsernameColor(username)}} key={i}>
+          <div className={setClass()} id={username} style={{backgroundColor:players[username] ? players[username].color : getUsernameColor(username)}} key={username}>
             <div className="player-area-header">
               <div className="nickname">{username}</div>
               <div className="player-area-buttons">

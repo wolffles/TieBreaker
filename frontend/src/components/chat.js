@@ -38,6 +38,8 @@ export default function Chat({ context }) {
     useEffect(() => {
         var div = document.getElementById("messages");
 
+
+
         if(!!div){
          div.scrollTop = div.scrollHeight - div.clientHeight;
         }

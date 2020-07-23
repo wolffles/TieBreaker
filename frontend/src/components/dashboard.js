@@ -35,8 +35,8 @@ export default function Dashboard({ context }) {
       for (let username in updatedState.players){
         updatedState.players[username].score = input;
       }
-      setUserInfo(updatedState);
-      updatePlayers({players:updatedState.players});
+      setUserInfo(updatedState)
+      updatePlayers({players:updatedState.players, noRender:true});
     }
 
     //this is the dice code
@@ -108,7 +108,6 @@ export default function Dashboard({ context }) {
       updatedState.players = data.savedPlayers
       updatedState.password = data.password
 
-      console.log('getting update from server',  `${new Date().getMinutes()}` + ":" + `${new Date().getSeconds()}` + ":"  + `${new Date().getMilliseconds()}`);
       setUserInfo(updatedState)
       //sometimes updatedState is undefined? maybe asynchronous?
       if(data.broadcast){
