@@ -99,10 +99,10 @@ io.on('connection', (socket) => {
     socket.on('update players', (data) => {
         rooms[roomName].savedPlayers = data.players;
 
-        if(data && !data.noRender){
-            broadcastToRoom(io,socket.roomName,'update game state', rooms[socket.roomName])
-        } else if (data && data.noRender){
+        if(data && data.noRender){
             broadcastRoomExcludeSender(socket,socket.roomName,'update game state', rooms[socket.roomName])
+        } else{
+            broadcastToRoom(io,socket.roomName,'update game state', rooms[socket.roomName])
         }
         
     })

@@ -23,7 +23,7 @@ export default function PlayersArea({ context, players, roomName, playersList })
         updatedPlayers[username].score2 = newValue;
 
       }
-    
+
      updatePlayers({players:updatedPlayers, noRender: true});
 
     }
