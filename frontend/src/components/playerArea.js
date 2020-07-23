@@ -1,4 +1,4 @@
-import React, {useContext} from "react";
+import React, {useContext, useEffect} from "react";
 import {updatePlayers, socket} from '../utility/socket.js';
 import { FaTrash, FaPlus, FaMinus } from 'react-icons/fa';
 import { getUsernameColor } from "../utility/playerMisc.js";
@@ -24,7 +24,7 @@ export default function PlayersArea({ context, players, roomName, playersList })
 
       }
     
-      updatePlayers({players:updatedPlayers});
+     updatePlayers({players:updatedPlayers, noRender: true});
 
     }
 
@@ -37,7 +37,7 @@ export default function PlayersArea({ context, players, roomName, playersList })
      // console.log('here is the given username', username)
       updatedState.players[username].secondInput = !updatedState.players[username].secondInput
 
-     // setUserInfo(updatedState);
+      //setUserInfo(updatedState);
       updatePlayers({players:updatedState.players});
       
     }
@@ -49,14 +49,14 @@ export default function PlayersArea({ context, players, roomName, playersList })
         return (
           <div className="input-holder">
             {/*  */}
-            <input onChange={(e) => handleChange(e, username, 'score')}  maxLength="4" className="score" style={{backgroundColor:players[username] ? players[username].color : getUsernameColor(username)}} placeholder={players[username] ? players[username].score : 69}/>         
-            <input onChange={(e) => handleChange(e, username, 'score2')} maxLength="4" className="score" style={{backgroundColor:players[username] ? players[username].color : getUsernameColor(username)}} placeholder={players[username] ? players[username].score2 : 69}/>  
+            <input onChange={(e) => handleChange(e, username, 'score')} className="score" style={{backgroundColor:players[username] ? players[username].color : getUsernameColor(username)}} placeholder={players[username] ? players[username].score : 69}/>         
+            <input onChange={(e) => handleChange(e, username, 'score2')} className="score" style={{backgroundColor:players[username] ? players[username].color : getUsernameColor(username)}} placeholder={players[username] ? players[username].score2 : 69}/>  
           </div>       
         );
       }else{
         console.log('moving to one input',  `${new Date().getMinutes()}` + ":" + `${new Date().getSeconds()}` + ":"  + `${new Date().getMilliseconds()}`);
 
-        return <input onChange={(e) => handleChange(e, username, 'score')} maxength="4" className="score" style={{backgroundColor:players[username] ? players[username].color : getUsernameColor(username)}} placeholder={players[username] ? players[username].score : 69}/>;         
+        return <input onChange={(e) => handleChange(e, username, 'score')} className="score" style={{backgroundColor:players[username] ? players[username].color : getUsernameColor(username)}} placeholder={players[username] ? players[username].score : 69}/>;         
       }
     }
 
@@ -83,6 +83,10 @@ export default function PlayersArea({ context, players, roomName, playersList })
       }
     }
 
+    useEffect( () =>{
+      console.log('use effect was called',  `${new Date().getMinutes()}` + ":" + `${new Date().getSeconds()}` + ":"  + `${new Date().getMilliseconds()}`);
+    });
+
     if (players){
     playersArea = playersList.map((username, i) =>{
         return( 
@@ -93,8 +97,8 @@ export default function PlayersArea({ context, players, roomName, playersList })
                 {addButtonRender(username, players[username].secondInput)}
                 <div className="delete" onClick={(e) => deletePlayer(e, username)}><FaTrash  size="2em" /></div>
               </div>
-            </div>   
-            {inputs(username, players[username].secondInput, i)}      
+            </div>  
+            {inputs(username, players[username].secondInput, i)}  
           </div>
           );
         });

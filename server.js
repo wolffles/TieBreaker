@@ -98,11 +98,13 @@ io.on('connection', (socket) => {
     // this will be called when we need to update any player
     socket.on('update players', (data) => {
         rooms[roomName].savedPlayers = data.players;
-        if(data){
-            //broadcastRoomExcludeSender(socket,socket.roomName,'update game state', rooms[socket.roomName])
-            broadcastToRoom(io,socket.roomName,'update game state', rooms[socket.roomName])
 
+        if(data && !data.noRender){
+            broadcastToRoom(io,socket.roomName,'update game state', rooms[socket.roomName])
+        } else if (data && data.noRender){
+            broadcastRoomExcludeSender(socket,socket.roomName,'update game state', rooms[socket.roomName])
         }
+        
     })
 
     socket.on('roll dice', (side) => {
