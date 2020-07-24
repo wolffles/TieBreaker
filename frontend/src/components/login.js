@@ -2,6 +2,7 @@ import React, {useContext, createContext, useState, useEffect} from "react";
 import '../style/login.css';
 import '../style/style.css';
 import { socket} from '../utility/socket.js';
+import ScratchPad from "./scratchPad";
 
 
 
@@ -66,17 +67,6 @@ export default function Login({context}) {
 
   useEffect(() => {
 
-    // socket.on('login', (data) =>{
-    //     if (data.numUsers == 1) {
-    //       console.log("I'm the host");
-    //       let updatedState = Object.assign({},userInfo);
-    //       updatedState.host = true;
-    //       setUserInfo(updatedState);
-    //     }else{
-    //         console.log("i am not the host");
-    //     }
-    // });    
-
 
     socket.on('update player state', (data) => {
       // console.log('made it to update player state')
@@ -88,22 +78,13 @@ export default function Login({context}) {
       updatedState.color = data.color
       updatedState.roomName = data.roomName
       updatedState.messages = updatedState.messages ? updatedState.messages.concat(data.messages) : data.messages
+      updatedState.scratchPad = data.scratchPad
       setUserInfo(updatedState);
     })
 
     socket.on('wrong password',(roomName) =>{
       alert(`You entered the wrong password for existing room "${roomName}". Please enter the correct password, or try entering a room with a different name`);
     });
-
-    // moved to dashboard
-    // socket.on('update game state', (data) => {
-    //   let updatedState = Object.assign({},userInfo);
-    //   updatedState.connectedPlayersList = data.connectedPlayersList
-    //   updatedState.playersList = data.savedPlayersList
-    //   updatedState.players = data.savedPlayers
-    //   setUserInfo(updatedState);
-    // })
-
 
     return function cleanup() {
       //  socket.off('login');

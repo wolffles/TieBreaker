@@ -122,3 +122,27 @@ cursor: pointer;
     cursor: pointer;
 }
 
+/* ------- ScratchPad CSS ------ */
+
+.scratch-pad {
+    width:100%;
+}
+
+.scratch-table {
+    /* display:flex; */
+    table-layout: auto;
+    border-collapse:collapse;
+    border-spacing: 0px;
+    padding:0px;
+}
+
+.cell .input::placeholder {
+    color: black;
+    font-weight: bold;
+}
+
+.cell .input{
+    width:100%;
+    color: black;
+    font-weight: bold;  
+  }

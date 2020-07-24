@@ -17,4 +17,8 @@ export const updatePlayers = (data) => {
     socket.emit('update players', data)
 }
 
+export const updatePlayerInfo = (data) => {
+    socket.emit('update player', data)
+}
+
 //from server

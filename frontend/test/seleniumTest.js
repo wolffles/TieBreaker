@@ -19,7 +19,7 @@ describe('DefaultTest', () => {
 
     it('sets the score total to 40', async () => {
       (await driver).findElement(By.css(".setPoints.input")).sendKeys('40', Key.ENTER)
-      await driver.wait(until.elementLocated(By.className('wolf score')))
+      await driver.wait(until.elementLocated(By.css('#wolf .score')))
       const scoreChange = await (await driver.findElement(By.className('wolf score'))).getAttribute('placeholder')
       assert(scoreChange, 40, "was not 40 as expect")
     });

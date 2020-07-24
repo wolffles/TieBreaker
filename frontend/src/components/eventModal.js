@@ -59,10 +59,6 @@ export default function DiceModal({ context, showEvent, eventValue, modalType}) 
 </div>);
     }
   }
-
-
-  
-
     return (
       <div id="modalBackground" className={`${showEvent ? "modal-background" : "hidden"}`}>{modalRender()}</div>
   );

@@ -107,6 +107,14 @@ io.on('connection', (socket) => {
         
     })
 
+    // updating player Information
+    socket.on('update player info', (data) => {
+        let player = rooms[roomName].savedPlayers[data.username]
+        player.scratchPad = data.scratchPad
+        console.log(player.scratchPad)
+        // socket.emit('update player state', rooms[roomName].savedPlayers[socket.username])
+    })
+
     socket.on('roll dice', (side) => {
         let array = diceToss(side)
         broadcastToRoom(io, socket.roomName, "dice is rolling", array)

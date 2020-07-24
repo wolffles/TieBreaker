@@ -64,7 +64,8 @@ module.exports = {
             password: data.password, 
             color: getUsernameColor(username),
             roomName: data.roomName,
-            messages: [['Welcome To TieBreaker', undefined]]
+            messages: [['Welcome To TieBreaker', undefined]],
+            scratchPad: [['hello','world']]
         }
     },
     newPlayerInRoom: function(room,player){

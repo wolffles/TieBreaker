@@ -4,6 +4,7 @@ import EventModal from './eventModal.js'
 import '../style/style.css';
 import {updatePlayers, socket} from '../utility/socket.js';
 
+
 export default function Dashboard({ context }) {
     const [userInfo, setUserInfo] = useContext(context);
 
@@ -75,50 +76,48 @@ export default function Dashboard({ context }) {
         }
       }
 
-      socket.on('update player data', (data) =>{
-          let updatedState = Object.assign({}, userInfo);
-          updatedState.players = data.players;
-          setUserInfo(updatedState);
+      
+      socket.on('dice is rolling', roll =>{
+        if(!showEvent){setShowEvent(true)};
+        setModalType('dice');
+        displayingEvent(roll)
       });
+      
+      socket.on('coin is flipping', flip =>{
+        if(!showEvent){setShowEvent(true)};
+        setModalType('flip');
+        displayingEvent(flip, 'flip')
+      });
+      
+      socket.on('choosing player', flip =>{
+        if(!showEvent){setShowEvent(true)};
+        setModalType('choose');
+        displayingEvent(flip, 'choose')
+      });
+      
+      // socket.on('update player data', (data) =>{
+      //     let updatedState = Object.assign({}, userInfo);
+      //     updatedState.players = data.players;
+      //     setUserInfo(updatedState);
+      // });
 
-    socket.on('dice is rolling', roll =>{
-      if(!showEvent){setShowEvent(true)};
-      setModalType('dice');
-      displayingEvent(roll)
-    });
-
-    socket.on('coin is flipping', flip =>{
-      if(!showEvent){setShowEvent(true)};
-      setModalType('flip');
-      displayingEvent(flip, 'flip')
-    });
-
-    socket.on('choosing player', flip =>{
-      if(!showEvent){setShowEvent(true)};
-      setModalType('choose');
-      displayingEvent(flip, 'choose')
-    });
-
-
-
-    socket.on('update game state', (data) => {
+      socket.on('update game state', (data) => {
       let updatedState = Object.assign({},userInfo);
       updatedState.connectedPlayersList = data.connectedPlayersList
       updatedState.playersList = data.savedPlayersList
       updatedState.players = data.savedPlayers
       updatedState.password = data.password
-
       setUserInfo(updatedState)
       //sometimes updatedState is undefined? maybe asynchronous?
       if(data.broadcast){
-      socket.emit('request server messages', data)
+        socket.emit('request server messages', data)
       }
     })
 
      
       return function cleanup() {
           socket.off('dice is rolling');
-          socket.off('update player data');
+          // socket.off('update player data');
           socket.off('update game state');
           socket.off('coin is flipping');
           socket.off('choosing player');
@@ -134,7 +133,7 @@ export default function Dashboard({ context }) {
                 <input className="setPoints input"type="number" maxLength="10" placeholder="Set Points" onChange={changeInput}/>
             </form>
             <div className="buttons">
-              <button  onClick={(e) => showEventModal(e, 'dice')} className="button showDie"> Roll Die </button>
+              <button onClick={(e) => showEventModal(e, 'dice')} className="button showDie"> Roll Die </button>
               <button onClick={(e) => showEventModal(e,'flip')} className="button flipCoin"> Flip Coin </button>
               <button onClick={(e) => showEventModal(e, 'choose')} className="button chooser">Choose Player</button>
             </div>

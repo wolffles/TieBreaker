@@ -281,9 +281,15 @@ margin: 15px 10px 0px 0px;
   margin: 0;
 }
 
-.chatArea {
+.chatDisplay {
   height: 100%;
   padding-bottom: 60px;
+  background-color: #CDCDD4;
+}
+
+.chatArea {
+  height: 100%;
+
   border-right: 8px solid #1A1A1D;
   background-color: #CDCDD4;
 }
@@ -406,11 +412,27 @@ margin: 15px 10px 0px 0px;
 }
 
 .roomName {
+  text-align: center;
+  font-weight: 700;
+  width:80%;
+
+}
+
+.chat-toolbar {
+  display: flex;
   background-color: #1A1A1D;
   color: white;
   text-align: center;
   font-weight: 700;
   width:100%;
-  padding-bottom: 5px;
+}
+
+.button-box {
+  display:flex;
+  flex-direction:column
+}
+
+.button-box .button{
+  height: 100%;
 }
 

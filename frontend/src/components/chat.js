@@ -1,15 +1,19 @@
 import React, {useContext, useState, createContext, useEffect} from "react";
 import MessageList from './messageList.js';
 import '../style/style.css';
-//inporting socket so application can have one instance of socket
+//importing socket so application can have one instance of socket
 import {sendMessage, socket} from '../utility/socket.js';
+import ScratchPad from "./scratchPad.js";
 
 
 export default function Chat({ context }) {
     const [userInfo, setUserInfo] = useContext(context);
 
-    let inputContext = createContext('')
-    let [message, setMessage] = useState(inputContext);
+    const [message, setMessage] = useState('');
+    const [toggle, setToggle] = useState('chat-toggle')
+
+    //local table conent gets saved on the server but is also saved here
+    const [localMessageList, setLocalMessageList] = useState(userInfo ? [] : userInfo.messages)
 
     let hidden = true
   if (userInfo.username){
@@ -35,6 +39,12 @@ export default function Chat({ context }) {
         addMessage(message,userInfo.username);
        
     }
+
+    function toggleDisplay(e){
+        setToggle(e.target.id)
+        console.log(toggle)
+    }
+
     useEffect(() => {
         var div = document.getElementById("messages");
 
@@ -96,18 +106,29 @@ export default function Chat({ context }) {
     return (
         <div className={`chat page ${hidden ? "hidden" : ""}`}>
             <div className="chatArea">
-                <div className="roomName">
-                    Username: {userInfo.username}<br/>
-                    Room Name: {userInfo.roomName}<br/>
-                    Password: {userInfo.password}<br/>
+                    <div className="chat-toolbar">
+                        <div className="button-box">
+                            <button className="button" id="chat-toggle" onClick={toggleDisplay}>chat</button>
+                            <button className="button" id="scratch-toggle" onClick={toggleDisplay}>scratch</button>
+                        </div>
+                        <div className="roomName">
+                            Username: {userInfo.username}<br/>
+                            Room Name: {userInfo.roomName}<br/>
+                            Password: {userInfo.password}<br/>
+                        </div>
+                    </div>
+                <div className={`chatDisplay ${toggle == 'chat-toggle' ? "" : "hidden"}`}>
+                    <div id="messages" className="messages">
+                        <MessageList messages={userInfo.messages} />
+                    </div>
+                    <form className="messageInput" onSubmit={handleSubmit}> 
+                        <input id="inputMessage" autoFocus className="inputMessage" placeholder="Type here..." onChange={changeInput} />
+                    </form>
                 </div>
-                <div id="messages" className="messages">
-                    <MessageList messages={userInfo.messages} />
-                </div>
+                <ScratchPad context={context} toggle={toggle}/>
+
             </div>
-            <form className="messageInput" onSubmit={handleSubmit}> 
-                <input id="inputMessage" autoFocus className="inputMessage" placeholder="Type here..." onChange={changeInput} />
-            </form>
+            {/* <NotePad/> */}
         </div>
     );
   }

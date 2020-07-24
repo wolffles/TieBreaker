@@ -20,16 +20,9 @@ function App() {
   //
 
   function app(){
-    // let display = '';
-    // if (userInfo.username){
-    //   display = 'hidden';
-    // }
       return (
         <div className="pages">
-          {/* <div className={display}> */}
           <Login context={userContext} />
-          {/* </div> */}
-          {/* <SocketUtility context={userContext} /> */}
           <Chat context={userContext} />
           <Dashboard context={userContext}/>
         </div>

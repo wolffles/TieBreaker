@@ -30,13 +30,13 @@ rooms {
         broadcast: false,
         savedPlayers: {
             playerObj:{
-            username: "",
-            id: "",
-            score: 0,
-            password: "", 
-            color: getUsernameColor(username),
-            roomName: "",
-            messages: [['Welcome To TieBreaker', undefined]]
+                username: "",
+                id: "",
+                score: 0,
+                password: "", 
+                color: getUsernameColor(username),
+                roomName: "",
+                messages: [['Welcome To TieBreaker', undefined]]
             },
             ...
         },
