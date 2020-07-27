@@ -108,16 +108,21 @@ io.on('connection', (socket) => {
 
     // updating player Information
     socket.on('update player info', (data) => {
-        let player = rooms[roomName].savedPlayers[data.username]
-        switch (data.action) {
-            case 'chat':
-                return player.messages = data.messages
-            case 'scratchPad':
-                return player.scratchPad = data.scratchPad
-            default:
-                throw new Error();
+        // something werid happens when you refresh the nodemon server and there is a connected user this if statement should stop it.
+        if (rooms[roomName]){
+            let player = rooms[roomName].savedPlayers[data.username]
+            switch (data.action) {
+                case 'chat':
+                    return player.messages = data.messages
+                case 'scratch-pad':
+                    return player.scratchPad = data.scratchPad
+                case 'chat-toggle':
+                    return player.chatToggle = data.chatToggle
+                default:
+                    throw new Error();
+            } 
+            // socket.emit('update player state', rooms[roomName].savedPlayers[socket.username])
         }
-        // socket.emit('update player state', rooms[roomName].savedPlayers[socket.username])
     })
 
     socket.on('roll dice', (side) => {

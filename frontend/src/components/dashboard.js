@@ -111,7 +111,7 @@ export default function Dashboard({ context }) {
       updatedState.password = data.password
       updatedState.scratchPad = data.savedPlayers[userInfo.username].scratchPad
       updatedState.messages = data.savedPlayers[userInfo.username].messages
-      console.log("updated", updatedState.scratchPad)
+      updatedState.chatToggle = data.savedPlayers[userInfo.username].chatToggle
       setUserInfo(updatedState)
       if(data.broadcast){
         socket.emit('request server messages', data)

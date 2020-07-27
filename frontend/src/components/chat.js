@@ -10,7 +10,7 @@ export default function Chat({ context }) {
     const [userInfo, setUserInfo] = useContext(context);
 
     const [message, setMessage] = useState('');
-    const [toggle, setToggle] = useState('chat-toggle')
+    const [toggle, setToggle] = useState(userInfo.chatToggle ? userInfo.chatToggle : 'chat-toggle')
 
     //local table conent gets saved on the server but is also saved here
     const [localMessageList, setLocalMessageList] = useState(userInfo.messages)
@@ -35,15 +35,15 @@ export default function Chat({ context }) {
 
     function handleSubmit(e){
         e.preventDefault();
-        //need to handle input erase here
         sendMessage({message:message, username:userInfo.username});
         addMessage(message,userInfo.username);
+        e.target.children[0].value = ''
        
     }
 
     function toggleDisplay(e){
         setToggle(e.target.id)
-        console.log(toggle)
+        updatePlayerInfo({chatToggle:e.target.id, username:userInfo.username,action:'chat-toggle'})
     }
 
     useEffect(() => {

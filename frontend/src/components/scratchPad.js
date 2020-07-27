@@ -18,7 +18,7 @@ export default function ScratchPad({ context, toggle }) {
             setLocalTableContent(updatedState)
             console.log('setlocal', updatedState)
             // socket.emit('update player info', {username:userInfo.username, scratchPad:updatedState})  
-            updatePlayerInfo({username:userInfo.username, scratchPad:updatedState, action:'scratchPad'})
+            updatePlayerInfo({username:userInfo.username, scratchPad:updatedState, action:'scratch-pad'})
     }   
 
     function addColumn(){
@@ -28,7 +28,7 @@ export default function ScratchPad({ context, toggle }) {
             })
             setLocalTableContent(updatedState)
             // socket.emit('update player info', {username:userInfo.username, scratchPad:updatedState})
-            updatePlayerInfo({username:userInfo.username, scratchPad:updatedState, action:'scratchPad'})
+            updatePlayerInfo({username:userInfo.username, scratchPad:updatedState, action:'scratch-pad'})
     }
 
     function handleInput(e){
@@ -38,7 +38,7 @@ export default function ScratchPad({ context, toggle }) {
         let colIdx = Number(e.target.id.match(/\d+$/)[0])
         updatedState[rowIdx][colIdx] = e.target.value
         // socket.emit('update player info', {username:userInfo.username, scratchPad:updatedState})
-        updatePlayerInfo({username:userInfo.username, scratchPad:updatedState, action:'scratchPad'})
+        updatePlayerInfo({username:userInfo.username, scratchPad:updatedState, action:'scratch-pad'})
     }
 
        let ta = localTableContent.map((row,index) => {
