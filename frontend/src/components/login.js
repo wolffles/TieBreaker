@@ -78,7 +78,6 @@ export default function Login({context}) {
       updatedState.color = data.color
       updatedState.roomName = data.roomName
       updatedState.messages = updatedState.messages ? updatedState.messages.concat(data.messages) : data.messages
-      console.log(data.scratchPad)
       updatedState.scratchPad = data.scratchPad
       setUserInfo(updatedState);
     })

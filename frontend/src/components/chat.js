@@ -1,4 +1,4 @@
-import React, {useContext, useState, useReducer, useEffect} from "react";
+import React, {useContext, useState, useEffect} from "react";
 import MessageList from './messageList.js';
 import '../style/style.css';
 //importing socket so application can have one instance of socket
@@ -44,30 +44,6 @@ export default function Chat({ context }) {
     function toggleDisplay(e){
         setToggle(e.target.id)
         console.log(toggle)
-    }
-
-    const initialState = {count: 0};
-
-    function reducer(state, action) {
-    switch (action.type) {
-        case 'increment':
-        return {count: state.count + 1};
-        case 'decrement':
-        return {count: state.count - 1};
-        default:
-        throw new Error();
-    }
-    }
-
-    function Counter() {
-    const [state, dispatch] = useReducer(reducer, initialState);
-    return (
-        <>
-        Count: {state.count}
-        <button onClick={() => dispatch({type: 'decrement'})}>-</button>
-        <button onClick={() => dispatch({type: 'increment'})}>+</button>
-        </>
-    );
     }
 
     useEffect(() => {
@@ -132,7 +108,6 @@ export default function Chat({ context }) {
         <div className={`chat page ${hidden ? "hidden" : ""}`}>
             <div className="chatArea">
                     <div className="chat-toolbar">
-                        <Counter/>
                         <div className="button-box">
                             <button className="button" id="chat-toggle" onClick={toggleDisplay}>chat</button>
                             <button className="button" id="scratch-toggle" onClick={toggleDisplay}>scratch</button>

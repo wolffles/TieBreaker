@@ -110,7 +110,7 @@ export default function Dashboard({ context }) {
       updatedState.players = data.savedPlayers
       updatedState.password = data.password
       updatedState.scratchPad = data.savedPlayers[userInfo.username].scratchPad
-      updatedState.messages =  updatedState.messages ? updatedState.messages.concat(data.savedPlayers[userInfo.username].messages) : data.savedPlayers[userInfo.username].messages
+      updatedState.messages = data.savedPlayers[userInfo.username].messages
       console.log("updated", updatedState.scratchPad)
       setUserInfo(updatedState)
       if(data.broadcast){
