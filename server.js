@@ -6,7 +6,7 @@ const io = require('socket.io')(server, {pingTimeout: 30000});
 const port = process.env.PORT || 3001;
 
 const { newPlayerInRoom, createGameRoom, createPlayerObj, userConnectedToRoom, userDisconnected, deleteRoom, removeUser } = require('./gameRoom');
-const { choosePlayer, coinToss, diceToss, modifyUsername, isUsernameUnique } = require('./sourceCheck');
+const { choosePlayer, coinToss, diceToss, modifyUsername, isUsernameUnique, updateServerGameState } = require('./sourceCheck');
 
 server.listen(port, () => {
     console.log(`Server listening at port: ${port}`);
@@ -97,8 +97,7 @@ io.on('connection', (socket) => {
     
     // this will be called when we need to update any player
     socket.on('update players', (data) => {
-        rooms[roomName].savedPlayers = data.players;
-
+        rooms[socket.roomName] = updateServerGameState(rooms[socket.roomName], data)
         if(data && data.noRender){
             broadcastRoomExcludeSender(socket,socket.roomName,'update game state', rooms[socket.roomName])
         } else{
@@ -110,8 +109,14 @@ io.on('connection', (socket) => {
     // updating player Information
     socket.on('update player info', (data) => {
         let player = rooms[roomName].savedPlayers[data.username]
-        console.log(data.scratchPad)
-        player.scratchPad = data.scratchPad
+        switch (data.action) {
+            case 'chat':
+                return player.messages = data.messages
+            case 'scratchPad':
+                return player.scratchPad = data.scratchPad
+            default:
+                throw new Error();
+        }
         // socket.emit('update player state', rooms[roomName].savedPlayers[socket.username])
     })
 

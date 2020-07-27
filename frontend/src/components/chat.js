@@ -2,7 +2,7 @@ import React, {useContext, useState, useReducer, useEffect} from "react";
 import MessageList from './messageList.js';
 import '../style/style.css';
 //importing socket so application can have one instance of socket
-import {sendMessage, socket} from '../utility/socket.js';
+import {sendMessage, socket, updatePlayerInfo} from '../utility/socket.js';
 import ScratchPad from "./scratchPad.js";
 
 
@@ -30,6 +30,7 @@ export default function Chat({ context }) {
         updatedState = localMessageList.concat([[message, username]]) 
         //you could save messages at this point if you send it to the back end
         setLocalMessageList(updatedState);   
+        updatePlayerInfo({messages:updatedState, username:userInfo.username, action:'chat'})
     }
 
     function handleSubmit(e){

@@ -8,6 +8,7 @@ import {updatePlayers, socket} from '../utility/socket.js';
 export default function Dashboard({ context }) {
     const [userInfo, setUserInfo] = useContext(context);
 
+    const [localUserInfo,setlocalUserInfo] = useState(userInfo)
     let inputContext = createContext('');
 
     let [inputValue, setInputContext] = useState(inputContext);
@@ -25,7 +26,7 @@ export default function Dashboard({ context }) {
 
     function handleSubmit(e){
       e.preventDefault();
-      let updatedState = Object.assign({}, userInfo);
+      let updatedState = Object.assign({}, localUserInfo);
       let input = inputValue;
 
       if (typeof inputValue === 'object'){ 
@@ -36,9 +37,9 @@ export default function Dashboard({ context }) {
       for (let username in updatedState.players){
         updatedState.players[username].score = input;
       }
-      setUserInfo(updatedState)
+      setlocalUserInfo(updatedState)
       //this needs to send specifics or find a way to not replace the object
-      updatePlayers({players:updatedState.players, noRender:true});
+      updatePlayers({players:updatedState.players, action:'setPoints', noRender:true});
     }
 
     //this is the dice code
@@ -109,9 +110,9 @@ export default function Dashboard({ context }) {
       updatedState.players = data.savedPlayers
       updatedState.password = data.password
       updatedState.scratchPad = data.savedPlayers[userInfo.username].scratchPad
-      console.log("updated", data)
+      updatedState.messages =  updatedState.messages ? updatedState.messages.concat(data.savedPlayers[userInfo.username].messages) : data.savedPlayers[userInfo.username].messages
+      console.log("updated", updatedState.scratchPad)
       setUserInfo(updatedState)
-      //sometimes updatedState is undefined? maybe asynchronous?
       if(data.broadcast){
         socket.emit('request server messages', data)
       }

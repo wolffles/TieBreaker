@@ -11,15 +11,14 @@ export default function ScratchPad({ context, toggle }) {
     //local table conent gets saved on the server but is also saved here
     const [localTableContent,setLocalTableContent] = useState(userInfo.scratchPad)
 
-    console.log('localtable', localTableContent )
-
     function addRow(){
         let updatedState = Object.assign([],localTableContent);
             let size = updatedState[0].length
             updatedState.push(Array(size).fill('new-cell')) 
             setLocalTableContent(updatedState)
             console.log('setlocal', updatedState)
-            socket.emit('update player info', {username:userInfo.username, scratchPad:updatedState})  
+            // socket.emit('update player info', {username:userInfo.username, scratchPad:updatedState})  
+            updatePlayerInfo({username:userInfo.username, scratchPad:updatedState, action:'scratchPad'})
     }   
 
     function addColumn(){
@@ -28,7 +27,8 @@ export default function ScratchPad({ context, toggle }) {
                 row.push("new-cell")
             })
             setLocalTableContent(updatedState)
-            socket.emit('update player info', {username:userInfo.username, scratchPad:updatedState})
+            // socket.emit('update player info', {username:userInfo.username, scratchPad:updatedState})
+            updatePlayerInfo({username:userInfo.username, scratchPad:updatedState, action:'scratchPad'})
     }
 
     function handleInput(e){
@@ -37,7 +37,8 @@ export default function ScratchPad({ context, toggle }) {
         let rowIdx = Number(e.target.id.match(/\d+/)[0])
         let colIdx = Number(e.target.id.match(/\d+$/)[0])
         updatedState[rowIdx][colIdx] = e.target.value
-        socket.emit('update player info', {username:userInfo.username, scratchPad:updatedState})
+        // socket.emit('update player info', {username:userInfo.username, scratchPad:updatedState})
+        updatePlayerInfo({username:userInfo.username, scratchPad:updatedState, action:'scratchPad'})
     }
 
        let ta = localTableContent.map((row,index) => {
