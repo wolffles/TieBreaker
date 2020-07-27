@@ -108,6 +108,7 @@ export default function Dashboard({ context }) {
       updatedState.playersList = data.savedPlayersList
       updatedState.players = data.savedPlayers
       updatedState.password = data.password
+      updatedState.scratchPad = data.savedPlayers[userInfo.username].scratchPad
       console.log("updated", data)
       setUserInfo(updatedState)
       //sometimes updatedState is undefined? maybe asynchronous?
