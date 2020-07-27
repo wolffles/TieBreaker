@@ -6,7 +6,6 @@ import '../style/tools.css';
 export default function ScratchPad({ context, toggle }) {
     
     const [userInfo, setUserInfo] = useContext(context);
-    // let tableCells = userInfo.chatTools.scratchPad ? userInfo.chatTools.scratchPad : [['hello','world']]
 
     //local table conent gets saved on the server but is also saved here
     const [localTableContent,setLocalTableContent] = useState(userInfo.scratchPad)
@@ -17,7 +16,6 @@ export default function ScratchPad({ context, toggle }) {
             updatedState.push(Array(size).fill('new-cell')) 
             setLocalTableContent(updatedState)
             console.log('setlocal', updatedState)
-            // socket.emit('update player info', {username:userInfo.username, scratchPad:updatedState})  
             updatePlayerInfo({username:userInfo.username, scratchPad:updatedState, action:'scratch-pad'})
     }   
 
@@ -27,7 +25,6 @@ export default function ScratchPad({ context, toggle }) {
                 row.push("new-cell")
             })
             setLocalTableContent(updatedState)
-            // socket.emit('update player info', {username:userInfo.username, scratchPad:updatedState})
             updatePlayerInfo({username:userInfo.username, scratchPad:updatedState, action:'scratch-pad'})
     }
 
@@ -37,7 +34,6 @@ export default function ScratchPad({ context, toggle }) {
         let rowIdx = Number(e.target.id.match(/\d+/)[0])
         let colIdx = Number(e.target.id.match(/\d+$/)[0])
         updatedState[rowIdx][colIdx] = e.target.value
-        // socket.emit('update player info', {username:userInfo.username, scratchPad:updatedState})
         updatePlayerInfo({username:userInfo.username, scratchPad:updatedState, action:'scratch-pad'})
     }
 
@@ -58,9 +54,11 @@ export default function ScratchPad({ context, toggle }) {
 
     
   return (
-    <div className={`scratch-pad ${toggle == 'scratch-toggle'  ? "" : "hidden"}`}> 
-        <button onClick={addRow}>addRow</button>
-        <button onClick={addColumn}>addColumn</button> 
+    <div className={`scratch-pad ${toggle == 'scratch-toggle'  ? "" : "hidden"}`}>
+        <div className='scratch-tools'>
+            <button className='second-button' onClick={addRow}>+ Row</button>
+            <button className='second-button' onClick={addColumn}>+ Column</button> 
+        </div>
         <table className="scratch-table">
             <tbody>
                 {ta}

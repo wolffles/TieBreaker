@@ -136,6 +136,7 @@ cursor: pointer;
     padding:0px;
 }
 
+
 .cell .input::placeholder {
     color: black;
     font-weight: bold;
@@ -145,4 +146,11 @@ cursor: pointer;
     width:100%;
     color: black;
     font-weight: bold;  
+  }
+
+  .scratch-tools{
+      width:100%;
+      display:flex;
+      justify-content: space-evenly;
+      background-color: #31708E;
   }

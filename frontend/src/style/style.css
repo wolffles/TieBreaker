@@ -291,9 +291,12 @@ margin: 15px 10px 0px 10px;
 
 .chatArea {
   height: 100%;
-
   border-right: 8px solid #1A1A1D;
   background-color: #CDCDD4;
+}
+
+.chatArea button{
+  color: aliceblue;
 }
 
 .messages {
@@ -408,7 +411,16 @@ margin: 15px 10px 0px 10px;
   background-color: #5085A5;
 }
 
-.button:hover{
+.second-button{
+  padding: 5px;
+  font-weight:bold;
+  font-size: 1em;
+  text-align: center; 
+  background-color: #687864;
+  border-radius: 15%;
+}
+
+button:hover{
   background-color: #8FC1E3;
   cursor: pointer;
 }
