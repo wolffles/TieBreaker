@@ -85,8 +85,9 @@ export default function PlayersArea({ context, players, roomName, playersList })
             <div className="player-area-header">
               <div className="nickname">{username}</div>
               <div className="player-area-buttons">
-                {addButtonRender(username, players[username].secondInput)}
-                <div className="delete" onClick={(e) => deletePlayer(e, username)}><FaTrash  size="2em" /></div>
+              <div className="add-subtract" onClick={(e) => adjustInputs(e, username)}><FaPlus  size="2em" /></div>
+              <div className="add-subtract" onClick={(e) => adjustInputs(e, username)}><FaMinus  size="2em" /></div>
+              <div className="delete" onClick={(e) => deletePlayer(e, username)}><FaTrash  size="2em" /></div>
               </div>
             </div>  
             {inputs(username, players[username].secondInput, i)}  
