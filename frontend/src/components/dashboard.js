@@ -37,6 +37,7 @@ export default function Dashboard({ context }) {
         updatedState.players[username].score = input;
       }
       setUserInfo(updatedState)
+      //this needs to send specifics or find a way to not replace the object
       updatePlayers({players:updatedState.players, noRender:true});
     }
 
@@ -107,6 +108,7 @@ export default function Dashboard({ context }) {
       updatedState.playersList = data.savedPlayersList
       updatedState.players = data.savedPlayers
       updatedState.password = data.password
+      console.log("updated", data)
       setUserInfo(updatedState)
       //sometimes updatedState is undefined? maybe asynchronous?
       if(data.broadcast){

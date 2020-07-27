@@ -9,30 +9,26 @@ export default function ScratchPad({ context, toggle }) {
     // let tableCells = userInfo.chatTools.scratchPad ? userInfo.chatTools.scratchPad : [['hello','world']]
 
     //local table conent gets saved on the server but is also saved here
-    const [localTableContent,setLocalTableContent] = useState(userInfo ? [['hello', 'world']] : userInfo.chatTools.scratchPad)
+    const [localTableContent,setLocalTableContent] = useState(userInfo.scratchPad)
 
-
+    console.log('localtable', localTableContent )
 
     function addRow(){
         let updatedState = Object.assign([],localTableContent);
-        if(updatedState){
             let size = updatedState[0].length
             updatedState.push(Array(size).fill('new-cell')) 
             setLocalTableContent(updatedState)
-            socket.emit('update player info', {username:userInfo.username,scratchPad:updatedState})  
-        }
-        
+            console.log('setlocal', updatedState)
+            socket.emit('update player info', {username:userInfo.username, scratchPad:updatedState})  
     }   
 
     function addColumn(){
         let updatedState = Object.assign([],localTableContent);
-        if(updatedState){
             updatedState.map((row) => {
                 row.push("new-cell")
             })
             setLocalTableContent(updatedState)
-            socket.emit('update player info', {username:userInfo.username,scratchPad:updatedState})
-        }
+            socket.emit('update player info', {username:userInfo.username, scratchPad:updatedState})
     }
 
     function handleInput(e){
@@ -42,7 +38,6 @@ export default function ScratchPad({ context, toggle }) {
         let colIdx = Number(e.target.id.match(/\d+$/)[0])
         updatedState[rowIdx][colIdx] = e.target.value
         socket.emit('update player info', {username:userInfo.username, scratchPad:updatedState})
-        console.log(updatedState)
     }
 
        let ta = localTableContent.map((row,index) => {

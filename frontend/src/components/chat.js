@@ -1,4 +1,4 @@
-import React, {useContext, useState, createContext, useEffect} from "react";
+import React, {useContext, useState, useReducer, useEffect} from "react";
 import MessageList from './messageList.js';
 import '../style/style.css';
 //importing socket so application can have one instance of socket
@@ -13,28 +13,28 @@ export default function Chat({ context }) {
     const [toggle, setToggle] = useState('chat-toggle')
 
     //local table conent gets saved on the server but is also saved here
-    const [localMessageList, setLocalMessageList] = useState(userInfo ? [] : userInfo.messages)
+    const [localMessageList, setLocalMessageList] = useState(userInfo.messages)
 
     let hidden = true
   if (userInfo.username){
     hidden = false
   }
-
+//   console.log(localMessageList)
     function changeInput(e){
         e.preventDefault();
         setMessage(e.target.value);
     }
 
     function addMessage(message, username){
-        let updatedState = Object.assign({},userInfo);
-        if(updatedState.messages){
-        updatedState.messages = updatedState.messages.concat([[message, username]]) 
-        setUserInfo(updatedState);   
-        }
+        let updatedState = Object.assign([],localMessageList);
+        updatedState = localMessageList.concat([[message, username]]) 
+        //you could save messages at this point if you send it to the back end
+        setLocalMessageList(updatedState);   
     }
 
     function handleSubmit(e){
         e.preventDefault();
+        //need to handle input erase here
         sendMessage({message:message, username:userInfo.username});
         addMessage(message,userInfo.username);
        
@@ -43,6 +43,30 @@ export default function Chat({ context }) {
     function toggleDisplay(e){
         setToggle(e.target.id)
         console.log(toggle)
+    }
+
+    const initialState = {count: 0};
+
+    function reducer(state, action) {
+    switch (action.type) {
+        case 'increment':
+        return {count: state.count + 1};
+        case 'decrement':
+        return {count: state.count - 1};
+        default:
+        throw new Error();
+    }
+    }
+
+    function Counter() {
+    const [state, dispatch] = useReducer(reducer, initialState);
+    return (
+        <>
+        Count: {state.count}
+        <button onClick={() => dispatch({type: 'decrement'})}>-</button>
+        <button onClick={() => dispatch({type: 'increment'})}>+</button>
+        </>
+    );
     }
 
     useEffect(() => {
@@ -107,6 +131,7 @@ export default function Chat({ context }) {
         <div className={`chat page ${hidden ? "hidden" : ""}`}>
             <div className="chatArea">
                     <div className="chat-toolbar">
+                        <Counter/>
                         <div className="button-box">
                             <button className="button" id="chat-toggle" onClick={toggleDisplay}>chat</button>
                             <button className="button" id="scratch-toggle" onClick={toggleDisplay}>scratch</button>
@@ -119,7 +144,7 @@ export default function Chat({ context }) {
                     </div>
                 <div className={`chatDisplay ${toggle == 'chat-toggle' ? "" : "hidden"}`}>
                     <div id="messages" className="messages">
-                        <MessageList messages={userInfo.messages} />
+                        <MessageList messages={localMessageList} />
                     </div>
                     <form className="messageInput" onSubmit={handleSubmit}> 
                         <input id="inputMessage" autoFocus className="inputMessage" placeholder="Type here..." onChange={changeInput} />

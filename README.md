@@ -59,7 +59,7 @@ rooms {
         connectedPlayersList: [],
         username: "",
         score: 0,
-        score2:,
+        score2: 0,
         id: '',
         color: '',
         host: boolean,

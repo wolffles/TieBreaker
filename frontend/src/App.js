@@ -20,14 +20,22 @@ function App() {
   //
 
   function app(){
-      return (
+    let display = ''
+    if(userInfo.username){
+      display = (
         <div className="pages">
-          <Login context={userContext} />
           <Chat context={userContext} />
           <Dashboard context={userContext}/>
         </div>
       )
-    
+    }else{
+      display = (
+      <div className="pages">
+        <Login context={userContext} />
+      </div>
+      )
+    }
+    return (display)
   }
   return (
     <userContext.Provider value={[userInfo, setUserInfo]}>

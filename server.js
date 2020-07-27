@@ -110,8 +110,8 @@ io.on('connection', (socket) => {
     // updating player Information
     socket.on('update player info', (data) => {
         let player = rooms[roomName].savedPlayers[data.username]
+        console.log(data.scratchPad)
         player.scratchPad = data.scratchPad
-        console.log(player.scratchPad)
         // socket.emit('update player state', rooms[roomName].savedPlayers[socket.username])
     })
 
