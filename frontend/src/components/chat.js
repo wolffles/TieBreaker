@@ -81,7 +81,6 @@ export default function Chat({ context }) {
         });
 
         socket.on('message', (data) =>{
-        //   console.log('made it to message');
             addMessage(data.message,data.username);
         });
 
@@ -91,7 +90,7 @@ export default function Chat({ context }) {
             if(data.toBroadcast.userLeft){updatedState.messages.push(data.toBroadcast.userLeft)}
             if(data.toBroadcast.numUsers){updatedState.messages.push(data.toBroadcast.numUsers)}
             if(data.toBroadcast.userRemoved){updatedState.messages.push(data.toBroadcast.userRemoved)}
-            //   setUserInfo(updatedState);   
+            setUserInfo(updatedState);   
           });
         
         return function cleanup() {

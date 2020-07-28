@@ -69,7 +69,6 @@ export default function Login({context}) {
 
 
     socket.on('update player state', (data) => {
-      // console.log('made it to update player state')
       let updatedState = Object.assign({},userInfo);
       updatedState.username = data.username
       updatedState.score = data.score

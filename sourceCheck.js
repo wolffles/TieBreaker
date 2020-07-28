@@ -10,7 +10,6 @@ module.exports = {
         return roomData.connectedPlayersList.indexOf(username) == -1
     },
     modifyUsername: (username, roomData) => {
-        // console.log('in modifyUserName')
         let reg = /\d+$/
         let sub = username.match(reg)
         // if substring doesn't have any numbers(null) else add on to it
