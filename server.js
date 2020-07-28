@@ -60,7 +60,6 @@ io.on('connection', (socket) => {
                 rooms[roomName] = newPlayerInRoom(rooms[roomName], player)
             }
             addedUser = true;
-            // console.log(util.inspect(rooms[roomName],false,null,true))
             userConnectedToRoom(rooms[roomName], socket.username)
             socket.emit('update player state', rooms[roomName].savedPlayers[socket.username])
             broadcastToRoom(io,roomName,'update game state', rooms[roomName]);
@@ -70,7 +69,6 @@ io.on('connection', (socket) => {
     });
 
     socket.on('request server messages', (data) => {
-        // console.log('request server messages was hit')
         rooms[data.roomName].broadcast = false;
         emitDataToClient(socket, 'server messages', data)
     })
@@ -100,12 +98,14 @@ io.on('connection', (socket) => {
     // this will be called when we need to update any player
     socket.on('update players', (data) => {
         let roomState = rooms[socket.roomName] 
+        // console.log(util.inspect(data.players,false,null,true))
         switch (data.action) {
             case 'setPoints':
-                roomState.savedPlayersList.forEach( username => {
-                    roomState.savedPlayers[username].points[0] = data.players[username].points[0]
-                    roomState.savedPlayers[username].points[1] = data.players[username].points[1]
-                }) 
+                for( let player in data.players ){
+                    data.players[player].points.forEach((point,index) => {
+                        roomState.savedPlayers[player].points[index] = point
+                        })
+                } 
                 break; 
             case 'newInput box':
                 console.log('this does nothing')
@@ -113,7 +113,6 @@ io.on('connection', (socket) => {
             default:
                 console.log('none of the actions were matched');
         }
-        console.log(util.inspect(roomState,false,null,true))
         if(data && data.noRender){
             broadcastRoomExcludeSender(socket,socket.roomName,'update game state', roomState)
         } else{
@@ -144,7 +143,6 @@ io.on('connection', (socket) => {
     socket.on('roll dice', (side) => {
         let array = diceToss(side)
         broadcastToRoom(io, socket.roomName, "dice is rolling", array)
-    // console.log('hit')
         // emitDataToClient(socket, "dice is rolling", data)
         // broadcastRoomExcludeSender(socket, roomName,'someone rolling dice',data)
     })
@@ -152,7 +150,6 @@ io.on('connection', (socket) => {
     socket.on('flip coin', () => {
         let array = coinToss(rooms[roomName].connectedPlayers)
         broadcastToRoom(io, socket.roomName, "coin is flipping", array)
-    // console.log('hit')
         // emitDataToClient(socket, "dice is rolling", data)
         // broadcastRoomExcludeSender(socket, roomName,'someone rolling dice',data)
     })
@@ -160,7 +157,6 @@ io.on('connection', (socket) => {
     socket.on('choose player', () => {
         let array = choosePlayer(rooms[roomName].savedPlayersList)
         broadcastToRoom(io, socket.roomName, "choosing player", array)
-    // console.log('hit')
         // emitDataToClient(socket, "dice is rolling", data)
         // broadcastRoomExcludeSender(socket, roomName,'someone rolling dice',data)
     })
