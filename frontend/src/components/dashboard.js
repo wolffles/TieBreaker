@@ -35,7 +35,7 @@ export default function Dashboard({ context }) {
       }
 
       for (let username in updatedState.players){
-        updatedState.players[username].score = input;
+        updatedState.players[username].points[0][1] = input;
       }
       setlocalUserInfo(updatedState)
       //this needs to send specifics or find a way to not replace the object

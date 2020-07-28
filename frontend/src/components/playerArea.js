@@ -1,4 +1,4 @@
-import React, {useContext, useEffect} from "react";
+import React, {useContext, userState, createContext, useEffect, useState} from "react";
 import {updatePlayers, socket} from '../utility/socket.js';
 import { FaTrash, FaPlus, FaMinus } from 'react-icons/fa';
 import { getUsernameColor } from "../utility/playerMisc.js";
@@ -7,20 +7,23 @@ export default function PlayersArea({ context, players, roomName, playersList })
    // console.log('here is the playersList', playersList);
    const [userInfo, setUserInfo] = useContext(context);
 
+   let playersContext = createContext(players);
+   const [localPlayers, setLocalPlayers] = useState(players);
+
     let playersArea;
   // console.log('here are the players', players);
 
-    function handleChange(e, username, valueType){
+    function handleChange(e, username, index, changeType){
       e.preventDefault();
 
       let newValue = e.target.value;
   
-      let updatedPlayers = Object.assign({}, players);
+      let updatedPlayers = Object.assign({}, localPlayers);
 
-      if(valueType === "score"){
-        updatedPlayers[username].score = newValue;
-      }else{
-        updatedPlayers[username].score2 = newValue;
+      if(changeType == "points"){
+        updatedPlayers[username].points[index][1] = newValue;
+      } else{
+        updatedPlayers[username].points[index][0] = newValue;
 
       }
 
@@ -28,46 +31,26 @@ export default function PlayersArea({ context, players, roomName, playersList })
 
     }
 
-    function adjustInputs(e, username){
+    function adjustInputs(e, username, action){
       e.preventDefault();
-      let updatedState = Object.assign({}, userInfo);
+      let updatedPlayers = Object.assign({}, localPlayers);
 
-      updatedState.players[username].secondInput = !updatedState.players[username].secondInput
-
-      setUserInfo(updatedState);
-      updatePlayers({players:updatedState.players, noRender: true});
-      
-    }
-
-    function inputs(username, secondInput, i){
-      if(secondInput){
-
-        return (
-          <div className="input-holder">
-            {/*  */}
-            <input maxLength="4" onChange={(e) => handleChange(e, username, 'score')} className="score" style={{backgroundColor:players[username] ? players[username].color : getUsernameColor(username)}} placeholder={players[username] ? players[username].score : 69}/>         
-            <input maxLength="4" onChange={(e) => handleChange(e, username, 'score2')} className="score" style={{backgroundColor:players[username] ? players[username].color : getUsernameColor(username)}} placeholder={players[username] ? players[username].score2 : 69}/>  
-          </div>       
-        );
-      }else{
-
-        return <input maxLength="4" onChange={(e) => handleChange(e, username, 'score')} className="score" style={{backgroundColor:players[username] ? players[username].color : getUsernameColor(username)}} placeholder={players[username] ? players[username].score : 69}/>;         
+      if(action == 'plus' && updatedPlayers[username].points.length < 4){
+        updatedPlayers[username].points.push(['Input title...','0'])
+      }else if (action == 'minus' && updatedPlayers[username].points.length > 1) {
+        updatedPlayers[username].points.pop()
+      } else{
+        return
       }
+
+      setLocalPlayers(updatedPlayers);
+      updatePlayers({players:updatedPlayers, noRender: true});
+      
     }
 
     function deletePlayer(e, username){
       e.preventDefault();
       socket.emit('remove player', {username:username, roomName: roomName});
-    }
-
-    function addButtonRender(username, secondInput){
-      if(secondInput){
-        return <div className="add-subtract" onClick={(e) => adjustInputs(e, username)}><FaMinus  size="2em" /></div>;
-
-      }else{
-        return <div className="add-subtract" onClick={(e) => adjustInputs(e, username)}><FaPlus  size="2em" /></div>;
-
-      }
     }
 
     function setClass(){
@@ -80,17 +63,34 @@ export default function PlayersArea({ context, players, roomName, playersList })
 
     if (players){
     playersArea = playersList.map((username, i) =>{
+
+      let player = players[username];
+
+      let inputsArea = player.points.map((point,i) =>{
+        console.log('here is the point', point);
+        console.log('here is the index', i);
+        return (
+        <div key={i}>
+          <input onChange={(e) => handleChange(e, username, i, 'title')} className="points-title" placeholder="Input title..." style={{backgroundColor:players[username] ? players[username].color : getUsernameColor(username)}} placeholder={players[username] ? point[0] : "Input title..."}/>
+          <input maxLength="4" onChange={(e) => handleChange(e, username, i, 'points')} className="points" style={{backgroundColor:players[username] ? players[username].color : getUsernameColor(username)}} placeholder={players[username] ? point[1] : 0} />    
+        </div>
+        );   
+
+      });
+
         return( 
           <div className={setClass()} id={username} style={{backgroundColor:players[username] ? players[username].color : getUsernameColor(username)}} key={username}>
             <div className="player-area-header">
               <div className="nickname">{username}</div>
               <div className="player-area-buttons">
-              <div className="add-subtract" onClick={(e) => adjustInputs(e, username)}><FaPlus  size="2em" /></div>
-              <div className="add-subtract" onClick={(e) => adjustInputs(e, username)}><FaMinus  size="2em" /></div>
+              <div className={player.points.length >= 4 ? "no-press" : "add-subtract"} onClick={(e) => adjustInputs(e, username, 'plus')}><FaPlus  size="2em" /></div>
+              <div className={player.points.length <= 1 ? "no-press" : "add-subtract"} onClick={(e) => adjustInputs(e, username, 'minus')}><FaMinus  size="2em" /></div>
               <div className="delete" onClick={(e) => deletePlayer(e, username)}><FaTrash  size="2em" /></div>
               </div>
-            </div>  
-            {inputs(username, players[username].secondInput, i)}  
+            </div>
+            <div className="player-area-body">
+              {inputsArea}
+            </div>
           </div>
           );
         });
