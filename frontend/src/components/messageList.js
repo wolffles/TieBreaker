@@ -6,9 +6,9 @@ export default function MessageList({ messages} ) {
   if (messages){
     messageList = messages.map((message, i) =>{
       if(isLink(message[0])){
-      return <li className="playerMessage"key={i}>
-        <span className="spanMessage" style={{color:getUsernameColor(message[1])}}>{message[1]}</span>: <a target="_blank" href={message[0]}>{message[0]}</a>
-        </li>;
+        return <li className="playerMessage"key={i}>
+          <span className="spanMessage" style={{color:getUsernameColor(message[1])}}>{message[1]}</span>: <a target="_blank"  rel='noopener noreferrer' href={message[0]}>{message[0]}</a>
+          </li>;
       }else if (message[1]){
         return <li className="playerMessage"key={i}>
         <span className="spanMessage" style={{color:getUsernameColor(message[1])}}>{message[1]}</span>: {message[0]}

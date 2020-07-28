@@ -1,11 +1,9 @@
-import React, {useContext, userState, createContext, useEffect, useState} from "react";
+import React, {useState} from "react";
 import {updatePlayers, socket} from '../utility/socket.js';
 import { FaTrash, FaPlus, FaMinus } from 'react-icons/fa';
 import { getUsernameColor } from "../utility/playerMisc.js";
 
-export default function PlayersArea({ context, players, roomName, playersList }) {
-   const [userInfo, setUserInfo] = useContext(context);
-
+export default function PlayersArea({ players, roomName, playersList }) {
    const [localPlayers, setLocalPlayers] = useState(players);
 
     let playersArea;
@@ -15,7 +13,7 @@ export default function PlayersArea({ context, players, roomName, playersList })
       let newValue = e.target.value;
       let updatedPlayers = Object.assign({}, localPlayers);
 
-      if(changeType == "points"){
+      if(changeType === "points"){
         updatedPlayers[username].points[index][1] = newValue;
       } else{
         updatedPlayers[username].points[index][0] = newValue;
@@ -30,9 +28,9 @@ export default function PlayersArea({ context, players, roomName, playersList })
       e.preventDefault();
       let updatedPlayers = Object.assign({}, localPlayers);
 
-      if(action == 'plus' && updatedPlayers[username].points.length < 4){
+      if(action === 'plus' && updatedPlayers[username].points.length < 4){
         updatedPlayers[username].points.push(['Input title...','0'])
-      }else if (action == 'minus' && updatedPlayers[username].points.length > 1) {
+      }else if (action === 'minus' && updatedPlayers[username].points.length > 1) {
         updatedPlayers[username].points.pop()
       } else{
         return
@@ -65,7 +63,7 @@ export default function PlayersArea({ context, players, roomName, playersList })
         return (
         <div key={i}>
           <input 
-            className="points-title" placeholder="Input title..." 
+            className="points-title" 
             onChange={(e) => handleChange(e, username, i, 'title')} 
             style={{backgroundColor:players[username] ? players[username].color : getUsernameColor(username)}} 
             placeholder={player ? point[0] : "Input title..."}

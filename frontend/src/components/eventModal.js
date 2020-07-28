@@ -1,5 +1,5 @@
- import React, {useState, useEffect} from "react";
-import {sendMessage, socket} from '../utility/socket.js';
+ import React from "react";
+import {socket} from '../utility/socket.js';
 import '../style/tools.css';
 import '../style/style.css';
 export default function DiceModal({ context, showEvent, eventValue, modalType}) {
@@ -24,7 +24,7 @@ export default function DiceModal({ context, showEvent, eventValue, modalType}) 
 
 
   function modalRender(){
-    if(modalType == 'dice') {
+    if(modalType === 'dice') {
       return (
         <div className={`${showEvent ? "modal" : "hidden"}`}>
         <div className="dice divider outside">
@@ -42,7 +42,7 @@ export default function DiceModal({ context, showEvent, eventValue, modalType}) 
         </div>
       </div>
       );
-    }else if (modalType == 'flip') {
+    }else if (modalType === 'flip') {
       return (<div className={`${showEvent ? "column modal" : "hidden"}`}>
                     <div className="tool-display">
                      <div>{eventValue}</div>    

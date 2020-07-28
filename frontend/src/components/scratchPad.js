@@ -1,11 +1,11 @@
 import React, {useContext, useState} from "react";
-import { socket, updatePlayerInfo} from '../utility/socket.js';
+import { updatePlayerInfo} from '../utility/socket.js';
 import '../style/style.css';
 import '../style/tools.css';
 
 export default function ScratchPad({ context, toggle }) {
     
-    const [userInfo, setUserInfo] = useContext(context);
+    const [userInfo] = useContext(context);
 
     //local table conent gets saved on the server but is also saved here
     const [localTableContent,setLocalTableContent] = useState(userInfo.scratchPad)
@@ -21,7 +21,7 @@ export default function ScratchPad({ context, toggle }) {
     function addColumn(){
         let updatedState = Object.assign([],localTableContent);
             updatedState.map((row) => {
-                row.push("new-cell")
+                return row.push("new-cell")
             })
             setLocalTableContent(updatedState)
             updatePlayerInfo({username:userInfo.username, scratchPad:updatedState, action:'scratch-pad'})
@@ -53,7 +53,7 @@ export default function ScratchPad({ context, toggle }) {
 
     
   return (
-    <div className={`scratch-pad ${toggle == 'scratch-toggle'  ? "" : "hidden"}`}>
+    <div className={`scratch-pad ${toggle === 'scratch-toggle'  ? "" : "hidden"}`}>
         <div className='scratch-tools'>
             <button className='second-button' onClick={addRow}>+ Row</button>
             <button className='second-button' onClick={addColumn}>+ Column</button> 

@@ -2,7 +2,6 @@ import React, {useContext, createContext, useState, useEffect} from "react";
 import '../style/login.css';
 import '../style/style.css';
 import { socket} from '../utility/socket.js';
-import ScratchPad from "./scratchPad";
 
 
 

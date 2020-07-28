@@ -117,7 +117,7 @@ export default function Chat({ context }) {
                             Password: {userInfo.password}<br/>
                         </div>
                     </div>
-                <div className={`chatDisplay ${toggle == 'chat-toggle' ? "" : "hidden"}`}>
+                <div className={`chatDisplay ${toggle === 'chat-toggle' ? "" : "hidden"}`}>
                     <div id="messages" className="messages">
                         <MessageList messages={localMessageList} />
                     </div>
