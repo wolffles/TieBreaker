@@ -4,6 +4,7 @@ const path = require('path');
 const server = require('http').createServer(app);
 const io = require('socket.io')(server, {pingTimeout: 30000});
 const port = process.env.PORT || 3001;
+const util = require('util')
 
 const { newPlayerInRoom, createGameRoom, createPlayerObj, userConnectedToRoom, userDisconnected, deleteRoom, removeUser } = require('./gameRoom');
 const { choosePlayer, coinToss, diceToss, modifyUsername, isUsernameUnique, updateServerGameState } = require('./sourceCheck');
@@ -59,6 +60,7 @@ io.on('connection', (socket) => {
                 rooms[roomName] = newPlayerInRoom(rooms[roomName], player)
             }
             addedUser = true;
+            // console.log(util.inspect(rooms[roomName],false,null,true))
             userConnectedToRoom(rooms[roomName], socket.username)
             socket.emit('update player state', rooms[roomName].savedPlayers[socket.username])
             broadcastToRoom(io,roomName,'update game state', rooms[roomName]);
@@ -97,13 +99,26 @@ io.on('connection', (socket) => {
     
     // this will be called when we need to update any player
     socket.on('update players', (data) => {
-        rooms[socket.roomName] = updateServerGameState(rooms[socket.roomName], data)
-        if(data && data.noRender){
-            broadcastRoomExcludeSender(socket,socket.roomName,'update game state', rooms[socket.roomName])
-        } else{
-            broadcastToRoom(io,socket.roomName,'update game state', rooms[socket.roomName])
+        let roomState = rooms[socket.roomName] 
+        switch (data.action) {
+            case 'setPoints':
+                roomState.savedPlayersList.forEach( username => {
+                    roomState.savedPlayers[username].points[0] = data.players[username].points[0]
+                    roomState.savedPlayers[username].points[1] = data.players[username].points[1]
+                }) 
+                break; 
+            case 'newInput box':
+                console.log('this does nothing')
+                break;
+            default:
+                console.log('none of the actions were matched');
         }
-        
+        console.log(util.inspect(roomState,false,null,true))
+        if(data && data.noRender){
+            broadcastRoomExcludeSender(socket,socket.roomName,'update game state', roomState)
+        } else{
+            broadcastToRoom(io,socket.roomName,'update game state', roomState)
+        }
     })
 
     // updating player Information
@@ -119,7 +134,8 @@ io.on('connection', (socket) => {
                 case 'chat-toggle':
                     return player.chatToggle = data.chatToggle
                 default:
-                    throw new Error();
+                   console.log('none of the actions were matched');
+                   break;
             } 
             // socket.emit('update player state', rooms[roomName].savedPlayers[socket.username])
         }

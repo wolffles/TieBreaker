@@ -11,13 +11,10 @@ export default function PlayersArea({ context, players, roomName, playersList })
    const [localPlayers, setLocalPlayers] = useState(players);
 
     let playersArea;
-  // console.log('here are the players', players);
-
     function handleChange(e, username, index, changeType){
       e.preventDefault();
 
       let newValue = e.target.value;
-  
       let updatedPlayers = Object.assign({}, localPlayers);
 
       if(changeType == "points"){
@@ -27,7 +24,7 @@ export default function PlayersArea({ context, players, roomName, playersList })
 
       }
 
-     updatePlayers({players:updatedPlayers, noRender: true});
+     updatePlayers({players:updatedPlayers, action:'setPoints', noRender: true});
 
     }
 
@@ -68,11 +65,24 @@ export default function PlayersArea({ context, players, roomName, playersList })
 
       let inputsArea = player.points.map((point,i) =>{
         console.log('here is the point', point);
-        console.log('here is the index', i);
+        // console.log('here is the index', i);
         return (
         <div key={i}>
-          <input onChange={(e) => handleChange(e, username, i, 'title')} className="points-title" placeholder="Input title..." style={{backgroundColor:players[username] ? players[username].color : getUsernameColor(username)}} placeholder={players[username] ? point[0] : "Input title..."}/>
-          <input maxLength="4" onChange={(e) => handleChange(e, username, i, 'points')} className="points" style={{backgroundColor:players[username] ? players[username].color : getUsernameColor(username)}} placeholder={players[username] ? point[1] : 0} />    
+          <input 
+            // id={`${i} points-title`}
+            className="points-title" placeholder="Input title..." 
+            onChange={(e) => handleChange(e, username, i, 'title')} 
+            style={{backgroundColor:players[username] ? players[username].color : getUsernameColor(username)}} 
+            placeholder={player ? point[0] : "Input title..."}
+          />
+          <input 
+            //  id={`${i} points`}
+            className="points" 
+            maxLength="4" 
+            onChange={(e) => handleChange(e, username, i, 'points')} 
+            style={{backgroundColor:players[username] ? players[username].color : getUsernameColor(username)}} 
+            placeholder={players[username] ? point[1] : 0} 
+          />    
         </div>
         );   
 

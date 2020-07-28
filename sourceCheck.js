@@ -61,18 +61,6 @@ module.exports = {
            array = playersList;
        }
        return array;
-    }, updateServerGameState: (roomState, data) => {
-        switch (data.action) {
-            case 'setPoints':
-                roomState.savedPlayersList.forEach( username => {
-                    roomState.savedPlayers[username].score = data.players[username].score
-                })
-                return roomState
-            case 'newInput box':
-                return {count: state.count - 1};
-            default:
-                throw new Error();
-        }
     }
 
 }
