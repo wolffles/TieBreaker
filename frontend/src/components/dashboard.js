@@ -56,8 +56,8 @@ export default function Dashboard({ context }) {
     function displayingEvent(roll, type) {
       roll.forEach((face, i) => {
         let side;
-        if(type == 'flip') {
-          side = face == 1 ? 'Heads' : 'Tails'
+        if(type === 'flip') {
+          side = face === 1 ? 'Heads' : 'Tails'
         }else{
           side = face
         }
@@ -73,7 +73,7 @@ export default function Dashboard({ context }) {
 
       let modalElement = document.getElementById('modalBackground');
 
-      if (showEvent && event.target == modalElement) {
+      if (showEvent && event.target === modalElement) {
           setShowEvent(false)
         }
       }
