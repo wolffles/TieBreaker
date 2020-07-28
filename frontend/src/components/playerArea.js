@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React, {useState} from "react";
 import {updatePlayers, socket} from '../utility/socket.js';
 import { FaTrash, FaPlus, FaMinus } from 'react-icons/fa';
 import { getUsernameColor } from "../utility/playerMisc.js";
@@ -54,8 +54,6 @@ export default function PlayersArea({ players, roomName, playersList }) {
       }
     }
 
-
-
     if (players){
     playersArea = playersList.map((username, i) =>{
 
@@ -70,13 +68,12 @@ export default function PlayersArea({ players, roomName, playersList }) {
             style={{backgroundColor:players[username] ? players[username].color : getUsernameColor(username)}} 
             placeholder={player ? point[0] : "Input title..."}
           />
-          <input
-            id={username + "points"} 
+          <input 
             className="points" 
             maxLength="4" 
             onChange={(e) => handleChange(e, username, i, 'points')} 
             style={{backgroundColor:players[username] ? players[username].color : getUsernameColor(username)}} 
-            placeholder={players[username] ? point[1] : 0}
+            placeholder={players[username] ? point[1] : 0} 
           />    
         </div>
         );   
