@@ -44,7 +44,7 @@ export default function PlayersArea({ context, players, roomName, playersList })
       }
 
       setLocalPlayers(updatedPlayers);
-      updatePlayers({players:updatedPlayers, noRender: true});
+      updatePlayers({players:updatedPlayers, action:"setPoints", noRender:true});
       
     }
 

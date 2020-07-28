@@ -97,7 +97,22 @@ io.on('connection', (socket) => {
     
     // this will be called when we need to update any player
     socket.on('update players', (data) => {
-        rooms[socket.roomName] = updateServerGameState(rooms[socket.roomName], data)
+        let roomState = rooms[socket.roomName] 
+
+        switch (data.action) {
+            case 'setPoints':
+                
+                    rooms[socket.roomName].forEach( username => {
+                    roomState.savedPlayers[username].points = data.players[username].points
+                })
+             
+                return roomState;
+            case 'newInput box':
+                return {count: state.count - 1};
+            default:
+                console.log('');
+            }
+
         if(data && data.noRender){
             broadcastRoomExcludeSender(socket,socket.roomName,'update game state', rooms[socket.roomName])
         } else{
