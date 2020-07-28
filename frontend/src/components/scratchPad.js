@@ -15,7 +15,12 @@ export default function ScratchPad({ context, toggle }) {
             let size = updatedState[0].length
             updatedState.push(Array(size).fill('new-cell')) 
             setLocalTableContent(updatedState)
+<<<<<<< HEAD
+            console.log('setlocal', updatedState)
             updatePlayerInfo({username:userInfo.username, scratchPad:updatedState, action:'scratch-pad'})
+=======
+            socket.emit('update player info', {username:userInfo.username, scratchPad:updatedState})  
+>>>>>>> added title and multiple points feature
     }   
 
     function addColumn(){
