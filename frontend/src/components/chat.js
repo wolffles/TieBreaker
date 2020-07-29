@@ -90,6 +90,7 @@ export default function Chat({ context }) {
             if(data.toBroadcast.userLeft){updatedState.messages.push(data.toBroadcast.userLeft)}
             if(data.toBroadcast.numUsers){updatedState.messages.push(data.toBroadcast.numUsers)}
             if(data.toBroadcast.userRemoved){updatedState.messages.push(data.toBroadcast.userRemoved)}
+            if(data.toBroadcast.userRmovedError){updatedState.messages.push(data.toBroadcast.userRemovedError)}
             setUserInfo(updatedState);   
           });
         

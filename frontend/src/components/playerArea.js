@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React, {useState} from "react";
 import {updatePlayers, socket} from '../utility/socket.js';
 import { FaTrash, FaPlus, FaMinus } from 'react-icons/fa';
 import { getUsernameColor } from "../utility/playerMisc.js";

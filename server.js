@@ -74,8 +74,12 @@ io.on('connection', (socket) => {
     })
 
     socket.on('remove player',(data) =>{
-       removeUser(rooms[data.roomName], data.username);
-       broadcastToRoom(io, data.roomName, 'update game state', rooms[data.roomName]);
+        if(!rooms[data.roomName].connectedPlayersList.includes(data.username)){ 
+            removeUser(rooms[data.roomName], data.username);
+            broadcastToRoom(io, data.roomName, 'update game state', rooms[data.roomName]);
+        }else{
+            emitDataToClient(socket, 'message', {message:["Can't delete an active player", undefined]})
+        }
     });
 
 
@@ -97,26 +101,29 @@ io.on('connection', (socket) => {
     
     // this will be called when we need to update any player
     socket.on('update players', (data) => {
-        let roomState = rooms[socket.roomName] 
-        // console.log(util.inspect(data.players,false,null,true))
-        switch (data.action) {
-            case 'setPoints':
-                for( let player in data.players ){
-                    data.players[player].points.forEach((point,index) => {
-                        roomState.savedPlayers[player].points[index] = point
-                        })
-                } 
-                break; 
-            case 'newInput box':
-                console.log('this does nothing')
-                break;
-            default:
-                console.log('none of the actions were matched');
-        }
-        if(data && data.noRender){
-            broadcastRoomExcludeSender(socket,socket.roomName,'update game state', roomState)
-        } else{
-            broadcastToRoom(io,socket.roomName,'update game state', roomState)
+        try {
+            let roomState = rooms[roomName] 
+            switch (data.action) {
+                case 'setPoints':
+                    for( let player in data.players ){
+                        data.players[player].points.forEach((point,index) => {
+                                roomState.savedPlayers[player].points[index] = point
+                            })
+                    } 
+                    break; 
+                case 'newInput box':
+                    console.log('this does nothing')
+                    break;
+                default:
+                    console.log('none of the actions were matched');
+            }
+            if(data && data.noRender){
+                broadcastRoomExcludeSender(socket,socket.roomName,'update game state', roomState)
+            } else{
+                broadcastToRoom(io,socket.roomName,'update game state', roomState)
+            }
+        } catch (error) {
+            console.log("this function is wonky here is the error", error)
         }
     })
 
