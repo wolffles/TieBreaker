@@ -46,7 +46,7 @@ export default function PlayersArea({ players, roomName, playersList }) {
       socket.emit('remove player', {username:username, roomName: roomName});
     }
 
-    function setClass(){
+    function setPlayerClass(){
       if(playersList.length <= 6){
         return "player";
       } else{
@@ -81,7 +81,7 @@ export default function PlayersArea({ players, roomName, playersList }) {
       });
 
         return( 
-          <div className={setClass()} id={username} style={{backgroundColor:players[username] ? players[username].color : getUsernameColor(username)}} key={username}>
+          <div className={setPlayerClass()} id={username} style={{backgroundColor:players[username] ? players[username].color : getUsernameColor(username)}} key={username}>
             <div className="player-area-header">
               <div className="nickname">{username}</div>
               <div className="player-area-buttons">
