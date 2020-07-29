@@ -30,6 +30,10 @@ export default function Dashboard({ context }) {
       let input = inputValue;
 
       if (typeof inputValue === 'object'){ 
+        //possible bug settting lifepoints to zero.
+        var today = new Date();
+        var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds() + ":" + today.getMilliseconds(); 
+        console.log('blank input was submitted ', time)
         input = '0';
         setInputContext(input);
       }

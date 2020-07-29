@@ -52,7 +52,6 @@ export default function Login({context}) {
     data = {
       id: socket.id,
       username: username,
-      score: 0,
       roomName: roomName,
       password: password,
       reconnecting: reconnecting
@@ -70,8 +69,6 @@ export default function Login({context}) {
     socket.on('update player state', (data) => {
       let updatedState = Object.assign({},userInfo);
       updatedState.username = data.username
-      updatedState.score = data.score
-      updatedState.score2 = data.score2
       updatedState.id = data.id
       updatedState.color = data.color
       updatedState.roomName = data.roomName

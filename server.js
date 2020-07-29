@@ -115,7 +115,7 @@ io.on('connection', (socket) => {
                     console.log('this does nothing')
                     break;
                 default:
-                    console.log('none of the actions were matched');
+                    console.log('none of the actions were matched in update players');
             }
             if(data && data.noRender){
                 broadcastRoomExcludeSender(socket,socket.roomName,'update game state', roomState)
@@ -140,7 +140,7 @@ io.on('connection', (socket) => {
                 case 'chat-toggle':
                     return player.chatToggle = data.chatToggle
                 default:
-                   console.log('none of the actions were matched');
+                   console.log('none of the actions were matched in update player info');
                    break;
             } 
             // socket.emit('update player state', rooms[roomName].savedPlayers[socket.username])
