@@ -25,6 +25,7 @@ app.get('*', (req, res) => {
   
 
 wake();
+let rooms = {}
 
 io.on('connection', (socket) => {
     //   socket.join('game1')
@@ -33,7 +34,6 @@ io.on('connection', (socket) => {
     // socket.emit('update game state', rooms['game1'])
     
     // these variables are global inside of an indivdual connection (I think)
-    let rooms = {}
     let addedUser = false
     let roomName = ""
     socket.on('message', (data) => {
