@@ -57,10 +57,10 @@ export default function PlayersArea({ players, roomName, playersList }) {
 
 
     if (players){
+    console.log(players)
     playersArea = playersList.map((username, i) =>{
 
       let player = players[username];
-
       let inputsArea = player.points.map((point,i) =>{
         return (
         <div key={i}>

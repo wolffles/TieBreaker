@@ -56,6 +56,7 @@ export default function Chat({ context }) {
         }
 
         socket.on('reconnect', () => {
+            console.log("you've auto reconnected")
             if (userInfo.username) {
               let data = {
                 reconnecting: true,
