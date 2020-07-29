@@ -21,8 +21,6 @@ export default function DiceModal({ context, showEvent, eventValue, modalType}) 
     socket.emit('choose player');
   }
 
-
-
   function modalRender(){
     if(modalType === 'dice') {
       return (

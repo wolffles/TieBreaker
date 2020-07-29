@@ -37,7 +37,7 @@ export default function PlayersArea({ players, roomName, playersList }) {
       }
 
       setLocalPlayers(updatedPlayers);
-      updatePlayers({players:updatedPlayers, noRender: true});
+      updatePlayers({players:updatedPlayers, actions:'setPoints', noRender: true});
       
     }
 
@@ -73,7 +73,7 @@ export default function PlayersArea({ players, roomName, playersList }) {
             maxLength="4" 
             onChange={(e) => handleChange(e, username, i, 'points')} 
             style={{backgroundColor:players[username] ? players[username].color : getUsernameColor(username)}} 
-            placeholder={players[username] ? point[1] : 0} 
+            placeholder={point[1]}
           />    
         </div>
         );   

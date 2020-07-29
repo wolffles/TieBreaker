@@ -5,6 +5,8 @@ const server = require('http').createServer(app);
 const io = require('socket.io')(server, {pingTimeout: 30000});
 const port = process.env.PORT || 3001;
 const util = require('util')
+// leave me here as example on how to use
+// console.log(util.inspect(myObject, false, null, true /* enable colors */))
 
 const { newPlayerInRoom, createGameRoom, createPlayerObj, userConnectedToRoom, userDisconnected, deleteRoom, removeUser } = require('./gameRoom');
 const { choosePlayer, coinToss, diceToss, modifyUsername, isUsernameUnique, updateServerGameState } = require('./sourceCheck');
@@ -61,6 +63,7 @@ io.on('connection', (socket) => {
             }
             addedUser = true;
             userConnectedToRoom(rooms[roomName], socket.username)
+            console.log(util.inspect(rooms[roomName], false, null, true))
             socket.emit('update player state', rooms[roomName].savedPlayers[socket.username])
             broadcastToRoom(io,roomName,'update game state', rooms[roomName]);
         }else{
@@ -74,8 +77,12 @@ io.on('connection', (socket) => {
     })
 
     socket.on('remove player',(data) =>{
-       removeUser(rooms[data.roomName], data.username);
-       broadcastToRoom(io, data.roomName, 'update game state', rooms[data.roomName]);
+        if(!rooms[data.roomName].connectedPlayersList.includes(data.username)){ 
+            removeUser(rooms[data.roomName], data.username);
+            broadcastToRoom(io, data.roomName, 'update game state', rooms[data.roomName]);
+        }else{
+            emitDataToClient(socket, 'message', {message:["Can't delete an active player", undefined]})
+        }
     });
 
 
@@ -97,26 +104,29 @@ io.on('connection', (socket) => {
     
     // this will be called when we need to update any player
     socket.on('update players', (data) => {
-        let roomState = rooms[socket.roomName] 
-        // console.log(util.inspect(data.players,false,null,true))
-        switch (data.action) {
-            case 'setPoints':
-                for( let player in data.players ){
-                    data.players[player].points.forEach((point,index) => {
-                        roomState.savedPlayers[player].points[index] = point
-                        })
-                } 
-                break; 
-            case 'newInput box':
-                console.log('this does nothing')
-                break;
-            default:
-                console.log('none of the actions were matched');
-        }
-        if(data && data.noRender){
-            broadcastRoomExcludeSender(socket,socket.roomName,'update game state', roomState)
-        } else{
-            broadcastToRoom(io,socket.roomName,'update game state', roomState)
+        try {
+            let roomState = rooms[roomName] 
+            switch (data.action) {
+                case 'setPoints':
+                    for( let player in data.players ){
+                        data.players[player].points.forEach((point,index) => {
+                                roomState.savedPlayers[player].points[index] = point
+                            })
+                    } 
+                    break; 
+                case 'newInput box':
+                    console.log('this does nothing')
+                    break;
+                default:
+                    console.log('none of the actions were matched in update players');
+            }
+            if(data && data.noRender){
+                broadcastRoomExcludeSender(socket,socket.roomName,'update game state', roomState)
+            } else{
+                broadcastToRoom(io,socket.roomName,'update game state', roomState)
+            }
+        } catch (error) {
+            console.log("this function is wonky here is the error", error)
         }
     })
 
@@ -133,7 +143,7 @@ io.on('connection', (socket) => {
                 case 'chat-toggle':
                     return player.chatToggle = data.chatToggle
                 default:
-                   console.log('none of the actions were matched');
+                   console.log('none of the actions were matched in update player info');
                    break;
             } 
             // socket.emit('update player state', rooms[roomName].savedPlayers[socket.username])

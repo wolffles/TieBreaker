@@ -66,17 +66,24 @@ export default function Chat({ context }) {
                 roomName: userInfo.roomName
               }
               socket.emit('add user', data);
-              addMessage("you have auto reconnected");
+              var today = new Date();
+              var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds() + ":" + today.getMilliseconds();  
+              console.log("you've been auto reconnected ", time)
+              addMessage("you have auto reconnected ");
             }
           });
 
         socket.on('disconnect', () => {
-            console.log("you've been disconnected")
+            var today = new Date();
+            var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds() + ":" + today.getMilliseconds();
+            console.log("you've been disconnected ", time)
             addMessage('you have been disconnected');
           });
 
         socket.on('reconnect_error', () => {
-            console.log("reconnecting has failed")
+            var today = new Date();
+            var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds() + ":" + today.getMilliseconds();
+            console.log("reconnecting has failed ", time)
             addMessage('attempt to reconnect has failed');
         });
 
@@ -90,6 +97,7 @@ export default function Chat({ context }) {
             if(data.toBroadcast.userLeft){updatedState.messages.push(data.toBroadcast.userLeft)}
             if(data.toBroadcast.numUsers){updatedState.messages.push(data.toBroadcast.numUsers)}
             if(data.toBroadcast.userRemoved){updatedState.messages.push(data.toBroadcast.userRemoved)}
+            if(data.toBroadcast.userRmovedError){updatedState.messages.push(data.toBroadcast.userRemovedError)}
             setUserInfo(updatedState);   
           });
         
