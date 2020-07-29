@@ -5,6 +5,8 @@ const server = require('http').createServer(app);
 const io = require('socket.io')(server, {pingTimeout: 30000});
 const port = process.env.PORT || 3001;
 const util = require('util')
+// leave me here as example on how to use
+// console.log(util.inspect(myObject, false, null, true /* enable colors */))
 
 const { newPlayerInRoom, createGameRoom, createPlayerObj, userConnectedToRoom, userDisconnected, deleteRoom, removeUser } = require('./gameRoom');
 const { choosePlayer, coinToss, diceToss, modifyUsername, isUsernameUnique, updateServerGameState } = require('./sourceCheck');
@@ -61,6 +63,7 @@ io.on('connection', (socket) => {
             }
             addedUser = true;
             userConnectedToRoom(rooms[roomName], socket.username)
+            console.log(util.inspect(rooms[roomName], false, null, true))
             socket.emit('update player state', rooms[roomName].savedPlayers[socket.username])
             broadcastToRoom(io,roomName,'update game state', rooms[roomName]);
         }else{
