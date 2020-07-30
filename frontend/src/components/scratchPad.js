@@ -15,7 +15,7 @@ export default function ScratchPad({ context, toggle }) {
             let size = updatedState[0].length
             updatedState.push(Array(size).fill('new-cell')) 
             setLocalTableContent(updatedState)
-            updatePlayerInfo({username:userInfo.username, scratchPad:updatedState})  
+            updatePlayerInfo({username:userInfo.username, scratchPad:updatedState, action:'scratch-pad'})  
     }   
 
     function addColumn(){
