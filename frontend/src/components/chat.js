@@ -47,10 +47,7 @@ export default function Chat({ context }) {
     }
 
     useEffect(() => {
-        var div = document.getElementById("messages");
-
-
-
+        var div = document.getElementById("chatDisplay");
         if(!!div){
          div.scrollTop = div.scrollHeight - div.clientHeight;
         }
@@ -125,7 +122,7 @@ export default function Chat({ context }) {
                             Password: {userInfo.password}<br/>
                         </div>
                     </div>
-                <div className={`chatDisplay ${toggle === 'chat-toggle' ? "" : "hidden"}`}>
+                <div id='chatDisplay' className={`chatDisplay ${toggle === 'chat-toggle' ? "" : "hidden"}`}>
                     <div id="messages" className="messages">
                         <MessageList messages={localMessageList} />
                     </div>

@@ -249,7 +249,7 @@ margin: 15px 10px 0px 10px;
   margin: 0;
   padding: 0;
   width: 100%;
-  /* overflow: hidden; */
+  overflow: hidden; 
 }
 
 /* Login Page */
@@ -391,6 +391,7 @@ margin: 15px 10px 0px 10px;
   float: left;
   word-break: break-word;
   padding-bottom: 40px;
+  overflow-y:scroll
 }
 
 ::-webkit-scrollbar {
@@ -419,8 +420,6 @@ margin: 15px 10px 0px 10px;
 }
 
 /* Input */
-
-
 .messageInput .inputMessage {
   border: 8px solid #1A1A1D;
   bottom: 0;
@@ -442,9 +441,9 @@ margin: 15px 10px 0px 10px;
 }
 
 
-  .hidden {
-    display: none;
-  }
+.hidden {
+  display: none;
+}
 
 /* menu bar  */
 .menubar {
