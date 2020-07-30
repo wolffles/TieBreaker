@@ -37,6 +37,8 @@ html, body {
   height: 100%;
   margin: 0;
   padding: 0;
+  background-color: #3e423d;
+
 }
 
 .player ul {
@@ -69,6 +71,22 @@ html, body {
   justify-content: center;
   /* align-items: center;  centers the height of the boxes*/
 
+}
+
+.playerAreaSpacing{
+  justify-content: space-evenly;
+  overflow-y: scroll;
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.playerAreaSpacing::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.playerAreaSpacing {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
 }
 
 .player {
@@ -165,11 +183,19 @@ margin: 15px 10px 0px 10px;
 .player-area-body{
   margin: auto;
   display: flex;
+  flex-direction: column;
+}
+
+.player-area-body2{
+  margin: auto;
+  display: flex;
   flex-direction: row;
 }
 
-.player-area-body div{
-  
+.player-area-body3{
+  margin: auto;
+  display: flex;
+  flex-direction: column;
 }
 
 .points {
@@ -179,8 +205,20 @@ margin: 15px 10px 0px 10px;
   color: white;
   outline: none;
   border: 2px solid white;
+}
+
+.points-font-small{
+  font-size: 3vh;
+}
+
+.points-font-medium{
+  font-size: 5vh;
+}
+
+.points-font-large{
   font-size: 8vh;
 }
+
 
 .points-title{
   left: 0px;
@@ -189,7 +227,16 @@ margin: 15px 10px 0px 10px;
   color: white;
   border: 2px solid white;
   border-bottom: none;
-  font-size: 2vw
+  font-weight: 600;
+
+}
+
+.points-title-font-medium{
+  font-size: 2vh;
+}
+
+.points-title-font-large{
+  font-size: 2vw;
 }
 
 
@@ -337,8 +384,18 @@ margin: 15px 10px 0px 10px;
   margin: 0;
 }
 
+::-webkit-scrollbar {
+  display: none;
+}
+
 .messages::-webkit-scrollbar {
   display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.messages {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
 }
 
 .message.typing .messageBody {

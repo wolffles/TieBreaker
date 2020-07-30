@@ -81,10 +81,15 @@ export default function Login({context}) {
       alert(`You entered the wrong password for existing room "${roomName}". Please enter the correct password, or try entering a room with a different name`);
     });
 
+    socket.on('too many users',(roomName) =>{
+      alert(`There are currently 12 users connected to room "${roomName}". Please connect to another room with less users`);
+    });
+
     return function cleanup() {
       //  socket.off('login');
        socket.off('update player state')
        socket.off('wrong password');
+       socket.off('too many users')
        //  socket.off('update game state')
       };
   });

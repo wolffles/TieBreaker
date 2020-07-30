@@ -54,22 +54,59 @@ export default function PlayersArea({ players, roomName, playersList }) {
       }
     }
 
+    function setPlayerBodyClass(){
+      if(playersList.length <= 2){
+        return "player-area-body";
+      } else if (playersList.length <=6) {
+        return "player-area-body2"
+      }else {
+        return "player-area-body3"
+      }
+    }
+
+    function setPointsClass(){
+      if(playersList.length <= 2){
+        return "points points-font-large";
+      } else if (playersList.length <=6){ 
+        return "points points-font-medium"
+      } else{
+        return "points points-font-small"
+      }
+    }
+
+    function setPointsTitleFont() {
+      if(playersList.length <= 2){
+        return "points-title points-title-font-large";
+      } else {
+        return "points-title points-title-font-medium"
+      }
+    }
+
+    function setPlayerAreaClass(){
+      if(playersList && playersList.length < 7){
+        return "playerArea"
+      } else {
+        return "playerArea playerAreaSpacing"
+      }
+    }
+    
+
     if (players){
-    console.log(players)
     playersArea = playersList.map((username, i) =>{
 
       let player = players[username];
+
       let inputsArea = player.points.map((point,i) =>{
         return (
         <div key={i}>
           <input 
-            className="points-title" 
+            className={setPointsTitleFont()} 
             onChange={(e) => handleChange(e, username, i, 'title')} 
             style={{backgroundColor:players[username] ? players[username].color : getUsernameColor(username)}} 
             placeholder={player ? point[0] : "Input title..."}
           />
           <input 
-            className="points" 
+            className={setPointsClass()} 
             maxLength="4" 
             onChange={(e) => handleChange(e, username, i, 'points')} 
             style={{backgroundColor:players[username] ? players[username].color : getUsernameColor(username)}} 
@@ -79,6 +116,8 @@ export default function PlayersArea({ players, roomName, playersList }) {
         );   
 
       });
+
+   
 
         return( 
           <div className={setPlayerClass()} id={username} style={{backgroundColor:players[username] ? players[username].color : getUsernameColor(username)}} key={username}>
@@ -90,7 +129,7 @@ export default function PlayersArea({ players, roomName, playersList }) {
               <div className="delete" onClick={(e) => deletePlayer(e, username)}><FaTrash  size="2em" /></div>
               </div>
             </div>
-            <div className="player-area-body">
+            <div className={setPlayerBodyClass()}>
               {inputsArea}
             </div>
           </div>
@@ -99,7 +138,7 @@ export default function PlayersArea({ players, roomName, playersList }) {
     }
 
   return (
-    <div className="playerArea">
+    <div className={setPlayerAreaClass()}>
           {playersArea}        
     </div>
   );

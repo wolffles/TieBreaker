@@ -41,6 +41,11 @@ io.on('connection', (socket) => {
         if (addedUser) return;
         roomName = data.roomName;
         socket.roomName = data.roomName;
+
+        if(rooms[roomName] && rooms[roomName].connectedPlayersList.length >= 12){
+            socket.emit('too many users', roomName);
+            return;
+        }
         if(!rooms[roomName]){ rooms[roomName] = createGameRoom(roomName, data.password) }
         if(data.password == "FelixRocks" || data.password == rooms[roomName].password){
             socket.join(roomName);
@@ -63,7 +68,7 @@ io.on('connection', (socket) => {
             }
             addedUser = true;
             userConnectedToRoom(rooms[roomName], socket.username)
-            console.log(util.inspect(rooms[roomName], false, null, true))
+           // console.log(util.inspect(rooms[roomName], false, null, true))
             socket.emit('update player state', rooms[roomName].savedPlayers[socket.username])
             broadcastToRoom(io,roomName,'update game state', rooms[roomName]);
         }else{
