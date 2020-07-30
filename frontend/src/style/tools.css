@@ -48,7 +48,7 @@ cursor: pointer;
 .dice{
     justify-content: center;
 }
-
+    
 .dice.button{
     height:100%;   
     font-size: 3em;
@@ -129,7 +129,6 @@ cursor: pointer;
 }
 
 .scratch-table {
-    /* display:flex; */
     table-layout: auto;
     border-collapse:collapse;
     border-spacing: 0px;
