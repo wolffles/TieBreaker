@@ -5,9 +5,11 @@ const server = require('http').createServer(app);
 const io = require('socket.io')(server, {pingTimeout: 30000});
 const port = process.env.PORT || 3001;
 const util = require('util')
+
 // leave me here as example on how to use
 // console.log(util.inspect(myObject, false, null, true /* enable colors */))
 
+const {wake} = require('./wake.js')
 const { newPlayerInRoom, createGameRoom, createPlayerObj, userConnectedToRoom, userDisconnected, deleteRoom, removeUser } = require('./gameRoom');
 const { choosePlayer, coinToss, diceToss, modifyUsername, isUsernameUnique, updateServerGameState } = require('./sourceCheck');
 
@@ -21,16 +23,17 @@ app.get('*', (req, res) => {
     res.sendFile(path.resolve(__dirname, 'frontend', 'build', 'index.html'));
 });
   
-//Dashboard
+
+wake();
 let rooms = {}
 
 io.on('connection', (socket) => {
- //   socket.join('game1')
-        // going to convert the code to have different rooms
-      //  if(!rooms['game1']){ rooms['game1'] = createGameRoom('game1') }
-   // socket.emit('update game state', rooms['game1'])
-
-   // these variables are global inside of an indivdual connection (I think)
+    //   socket.join('game1')
+    // going to convert the code to have different rooms
+    //  if(!rooms['game1']){ rooms['game1'] = createGameRoom('game1') }
+    // socket.emit('update game state', rooms['game1'])
+    
+    // these variables are global inside of an indivdual connection (I think)
     let addedUser = false
     let roomName = ""
     socket.on('message', (data) => {

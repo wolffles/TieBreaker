@@ -355,42 +355,52 @@ margin: 15px 10px 0px 10px;
   margin: 0;
 }
 
-.chatDisplay {
-  height: 100%;
-  padding-bottom: 60px;
-  background-color: #CDCDD4;
-}
-
 .chatArea {
   height: 100%;
   border-right: 8px solid #1A1A1D;
+  border-left: 8px solid #1A1A1D;
+  border-bottom: 8px solid #1A1A1D;
   background-color: #CDCDD4;
 }
+
+.chat-toolbar {
+  display: flex;
+  background-color: #1A1A1D;
+  color: white;
+  text-align: center;
+  font-weight: 700;
+  width:100%;
+  height: 6%
+}
+
+.chatDisplay {
+  height: 94%;
+  padding-bottom: 60px;
+  background-color: #CDCDD4;
+  overflow-y: scroll;
+}
+
 
 .chatArea button{
   color: aliceblue;
 }
 
 .messages {
-  margin: 0;
   width: 100%;
   padding: 0px 10px 0px 10px;
   font-size: 150%;
   float: left;
-  overflow-y: scroll;
   word-break: break-word;
-  height: 95%;
   padding-bottom: 40px;
-  margin: 0;
 }
 
 ::-webkit-scrollbar {
   display: none;
 }
 
-.messages::-webkit-scrollbar {
-  display: none;
-}
+/* .messages::-webkit-scrollbar {
+  display: none; 
+}*/
 
 /* Hide scrollbar for IE, Edge and Firefox */
 .messages {
@@ -512,15 +522,6 @@ button:hover{
   font-weight: 700;
   width:80%;
 
-}
-
-.chat-toolbar {
-  display: flex;
-  background-color: #1A1A1D;
-  color: white;
-  text-align: center;
-  font-weight: 700;
-  width:100%;
 }
 
 .button-box {
