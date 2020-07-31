@@ -3,6 +3,7 @@ import '../style/login.css';
 import '../style/style.css';
 import { socket} from '../utility/socket.js';
 import { FaInfoCircle } from 'react-icons/fa';
+import AlertModal from './alertModal.js'
 
 
 
@@ -20,6 +21,10 @@ export default function Login({context}) {
   let [passwordValue, setPasswordContext] = useState(passwordContext);
 
   let [reconnectingValue, setReconnectingContext] = useState(false);
+
+  let [showAlert, setShowAlert] = useState(false);
+
+  let [alertText, setAlertText] = useState('');
 
   let hidden = false
   if (userInfo.username){
@@ -60,16 +65,31 @@ export default function Login({context}) {
 
     socket.emit('add user', data);
     }else{
-      alert('Please enter a username, game room name, and password');
+      //alert('Please enter a username, game room name, and password');
+      setShowAlert(true)
+      setAlertText('Please enter a username, game room name, and password')
     }
   }
 
   function alertInfo(e) {
     e.preventDefault();
-    alert("Please enter a nickname, the game room you would like to enter, and a password for the room. You must enter the correct password for game rooms that already exist. If you are reconnecting to a game room, pease check the box right by the question on the screen")
+    //alert("Please enter a nickname, the game room you would like to enter, and a password for the room. You must enter the correct password for game rooms that already exist. If you are reconnecting to a game room, pease check the box right by the question on the screen")
+    setShowAlert(true)
+    setAlertText("Please enter a nickname, the game room you would like to enter, and a password for the room. You must enter the correct password for game rooms that already exist. If you are reconnecting to a game room, pease check the box right by the question on the screen")
+
   }
 
   useEffect(() => {
+
+
+    window.onclick = function(event) {
+
+      let modalElement = document.getElementById('modalBackgroundLogin');
+
+      if (showAlert && event.target === modalElement) {
+          setShowAlert(false)
+        }
+      }
 
 
     socket.on('update player state', (data) => {
@@ -84,11 +104,13 @@ export default function Login({context}) {
     })
 
     socket.on('wrong password',(roomName) =>{
-      alert(`You entered the wrong password for existing room "${roomName}". Please enter the correct password, or try entering a room with a different name`);
+      setShowAlert(true)
+      setAlertText(`You entered the wrong password for existing room "${roomName}". Please enter the correct password, or try entering a room with a different name`);
     });
 
     socket.on('too many users',(roomName) =>{
-      alert(`There are currently 12 users connected to room "${roomName}". Please connect to another room with less users`);
+      setShowAlert(true)
+      setAlertText(`There are currently 12 users connected to room "${roomName}". Please connect to another room with less users`);
     });
 
     return function cleanup() {
@@ -116,6 +138,7 @@ export default function Login({context}) {
                <br/>
                <button className="login-button"> Submit </button>
         </form>
+        <AlertModal showAlert={showAlert} alertText={alertText}/>
       </div>
     );
   }
