@@ -268,6 +268,40 @@ margin: 15px 10px 0px 10px;
   width: 100%;
 }
 
+.login-button{
+  color: white;
+  background-color: black;
+  border: solid white 2px;
+  width: 7vw;
+  height: 5vh;
+  font-size: 1vw;
+  text-align: center;
+}
+
+button.login-button:hover{
+  color: black;
+  background-color: white;
+  cursor: pointer;
+}
+
+.reconnection:hover {
+  cursor: pointer;
+}
+
+.login-info{
+  right: 0px;
+  top: 0px;
+  position: absolute;
+  margin: 15px 15px 0px 0px;
+}
+
+.login-info:hover{
+  cursor:pointer;
+}
+
+
+
+
 .form2 {
   height: 100px;
   margin-top: -70px;
@@ -530,4 +564,5 @@ button:hover{
 .button-box .button{
   height: 100%;
 }
+
 

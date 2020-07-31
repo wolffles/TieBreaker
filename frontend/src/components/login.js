@@ -2,6 +2,7 @@ import React, {useContext, createContext, useState, useEffect} from "react";
 import '../style/login.css';
 import '../style/style.css';
 import { socket} from '../utility/socket.js';
+import { FaInfoCircle } from 'react-icons/fa';
 
 
 
@@ -63,6 +64,11 @@ export default function Login({context}) {
     }
   }
 
+  function alertInfo(e) {
+    e.preventDefault();
+    alert("Please enter a nickname, the game room you would like to enter, and a password for the room. You must enter the correct password for game rooms that already exist. If you are reconnecting to a game room, pease check the box right by the question on the screen")
+  }
+
   useEffect(() => {
 
 
@@ -96,6 +102,8 @@ export default function Login({context}) {
 
     return (
       <div className={`login page ${hidden ? "hidden" : ""}`}>
+        <span className="login-info" onClick={(e) => alertInfo(e)}><FaInfoCircle size="2em" />
+</span>
         <form id="loginForm" className="form" onSubmit={handleSubmit}>
             <p className="title">What's your nickname?</p>
               <input id="nicknameInput" className="loginInput" type="text" maxLength="8" onChange={changeInput}/>
@@ -103,10 +111,10 @@ export default function Login({context}) {
                <input id="gameInput" className="loginInput" type="text" maxLength="8" onChange={changeGameInput}/> 
             <p className="title">Enter a Password: </p> 
                <input id="passwordInput" className="loginInput" type="text" maxLength="8" onChange={changePasswordInput}/> 
-            <p className="title">Are you a reconnecting user? </p> 
-               <input className="reconnecting"  type="checkbox" onClick={changeReconnecting}/>
-               <br/>
+            <p className="title">Are you a reconnecting user?  <input className="reconnecting"  type="checkbox" onClick={changeReconnecting}/> </p>                
                <input style={{display:"none"}}type="submit"></input>
+               <br/>
+               <button className="login-button"> Submit </button>
         </form>
       </div>
     );

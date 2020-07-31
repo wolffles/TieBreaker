@@ -27,7 +27,9 @@ export default function Dashboard({ context }) {
     function handleSubmit(e){
       e.preventDefault();
       let updatedState = Object.assign({}, localUserInfo);
-      let input = inputValue;
+      let input = inputValue;       
+       e.target.children[0].value = ''
+
 
       if (typeof inputValue === 'object'){ 
         //possible bug settting lifepoints to zero.
