@@ -1,10 +1,12 @@
 # TieBreaker
-Useful tools for all for table top games
+A MERN stack application that contains useful tools for all for table top games. It utilizies Socket.io to let players make instantaneous updates.
 
-## features
-* game unit counter ie: score/point/score display
-* real-time chat
-* a real-time chat and coin fliip feature. There is also a feature that allows players to randomly choose one of the connected players
+## Features
+* Game unit counter ie: score/point/score display
+* Real-time chat
+* A real-time dice and coin flip feature.
+* A player chooser feature that picks connected players at random
+* Multiple game rooms for players to connect
 
 
 ## Data flow for app
@@ -22,6 +24,7 @@ Useful tools for all for table top games
 
 
 ## Backend objects
+```
 rooms {
     roomName:{
         roomID: '',
@@ -33,7 +36,7 @@ rooms {
             playerObj:{
                 username: "",
                 id: "",
-                score: 0,
+                points: [['title','points']],
                 password: "", 
                 color: getUsernameColor(username),
                 roomName: "",
@@ -50,7 +53,7 @@ rooms {
 
     }
 }
-
+```
 ## Frontend State
 ```
     UserInfo {
