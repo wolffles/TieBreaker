@@ -3,7 +3,8 @@ Useful tools for all for table top games
 
 ## features
 * game unit counter ie: score/point/score display
-* names
+* real-time chat
+* a real-time chat and coin fliip feature. There is also a feature that allows players to randomly choose one of the connected players
 
 
 ## Data flow for app
