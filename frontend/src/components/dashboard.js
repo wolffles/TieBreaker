@@ -8,7 +8,7 @@ import {updatePlayers, socket} from '../utility/socket.js';
 export default function Dashboard({ context }) {
     const [userInfo, setUserInfo] = useContext(context);
 
-    const [localUserInfo,setlocalUserInfo] = useState(userInfo)
+    const [localUserInfo,setLocalUserInfo] = useState(userInfo)
     let inputContext = createContext('');
 
     let [inputValue, setInputContext] = useState(inputContext);
@@ -43,7 +43,7 @@ export default function Dashboard({ context }) {
       for (let username in updatedState.players){
         updatedState.players[username].points[0][1] = input;
       }
-      setlocalUserInfo(updatedState)
+      setUserInfo(updatedState)
       //this needs to send specifics or find a way to not replace the object
       updatePlayers({players:updatedState.players, action:'setPoints', noRender:true});
     }
