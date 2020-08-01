@@ -1,5 +1,5 @@
 # TieBreaker
-A MERN stack application that contains useful tools for all for table top games. It utilizies Socket.io to let players make instantaneous updates.
+A MERN stack application (with React Hooks) that contains useful tools for all for table top games. It utilizies Socket.io to let players make instantaneous updates.
 
 ## Features
 * Game unit counter ie: score/point/score display
