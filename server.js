@@ -120,8 +120,18 @@ io.on('connection', (socket) => {
                         data.players[player].points.forEach((point,index) => {
                                 roomState.savedPlayers[player].points[index] = point
                             })
+                            if(roomState.savedPlayers[player].points.length > data.players[player].points.length){
+                                roomState.savedPlayers[player].points.splice(data.players[player].points.length)
+                            }
                     } 
                     break; 
+                case 'deleteInput':
+                    for( let player in data.players ){
+                        data.players[player].points.forEach((point,index) => {
+                                roomState.savedPlayers[player].points[index] = point
+                            })
+                    } 
+                    break;
                 case 'newInput box':
                     console.log('this does nothing')
                     break;
