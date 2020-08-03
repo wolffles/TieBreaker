@@ -16,13 +16,24 @@ describe('DefaultTest', () => {
       const wolf = await driver.findElement(By.id('wolf'))
       expect(!!wolf).to.be.true;
     });
+    
 
     it('sets the score total to 40', async () => {
+
       (await driver).findElement(By.css(".setPoints.input")).sendKeys('40', Key.ENTER)
-      await driver.wait(until.elementLocated(By.css('#wolf .score')))
-      const scoreChange = await (await driver.findElement(By.className('wolf score'))).getAttribute('placeholder')
+      await driver.wait(until.elementLocated(By.css('#wolf')))
+      const scoreChange = await (await driver.findElement(By.className('points-title'))).getAttribute('placeholder')
       assert(scoreChange, 40, "was not 40 as expect")
     });
+
+    it('adds a message in chat', async () => {
+      (await driver).findElement(By.css(".inputMessage")).sendKeys('hello', Key.ENTER)
+      await driver.wait(until.elementLocated(By.css('.playerMessage')))
+      const message = await (await driver.findElement(By.css('.playerMessage')))
+      expect(!!message).to.be.true;
+    });
+
+    
 
     // it('new player logs and sends chat message', async () => {
     //   await driver2.get('http://localhost:3000');
