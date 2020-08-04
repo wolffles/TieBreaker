@@ -43,9 +43,9 @@ export default function Dashboard({ context }) {
       for (let username in updatedState.players){
         updatedState.players[username].points[0][1] = input;
       }
-      setUserInfo(updatedState)
+      //setUserInfo(updatedState)
       //this needs to send specifics or find a way to not replace the object
-      updatePlayers({players:updatedState.players, action:'setPoints', noRender:true});
+      updatePlayers({players:updatedState.players, action:'setPoints', noRender:false});
     }
 
     //this is the dice code
