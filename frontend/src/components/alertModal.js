@@ -1,18 +1,30 @@
-import React from "react";
+import React, {useState} from "react";
 import '../style/tools.css';
 import '../style/style.css';
-export default function AlertModal({ showAlert, alertText}) {
 
+export default function AlertModal({ showAlert, alertText}) {
+  const [show, setShowAlert] = useState(showAlert)
+
+  const closeAlert = () => {
+    setShowAlert(false)
+  }
 
   function modalRender(){
       return (
-        <div className={`${showAlert ? "modalLogin" : "hidden"}`}>
+        <div className={`${show ? "alert-modal" : "hidden"}`}>
+            <span onClick={closeAlert}>x</span>
             <p >{alertText}</p>
-      </div>
+        </div>
       );
     
   }
     return (
-      <div id="modalBackgroundLogin" className={`${showAlert ? "modal-background" : "hidden"}`}>{modalRender()}</div>
+      <div id="alertModalBackground" className={`${show ? "modal-background" : "hidden"}`}>
+         <div className={`${show ? "alert-modal" : "hidden"}`}>
+            {/* <span onClick={closeAlert}>x</span> */}
+            <p >{alertText}</p>
+        </div>
+
+      </div>
   );
 }

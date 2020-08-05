@@ -76,9 +76,7 @@ export default function Dashboard({ context }) {
     useEffect(() => {
 
       window.onclick = function(event) {
-
       let modalElement = document.getElementById('modalBackground');
-
       if (showEvent && event.target === modalElement) {
           setShowEvent(false)
         }

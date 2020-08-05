@@ -66,26 +66,22 @@ export default function Login({context}) {
     socket.emit('add user', data);
     }else{
       //alert('Please enter a username, game room name, and password');
-      setShowAlert(true)
       setAlertText('Please enter a username, game room name, and password')
+      setShowAlert(true)
     }
   }
 
   function alertInfo(e) {
     e.preventDefault();
     //alert("Please enter a nickname, the game room you would like to enter, and a password for the room. You must enter the correct password for game rooms that already exist. If you are reconnecting to a game room, pease check the box right by the question on the screen")
-    setShowAlert(true)
     setAlertText("Please enter a nickname, the game room you would like to enter, and a password for the room. You must enter the correct password for game rooms that already exist. If you are reconnecting to a game room, pease check the box right by the question on the screen")
+    setShowAlert(true)
 
   }
 
   useEffect(() => {
-
-
     window.onclick = function(event) {
-
-      let modalElement = document.getElementById('modalBackgroundLogin');
-
+      let modalElement = document.getElementById('alertModalBackground');
       if (showAlert && event.target === modalElement) {
           setShowAlert(false)
         }

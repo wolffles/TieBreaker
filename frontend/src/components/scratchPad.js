@@ -3,6 +3,7 @@ import { updatePlayerInfo} from '../utility/socket.js';
 import '../style/style.css';
 import '../style/tools.css';
 
+
 export default function ScratchPad({ context, toggle }) {
     
     const [userInfo] = useContext(context);
@@ -11,20 +12,45 @@ export default function ScratchPad({ context, toggle }) {
     const [localTableContent,setLocalTableContent] = useState(userInfo.scratchPad)
 
     function addRow(){
-        let updatedState = Object.assign([],localTableContent);
+        if(localTableContent.length < 51){
+            let updatedState = Object.assign([],localTableContent);
             let size = updatedState[0].length
-            updatedState.push(Array(size).fill('new-cell')) 
+            updatedState.push(Array(size).fill('')) 
             setLocalTableContent(updatedState)
             updatePlayerInfo({username:userInfo.username, scratchPad:updatedState, action:'scratch-pad'})  
+        }
     }   
 
     function addColumn(){
-        let updatedState = Object.assign([],localTableContent);
+        if(localTableContent[0].length < 11){
+            let updatedState = Object.assign([],localTableContent);
             updatedState.map((row) => {
-                return row.push("new-cell")
+                return row.push("")
             })
             setLocalTableContent(updatedState)
             updatePlayerInfo({username:userInfo.username, scratchPad:updatedState, action:'scratch-pad'})
+        }
+    }
+
+    function removeRow(){
+        let updatedState = Object.assign([],localTableContent);
+        console.log(updatedState)
+        if (updatedState.length > 1){
+            updatedState.pop()
+        }
+        setLocalTableContent(updatedState)
+        updatePlayerInfo({username:userInfo.username, scratchPad:updatedState, action:'scratch-pad'})
+    }
+
+    function removeColumn(){
+        let updatedState = Object.assign([],localTableContent);
+        updatedState.map((row) => {
+            if (row.length > 1){
+                return row.pop()
+            }
+        })
+        setLocalTableContent(updatedState)
+        updatePlayerInfo({username:userInfo.username, scratchPad:updatedState, action:'scratch-pad'})
     }
 
     function handleInput(e){
@@ -48,15 +74,15 @@ export default function ScratchPad({ context, toggle }) {
                 }
             </tr>
         )
-    })
-
-
+    }) 
     
   return (
     <div className={`scratch-pad ${toggle === 'scratch-toggle'  ? "" : "hidden"}`}>
         <div className='scratch-tools'>
-            <button className='second-button' onClick={addRow}>+ Row</button>
-            <button className='second-button' onClick={addColumn}>+ Column</button> 
+            <button className={localTableContent.length == 51  ? "second-button-unavailable" : 'second-button'} onClick={addRow}>+ Row</button>
+            <button className={localTableContent[0].length == 11  ? "second-button-unavailable" : 'second-button'} onClick={addColumn}>+ Column</button>
+            <button className={localTableContent.length <= 1  ? "second-button-unavailable" : 'second-button'} onClick={removeRow}>- Row</button>
+            <button className={localTableContent[0].length <= 1 ? "second-button-unavailable" : 'second-button'} onClick={removeColumn}>- Column</button>  
         </div>
         <table className="scratch-table">
             <tbody>

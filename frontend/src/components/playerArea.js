@@ -123,8 +123,8 @@ export default function PlayersArea({ players, roomName, playersList }) {
             <div className="player-area-header">
               <div className="nickname">{username}</div>
               <div className="player-area-buttons">
-              <div className={player.points.length >= 4 ? "no-press" : "add-subtract"} onClick={(e) => adjustInputs(e, username, 'plus')}><FaPlus  size="2em" /></div>
-              <div className={player.points.length <= 1 ? "no-press" : "add-subtract"} onClick={(e) => adjustInputs(e, username, 'minus')}><FaMinus  size="2em" /></div>
+              <div className={player.points.length >= 4 ? "no-press add-subtract" : "add-subtract"} onClick={(e) => adjustInputs(e, username, 'plus')}><FaPlus  size="2em" /></div>
+              <div className={player.points.length <= 1 ? "no-press add-subtract" : "add-subtract"} onClick={(e) => adjustInputs(e, username, 'minus')}><FaMinus  size="2em" /></div>
               <div className="delete" onClick={(e) => deletePlayer(e, username)}><FaTrash  size="2em" /></div>
               </div>
             </div>
