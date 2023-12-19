@@ -24,7 +24,7 @@ app.get('*', (req, res) => {
 });
   
 
-wake();
+// wake();
 let rooms = {}
 
 io.on('connection', (socket) => {
