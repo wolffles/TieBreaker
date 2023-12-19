@@ -6,7 +6,8 @@
   "scripts": {
     "client": "npm start --prefix ./frontend",
     "test": "npm run test --prefix ./frontend",
-    "start": "node server.js",
+    "server": "node server.js",
+    "start": "concurrently \"npm run nodemon\" \"npm run client\"",
     "nodemon": "nodemon server.js",
     "dev": "concurrently \"npm run nodemon\" \"npm run client\"",
     "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix frontend && npm run build --prefix frontend"
