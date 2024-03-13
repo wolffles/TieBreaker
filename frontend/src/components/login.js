@@ -8,7 +8,7 @@ import AlertModal from './alertModal.js'
 
 
 export default function Login({context}) {
-  
+
   let [userInfo, setUserInfo] = useContext(context);
 
   let inputContext = createContext('');
@@ -73,7 +73,7 @@ export default function Login({context}) {
 
   function alertInfo(e) {
     e.preventDefault();
-    //alert("Please enter a nickname, the game room you would like to enter, and a password for the room. You must enter the correct password for game rooms that already exist. If you are reconnecting to a game room, pease check the box right by the question on the screen")
+    alert("Please enter a nickname, the game room you would like to enter, and a password for the room. \n \n You must enter the correct password for game rooms that already exist. \n \n If you are reconnecting to a game room, please check the box right by the question on the screen")
     setAlertText("Please enter a nickname, the game room you would like to enter, and a password for the room. You must enter the correct password for game rooms that already exist. If you are reconnecting to a game room, pease check the box right by the question on the screen")
     setShowAlert(true)
 
