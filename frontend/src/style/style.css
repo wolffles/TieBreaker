@@ -253,18 +253,53 @@ margin: 15px 10px 0px 10px;
 
 /* Login Page */
 
-.login.page {
+.login.page{
   width: 100%;
-  height: 100vh;
+  height: 100%;
   position: absolute;
   z-index: 10;
-  background-color: #000;
+  background-color: #541d19;
+  color: #fff;
+  font-weight: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.login.page .form {
-  margin-top: 15vh;
+
+.loginform {
   text-align: center;
   width: 100%;
+}
+
+.login-container{
+    background-color: #000;
+    padding-bottom: 5vh;
+    border: 5px none;
+    border-radius: 25px;
+    width: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 10px 0px 40px 5px #992b23;
+}
+
+.login-info{
+  right: 0px;
+  top: 0px;
+  position: absolute;
+  margin: 15px 15px 0px 0px;
+}
+
+.loginInput {
+  background-color: transparent;
+  border: none;
+  border-bottom: 2px solid #fff;
+  outline: none;
+  padding-bottom: 15px;
+  text-align: center;
+  width: 400px;
+  color: white;
 }
 
 .login-button{
@@ -283,21 +318,14 @@ button.login-button:hover{
   cursor: pointer;
 }
 
-.reconnection:hover {
-  cursor: pointer;
-}
-
-.login-info{
-  right: 0px;
-  top: 0px;
-  position: absolute;
-  margin: 15px 15px 0px 0px;
-}
-
 .login-info:hover{
   cursor:pointer;
 }
 
+
+.reconnection:hover {
+  cursor: pointer;
+}
 
 
 
@@ -321,22 +349,6 @@ button.login-button:hover{
 }
 
 
-
-.loginInput {
-  background-color: transparent;
-  border: none;
-  border-bottom: 2px solid #fff;
-  outline: none;
-  padding-bottom: 15px;
-  text-align: center;
-  width: 400px;
-}
-
-
-.login.page *{
-  color: #fff;
-  font-weight: 200;
-}
 
 .title{
   font-size: 2vw;

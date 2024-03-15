@@ -120,20 +120,21 @@ export default function Login({context}) {
 
     return (
       <div className={`login page ${hidden ? "hidden" : ""}`}>
-        <span className="login-info" onClick={(e) => alertInfo(e)}><FaInfoCircle size="2em" />
-</span>
-        <form id="loginForm" className="form" onSubmit={handleSubmit}>
-            <p className="title">What's your nickname?</p>
-              <input id="nicknameInput" className="loginInput" type="text" maxLength="8" onChange={changeInput}/>
-            <p className="title">Enter a game room name: </p> 
-               <input id="gameInput" className="loginInput" type="text" maxLength="8" onChange={changeGameInput}/> 
-            <p className="title">Enter a Password: </p> 
-               <input id="passwordInput" className="loginInput" type="text" maxLength="8" onChange={changePasswordInput}/> 
-            <p className="title">Are you a reconnecting user?  <input className="reconnecting"  type="checkbox" onClick={changeReconnecting}/> </p>                
-               <input style={{display:"none"}}type="submit"></input>
-               <br/>
-               <button className="login-button"> Submit </button>
-        </form>
+        <span className="login-info" onClick={(e) => alertInfo(e)}><FaInfoCircle size="2em" /></span>
+        <div className="login-container">
+            <form id="loginForm" className="loginform" onSubmit={handleSubmit}>
+                <p className="title">What's your nickname?</p>
+                  <input id="nicknameInput" className="loginInput" type="text" maxLength="8" onChange={changeInput}/>
+                <p className="title">Enter a game room name: </p>
+                   <input id="gameInput" className="loginInput" type="text" maxLength="8" onChange={changeGameInput}/>
+                <p className="title">Enter a Password: </p>
+                   <input id="passwordInput" className="loginInput" type="text" maxLength="8" onChange={changePasswordInput}/>
+                <p className="title">Are you a reconnecting user?  <input className="reconnecting"  type="checkbox" onClick={changeReconnecting}/> </p>
+                   <input style={{display:"none"}}type="submit"></input>
+                   <br/>
+                   <button className="login-button"> Submit </button>
+            </form>
+        </div>
         <AlertModal showAlert={showAlert} alertText={alertText}/>
       </div>
     );
