@@ -3,13 +3,12 @@
 /*
 master style guide
 colors: 
-  #F7F9FB light grey
-  #8FC1E3 sky blue
-  #5085A5 pastel blue
-  #31708E navy/water blue
-  #687864 camo green
-  ##3e423d darkmode
-  #4E4E50 dark grey
+  #121212 black
+  #181818 shadow grey
+  #282828 dark grey
+  #404040 grey
+  #b3b3b3 light grey
+  #ffffff white
 */
 
 
@@ -62,7 +61,7 @@ html, body {
 
 
 .playerArea {
-  background-color: #3e423d;
+  background-color: #282828;
   height: 95vh;
   padding: 2.5%;
   padding-top: 0;
@@ -122,7 +121,7 @@ html, body {
 
 }
 
-.player-area-header{
+  .player-area-header{
   display: flex;
   justify-content: space-between;
   flex-direction: row;
@@ -273,7 +272,7 @@ margin: 15px 10px 0px 10px;
 }
 
 .login-container{
-    background-color: #000;
+    background-color: #140c0c;
     padding-bottom: 5vh;
     border: 5px none;
     border-radius: 25px;
@@ -405,10 +404,9 @@ button.login-button:hover{
 
 .chatArea {
   height: 100%;
-  border-right: 8px solid #1A1A1D;
-  border-left: 8px solid #1A1A1D;
-  border-bottom: 8px solid #1A1A1D;
-  background-color: #CDCDD4;
+  border-right: 5px solid #1A1A1D;
+  border-left: 5px solid #1A1A1D;
+  border-bottom: 5px solid #1A1A1D;
 }
 
 .chat-toolbar {
@@ -423,7 +421,7 @@ button.login-button:hover{
 .chatDisplay {
   height: 94%;
   padding-bottom: 60px;
-  background-color: #CDCDD4;
+  background-color: #b3b3b3;
   overflow-y: scroll;
 }
 
@@ -464,7 +462,7 @@ button.login-button:hover{
 
 /* Input */
 .messageInput .inputMessage {
-  border: 8px solid #1A1A1D;
+  border: 5px solid #1A1A1D;
   bottom: 0;
   height: 60px;
   left: 0;
@@ -473,7 +471,7 @@ button.login-button:hover{
   right: 0;
   position: fixed;
   width: 25%;
-  background-color: #4E4E50;
+  background-color: #181818;
   color: white;
   font-weight: 600;
 
@@ -491,7 +489,7 @@ button.login-button:hover{
 /* menu bar  */
 .menubar {
   overflow: hidden;
-  background-color: #31708E;
+  background-color: #181818;
   width: 100%;
   display: flex;
   justify-content: space-between;
@@ -505,7 +503,7 @@ button.login-button:hover{
   width: 150px;
   font-weight:bold;
   color: F7F9FB;
-  background-color: #5085A5;
+  background-color: #404040;
   padding: 0px;
   margin: 0px;
   border: 0px;
@@ -541,7 +539,7 @@ button.login-button:hover{
   font-size: 1em;
   width: 100%;
   text-align: center; 
-  background-color: #5085A5;
+  background-color: #404040;
 }
 
 .second-button{

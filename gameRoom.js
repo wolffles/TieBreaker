@@ -20,7 +20,7 @@ const COLORS2 = [
     '#3ab4bd', '#07c559', '#dcde64', '#e08207'
   ];
 
-  //colors corelate to #4 in following link: https://digitalsynopsis.com/design/website-color-schemes-palettes-combinations/
+  //colors correlate to #4 in following link: https://digitalsynopsis.com/design/website-color-schemes-palettes-combinations/
 
 // Gets the color of a username through our hash function
 const getUsernameColor = (username) => {

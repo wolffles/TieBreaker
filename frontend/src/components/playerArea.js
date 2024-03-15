@@ -119,7 +119,15 @@ export default function PlayersArea({ players, roomName, playersList }) {
    
 
         return( 
-          <div className={setPlayerClass()} id={username} style={{backgroundColor:players[username] ? players[username].color : getUsernameColor(username)}} key={username}>
+          <div
+            className={setPlayerClass()}
+            id={username}
+            style={{
+              backgroundColor:players[username] ? players[username].color : getUsernameColor(username),
+              boxShadow: "0px 0px 10px 5px #b3b3b3"
+            }}
+            key={username}
+          >
             <div className="player-area-header">
               <div className="nickname">{username}</div>
               <div className="player-area-buttons">
