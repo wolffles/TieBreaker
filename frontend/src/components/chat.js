@@ -38,7 +38,6 @@ export default function Chat({ context }) {
         sendMessage({message:message, username:userInfo.username});
         addMessage(message,userInfo.username);
         e.target.children[0].value = ''
-       
     }
 
     function toggleDisplay(e){
