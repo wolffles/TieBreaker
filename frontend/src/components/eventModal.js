@@ -2,9 +2,8 @@
 import {socket} from '../utility/socket.js';
 import '../style/tools.css';
 import '../style/style.css';
-export default function DiceModal({ context, showEvent, eventValue, modalType}) {
 
-
+export default function EventModal({ context, showEvent, eventValue, modalType}) {
   function rollDice(e){
     e.preventDefault();
     let diceType = e.target.innerHTML
