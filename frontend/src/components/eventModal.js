@@ -41,8 +41,8 @@ export default function EventModal({ context, showEvent, eventValue, modalType})
       );
     }else if (modalType === 'flip') {
       return (<div className={`${showEvent ? "column modal" : "hidden"}`}>
-                    <div className="tool-display">
-                     <div>{eventValue}</div>    
+                    <div className="coin-display">
+                      {eventValue}
                     </div>
                     <button className="modal-button coin" onClick={flipCoin}> Flip Coin </button>
               </div>);

@@ -3,7 +3,7 @@ import PlayerArea from './playerArea.js'
 import EventModal from './eventModal.js'
 import '../style/style.css';
 import {updatePlayers, socket} from '../utility/socket.js';
-
+import CoinAnimation from './coinAnimation.js';
 
 export default function Dashboard({ context }) {
     const [userInfo, setUserInfo] = useContext(context);
@@ -57,16 +57,16 @@ export default function Dashboard({ context }) {
 
       }
   
-      
+    function displayFlipEvent(flipAmount){
+      console.log('flipAmount', flipAmount)
+      console.log('setting event value')
+      setEventValue(<CoinAnimation totalFlips={flipAmount} />)
+    }
 
     function displayingEvent(roll, type) {
       roll.forEach((face, i) => {
         let side;
-        if(type === 'flip') {
-          side = face === 1 ? 'Heads' : 'Tails'
-        }else{
-          side = face
-        }
+        side = face
         setTimeout(() => {
           setEventValue(side)
         }, i*i*10);
@@ -89,16 +89,16 @@ export default function Dashboard({ context }) {
         displayingEvent(roll)
       });
       
-      socket.on('coin is flipping', flip =>{
+      socket.on('coin is flipping', flipAmount =>{
         if(!showEvent){setShowEvent(true)};
         setModalType('flip');
-        displayingEvent(flip, 'flip')
+        displayFlipEvent(flipAmount)
       });
       
-      socket.on('choosing player', flip =>{
+      socket.on('choosing player', playersArray =>{
         if(!showEvent){setShowEvent(true)};
         setModalType('choose');
-        displayingEvent(flip, 'choose')
+        displayingEvent(playersArray, 'choose')
       });
       
       // socket.on('update player data', (data) =>{

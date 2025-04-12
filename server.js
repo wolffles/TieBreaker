@@ -176,8 +176,9 @@ io.on('connection', (socket) => {
     })
 
     socket.on('flip coin', () => {
-        let array = coinToss(rooms[roomName].connectedPlayers)
-        broadcastToRoom(io, socket.roomName, "coin is flipping", array)
+        //coinToss returns array because the whole function returns an array
+        let numberOfFlips = coinToss(rooms[roomName].connectedPlayers)
+        broadcastToRoom(io, socket.roomName, "coin is flipping", numberOfFlips)
         // emitDataToClient(socket, "dice is rolling", data)
         // broadcastRoomExcludeSender(socket, roomName,'someone rolling dice',data)
     })

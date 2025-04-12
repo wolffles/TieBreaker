@@ -28,17 +28,8 @@ module.exports = {
         }
         return array
     }, coinToss: () => {
-        let flip = Math.floor(Math.random() * 2) + 1;
-        let array = [];
-        while (array.length < 13){
-          array.push(flip)
-          if(flip == 1){
-              flip = 2
-          } else {
-              flip = 1
-          }
-        }
-        return array
+        return Math.floor(Math.random() * 6) + 5;
+        //return number of flips from 5 to 10
     }, choosePlayer: (playersList) => {
         let array = [];
        if(playersList.length >= 3){

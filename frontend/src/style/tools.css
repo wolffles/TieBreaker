@@ -46,6 +46,7 @@
 
 .modal-button{
     font-weight:bold;
+    height: 20%;
     font-size: 5vw;
     width: 100%;
     text-align: center; 
@@ -102,12 +103,20 @@ cursor: pointer;
 
 /* ********************* coin flip  ************** */
 
-.column.modal{
+.coin-display{
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 80%;
+    background-color: #1A1A1A;
+}
+
+.column{
     position: fixed;
     display: flex;
     flex-direction: column;
-    width: 50%;
-    height: 50%;
+    width: 60%;
+    height: 60%;
     top: 25%;
     left: 35%;
     background-color: white;
