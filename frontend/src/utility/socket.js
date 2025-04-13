@@ -1,17 +1,33 @@
-import openSocket from 'socket.io-client';
+import io from 'socket.io-client';
 
-let host
 
-if(window.origin.includes("herokuapp") && window.origin.includes("tie-breaker7")){
-    host = "https://tie-breaker7.herokuapp.com/"
-}else if(window.origin.includes("herokuapp")) {
-    host = "https://tie-breaker-1d45a4631458.herokuapp.com/" 
-} else {
-    host = "http://localhost:3001"
-}
 
-console.log('here is the host server', host);
-export const  socket = openSocket(host);
+const getSocketHost = () => {
+    if (window.location.hostname === 'localhost') {
+        return 'http://localhost:3001';
+    }
+    // For production, use the current hostname with HTTPS
+    return `https://${window.location.hostname}`;
+};
+
+console.log('here is the host server', getSocketHost());
+
+
+export const socket = io(getSocketHost(), {
+    transports: ['polling'],  // Start with polling only
+    reconnectionAttempts: 5,
+    reconnectionDelay: 1000,
+    reconnectionDelayMax: 5000,
+    timeout: 20000,
+    path: '/socket.io/',
+    secure: window.location.hostname !== 'localhost',
+    withCredentials: true
+});
+
+// // Log connection events for debugging
+// socket.on('connect', () => {
+//     console.log('Socket connected successfully');
+// });
 
 // to server
 export const sendMessage = (data) => {

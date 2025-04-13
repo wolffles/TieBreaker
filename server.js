@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 const path = require('path');
 const server = require('http').createServer(app);
-const io = require('socket.io')(server, {pingTimeout: 30000});
+const {Server} = require('socket.io');
 const port = process.env.PORT || 3001;
 const util = require('util')
 
@@ -15,6 +15,27 @@ const { choosePlayer, coinToss, diceToss, modifyUsername, isUsernameUnique, upda
 
 server.listen(port, () => {
     console.log(`Server listening at port: ${port}`);
+});
+// Configure Socket.IO with proper WebSocket handling
+const io = new Server(server, {
+    cors: {
+        origin: ["http://localhost:3000", "http://localhost:3001", "https://simply-chat-app.fly.dev"],
+        methods: ["GET", "POST"],
+        credentials: true,
+        allowedHeaders: ["*"]
+    },
+    path: '/socket.io/',
+    transports: ['polling', 'websocket'],
+    pingTimeout: 5000,
+    pingInterval: 25000,
+    upgradeTimeout: 10000,
+    maxHttpBufferSize: 1e6,
+    connectTimeout: 600000,
+    serverClient: false,
+    disconnectOnUnload: true,
+    allowEIO3: true,
+    allowUpgrades: true,
+    cookie: false
 });
 
 app.use(express.static('frontend/build'));
