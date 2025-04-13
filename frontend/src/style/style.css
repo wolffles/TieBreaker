@@ -295,7 +295,7 @@ margin: 15px 10px 0px 10px;
 }
 
 .loginInput {
-  background-color: transparent;
+  background-color: transparent !important;
   border: none;
   border-bottom: 2px solid #fff;
   outline: none;
@@ -303,6 +303,18 @@ margin: 15px 10px 0px 10px;
   text-align: center;
   width: 400px;
   color: white;
+  font-weight: bold;
+}
+
+/* Override browser autofill styling */
+.loginInput:-webkit-autofill,
+.loginInput:-webkit-autofill:hover,
+.loginInput:-webkit-autofill:focus,
+.loginInput:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 30px transparent inset !important;
+  -webkit-text-fill-color: white !important;
+  background-color: transparent !important;
+  transition: background-color 5000s ease-in-out 0s;
 }
 
 .login-button{

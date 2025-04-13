@@ -248,26 +248,32 @@ export default function CoinAnimation({ totalFlips }) {
 
   return (
     <div className="bg-gray-800 rounded-lg p-6" style={{ position: 'relative' }}>
-      {!isFlipping && (
                 <div style={{
-                  position: 'absolute',
-                  left: '0',
-                  right: '0',
                   display: 'flex',
                   justifyContent: 'center',
-                  zIndex: 10
                 }}>
+                {!isFlipping ? 
                   <h1 style={{
-                    fontSize: '2rem',
+                    fontSize: '20px',
                     fontWeight: 'bold',
                     color: 'white',
                     backgroundColor: 'transparent',
-
-                  }}>
-            {flipStartingFace}
-          </h1>
+                    height: '30px',
+                    paddingBottom: '10px'
+                  }}> 
+                    {flipStartingFace}
+                  </h1>
+                  :
+                  <h1 style={{
+                    fontSize: '20px',
+                    fontWeight: 'bold',
+                    color: 'white',
+                    backgroundColor: 'transparent',
+                    height: '30px',
+                    paddingBottom: '10px'
+                  }}> </h1>
+                }
         </div>
-      )}
       <div 
         ref={containerRef} 
         className="w-full h-96 bg-gray-700 rounded-lg mb-4"
