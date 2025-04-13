@@ -1,8 +1,10 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useCallback } from 'react';
 import * as THREE from 'three';
 
 
 export default function CoinAnimation({ totalFlips }) {
+  // console.log('CoinAnimation render - totalFlips:', totalFlips);
+  
   const containerRef = useRef(null);
   const coinRef = useRef(null);
   const animationStateRef = useRef({
@@ -17,6 +19,15 @@ export default function CoinAnimation({ totalFlips }) {
   const isActiveRef = useRef(true);
   const animationFrameRef = useRef(null);
   const prevTotalFlipsRef = useRef(totalFlips);
+  const startingFaceRef = useRef(StartingFace);
+  const totalFlipsRef = useRef(totalFlips);
+  
+  // Update refs when props/state change
+  useEffect(() => {
+    startingFaceRef.current = StartingFace;
+    totalFlipsRef.current = totalFlips;
+  }, [StartingFace, totalFlips]);
+  
   const flipStartingFace = (totalFlips % 2 === 0) ? StartingFace ? "Heads": "Tails": !StartingFace ? "Tails": "Heads";
 
   // Function to check if the component is visible
@@ -26,35 +37,46 @@ export default function CoinAnimation({ totalFlips }) {
     return !(rect.width === 0 || rect.height === 0);
   };
 
-  const flipCoin = () => {
+
+  const flipCoin = useCallback(() => {
+    console.log('flipCoin function called with totalFlips:', totalFlipsRef.current);
     
     setIsFlipping(true);
-    if (animationStateRef.current.isAnimating || !coinRef.current) return;
+    if (animationStateRef.current.isAnimating || !coinRef.current) {
+      console.log('Animation blocked:', {
+        isAnimating: animationStateRef.current.isAnimating,
+        coinRefExists: !!coinRef.current
+      });
+      return;
+    }
     
+    console.log('Starting animation with totalFlips:', totalFlipsRef.current);
     animationStateRef.current.isAnimating = true;
     animationStateRef.current.flipCount = 0;
-    
-    // Random number of flips 5,6,7,8,9,10
-    // const totalFlips = Math.floor(Math.random() * 6) + 5;
-    // const totalFlips = 1
+  
     
     // Set initial rotation based on current face
-    animationStateRef.current.currentRotation = StartingFace ? 0 : Math.PI;
+    animationStateRef.current.currentRotation = startingFaceRef.current ? 0 : Math.PI;
     coinRef.current.rotation.z = animationStateRef.current.currentRotation;
     
     // Result is opposite of starting state if odd number of flips
-    const willBeHeads = StartingFace === (totalFlips % 2 === 0);
+    const willBeHeads = startingFaceRef.current === (totalFlipsRef.current % 2 === 0);
+    console.log('Will be heads:', willBeHeads);
     
     const animateFlip = () => {
-      if (!isActiveRef.current) return;
+      if (!isActiveRef.current) {
+        console.log('Animation stopped: isActiveRef is false');
+        return;
+      }
       
       // Check if component is visible before continuing animation
       if (!isVisible()) {
+        console.log('Component not visible, continuing animation in background');
         animationFrameRef.current = requestAnimationFrame(animateFlip);
         return;
       }
       
-      if (animationStateRef.current.flipCount < totalFlips) {
+      if (animationStateRef.current.flipCount < totalFlipsRef.current) {
         // Flip animation - continuous rotation without resets
         animationStateRef.current.currentRotation += animationStateRef.current.flipSpeed;
         coinRef.current.rotation.z = animationStateRef.current.currentRotation;
@@ -66,10 +88,12 @@ export default function CoinAnimation({ totalFlips }) {
         // keep flipping until completerotations is greater than flipcount
         if (completeRotations > animationStateRef.current.flipCount) {
           animationStateRef.current.flipCount = completeRotations;
+          // console.log('Flip count updated:', animationStateRef.current.flipCount);
         }
         
         animationFrameRef.current = requestAnimationFrame(animateFlip);
       } else {
+        console.log('Animation complete, setting final rotation');
         // Set the final rotation to match the result
         // We use modulo to get the final position within a single rotation
         const finalRotation = willBeHeads ? 0 : Math.PI;
@@ -84,13 +108,18 @@ export default function CoinAnimation({ totalFlips }) {
     };
     
     animateFlip();
-  };
+  }, []); // No dependencies needed since we're using refs
 
   useEffect(() => {
-    if (!containerRef.current) return;
+    console.log('Initial setup effect running');
+    if (!containerRef.current) {
+      console.log('No container ref, returning early');
+      return;
+    }
 
     // Store the container reference for cleanup
     const container = containerRef.current;
+    console.log('Container found, setting up scene');
 
     // Scene setup
     const scene = new THREE.Scene();
@@ -134,12 +163,14 @@ export default function CoinAnimation({ totalFlips }) {
     const coin = new THREE.Mesh(coinGeometry, coinMaterial);
     scene.add(coin);
     coinRef.current = coin;
+    console.log('Coin created and added to scene');
 
     // Add textures for heads and tails
     const textureLoader = new THREE.TextureLoader();
     const headsTexture = textureLoader.load('/images/coin-heads.png');
     const tailsTexture = textureLoader.load('/images/coin-tails.png');
-    console.log(headsTexture);
+    console.log('Textures loaded:', { headsTexture, tailsTexture });
+    
     const headsMaterial = new THREE.MeshStandardMaterial({
       map: headsTexture,
       metalness: 0.8,
@@ -157,13 +188,7 @@ export default function CoinAnimation({ totalFlips }) {
         headsMaterial,  // top face (heads)
         tailsMaterial   // bottom face (tails)
     ];
-
-    // Controls
-    // const controls = new OrbitControls(camera, renderer.domElement);
-    // controls.target.set(-1, -1, -1);
-    // controls.update()
-    // controls.enableDamping = true;
-    // controls.dampingFactor = 0.05;
+    console.log('Materials applied to coin');
 
     // Handle window resize
     const handleResize = () => {
@@ -178,22 +203,26 @@ export default function CoinAnimation({ totalFlips }) {
 
     // Animation loop
     const animate = () => {
-      if (!isActiveRef.current) return;
+      if (!isActiveRef.current) {
+        console.log('Animation loop stopped: isActiveRef is false');
+        return;
+      }
       
       // Check if component is visible before rendering
       if (isVisible()) {
         renderer.render(scene, camera);
-        // console.log("Rendering frame, coin position:", coin.position);
       }
       
       animationFrameRef.current = requestAnimationFrame(animate);
     };
 
     animate();
-    console.log("component mounted and rendered")
+    console.log("Initial setup complete, animation loop started");
     
+    flipCoin();
     // Cleanup
     return () => {
+      console.log('Cleanup function running');
       isActiveRef.current = false; // Stop the animation loop
       if (animationFrameRef.current) {
         cancelAnimationFrame(animationFrameRef.current);
@@ -208,25 +237,14 @@ export default function CoinAnimation({ totalFlips }) {
       headsMaterial.dispose();
       tailsMaterial.dispose();
       renderer.dispose();
-    };
-  }, []);
-
-  // Add effect to trigger coin flip once on mount
-  useEffect(() => {
-    // Small delay to ensure the component is fully mounted
-    const timer = setTimeout(() => {
-      console.log('componenet mounted')
-      flipCoin();
-    }, 100);
-    
-    return () => {
-      clearTimeout(timer);
-      isActiveRef.current = false; // Ensure flip animation stops too
       if (animationFrameRef.current) {
         cancelAnimationFrame(animationFrameRef.current);
       }
+      console.log('Cleanup complete');
+
     };
-  }, []); // Removed flipCoin from dependency array to avoid infinite loop
+  }, [flipCoin]);
+
 
   // Add effect to watch for changes in totalFlips
   useEffect(() => {
@@ -237,14 +255,17 @@ export default function CoinAnimation({ totalFlips }) {
       
       // Small delay to ensure the component is ready
       const timer = setTimeout(() => {
+        console.log('flipping coin due to totalFlips change');
         flipCoin();
       }, 100);
       
       return () => {
+        console.log('totalFlips change cleanup running');
         clearTimeout(timer);
       };
     }
-  }, [totalFlips]);
+  }, [totalFlips, flipCoin]);
+
 
   return (
     <div className="bg-gray-800 rounded-lg p-6" style={{ position: 'relative' }}>
