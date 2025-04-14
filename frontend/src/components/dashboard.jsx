@@ -28,7 +28,7 @@ export default function Dashboard() {
 
     function handleSubmit(e){
       e.preventDefault();
-      let updatedState = Object.assign({}, localUserInfo);
+      let updatedState = Object.assign({}, userInfo);
       let input = inputValue;       
        e.target.children[0].value = ''
 
@@ -41,7 +41,7 @@ export default function Dashboard() {
         input = '0';
         setInputContext(input);
       }
-
+      console.log('updatedState.players', updatedState.players)
       for (let username in updatedState.players){
         updatedState.players[username].points[0][1] = input;
       }

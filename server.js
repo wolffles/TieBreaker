@@ -149,6 +149,7 @@ io.on('connection', (socket) => {
     
     // this will be called when we need to update any player
     socket.on('update players', (data) => {
+        console.log("update players recieved", data)
         try {
             let roomState = rooms[roomName] 
             switch (data.action) {
