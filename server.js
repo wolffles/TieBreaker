@@ -2,7 +2,8 @@ const express = require('express');
 const app = express();
 const path = require('path');
 const server = require('http').createServer(app);
-const {Server} = require('socket.io');
+const { Server } = require('socket.io');
+const cors = require('cors');
 const port = process.env.PORT || 3001;
 const util = require('util')
 
@@ -13,13 +14,18 @@ const util = require('util')
 const { newPlayerInRoom, createGameRoom, createPlayerObj, userConnectedToRoom, userDisconnected, deleteRoom, removeUser } = require('./gameRoom');
 const { choosePlayer, coinToss, diceToss, modifyUsername, isUsernameUnique, updateServerGameState } = require('./sourceCheck');
 
-server.listen(port, () => {
-    console.log(`Server listening at port: ${port}`);
-});
+// Enable CORS for all routes
+app.use(cors({
+    origin: ["http://localhost:3000", "http://localhost:3001", "http://localhost:5173", "https://simply-chat-app.fly.dev"],
+    methods: ["GET", "POST"],
+    credentials: true,
+    allowedHeaders: ["*"]
+}));
+
 // Configure Socket.IO with proper WebSocket handling
 const io = new Server(server, {
     cors: {
-        origin: ["http://localhost:3000", "http://localhost:3001", "https://simply-chat-app.fly.dev"],
+        origin: ["http://localhost:3000", "http://localhost:3001", "http://localhost:5173", "https://simply-chat-app.fly.dev"],
         methods: ["GET", "POST"],
         credentials: true,
         allowedHeaders: ["*"]
@@ -38,13 +44,17 @@ const io = new Server(server, {
     cookie: false
 });
 
+// Add a test route to verify the server is running
+app.get('/test', (req, res) => {
+    res.send('Server is running!');
+});
+
 app.use(express.static('frontend/build'));
 
 app.get('*', (req, res) => {
     res.sendFile(path.resolve(__dirname, 'frontend', 'build', 'index.html'));
 });
   
-
 // wake();
 let rooms = {}
 
@@ -53,7 +63,7 @@ io.on('connection', (socket) => {
     // going to convert the code to have different rooms
     //  if(!rooms['game1']){ rooms['game1'] = createGameRoom('game1') }
     // socket.emit('update game state', rooms['game1'])
-    
+    console.log('a user connected')
     // these variables are global inside of an indivdual connection (I think)
     let addedUser = false
     let roomName = ""
@@ -93,15 +103,21 @@ io.on('connection', (socket) => {
             addedUser = true;
             userConnectedToRoom(rooms[roomName], socket.username)
            // console.log(util.inspect(rooms[roomName], false, null, true))
+           console.log("emitting update player state")
             socket.emit('update player state', rooms[roomName].savedPlayers[socket.username])
-            broadcastToRoom(io,roomName,'update game state', rooms[roomName]);
         }else{
             socket.emit('wrong password', roomName);
         }
     });
 
+    socket.on('playerDashboardReady', (data) => {
+        console.log("emitting update game state, rooms[roomName]", roomName, rooms[roomName])
+        broadcastToRoom(io, roomName,'update game state', rooms[roomName]);
+    })
+
     socket.on('request server messages', (data) => {
         rooms[data.roomName].broadcast = false;
+        console.log("emitting server messages", data)
         emitDataToClient(socket, 'server messages', data)
     })
 
@@ -133,6 +149,7 @@ io.on('connection', (socket) => {
     
     // this will be called when we need to update any player
     socket.on('update players', (data) => {
+        console.log("update players recieved", data)
         try {
             let roomState = rooms[roomName] 
             switch (data.action) {
@@ -242,4 +259,14 @@ const broadcastRoomExcludeSender = (socket, roomName, listenString, dataObj ) =>
  * @param {*} dataObj 
  */
 const broadcastToRoom = (io, roomName, listenString, dataObj) => { 
-      io.in(roomName).emit(listenString, dataObj);}
+    console.log(`Broadcasting '${listenString}' to room: ${roomName}`);
+    console.log("Data being broadcast:", JSON.stringify(dataObj, null, 2));
+    io.in(roomName).emit(listenString, dataObj);
+    console.log("Broadcast complete");
+}
+
+// Start the server after configuring everything
+server.listen(port, () => {
+    console.log(`Server listening at port: ${port}`);
+    console.log(`Socket.IO server is running on path: /socket.io/`);
+});

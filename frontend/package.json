@@ -8,14 +8,11 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
-    "enzyme": "^3.11.0",
-    "enzyme-adapter-react-16": "^1.15.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-icons": "^3.10.0",
-    "react-scripts": "^5.0.1",
-    "socket.io-client": "^4.8.1",
-    "three": "^0.175.0"
+    "react-icons": "^4.11.0",
+    "react-test-renderer": "^18.2.0",
+    "socket.io-client": "^4.4.1"
   },
     "overrides": {
     "nth-check": "^2.0.1",
@@ -25,10 +22,10 @@
     "@svgr/webpack": "^8.0.0"
 },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "node_modules/.bin/mocha --timeout 10000",
-    "eject": "react-scripts eject"
+    "start": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "node_modules/.bin/mocha --timeout 10000"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -46,8 +43,10 @@
     ]
   },
   "devDependencies": {
+    "@vitejs/plugin-react": "^3.0.0",
     "chai": "^4.2.0",
     "mocha": "^10.2.0",
-    "selenium-webdriver": "^4.0.0-alpha.7"
+    "selenium-webdriver": "^4.0.0-alpha.7",
+    "vite": "^4.0.0"
   }
 }

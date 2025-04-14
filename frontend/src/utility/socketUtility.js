@@ -2,10 +2,10 @@ import React, {useContext, useState, createContext, useEffect} from "react";
 // import MessageList from './messageList.js';
 //inporting socket so application can have one instance of socket
 import {sendMessage, socket} from './socket.js';
+import {userContext} from '../App.jsx';
 
-
-export default function SocketUtility({ context }) {
-    const [userInfo, setUserInfo] = useContext(context);
+export default function SocketUtility() {
+    const [userInfo, setUserInfo] = useContext(userContext);
    
 
     let inputContext = createContext('')

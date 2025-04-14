@@ -1,7 +1,5 @@
 import io from 'socket.io-client';
 
-
-
 const getSocketHost = () => {
     if (window.location.hostname === 'localhost') {
         return 'http://localhost:3001';
@@ -12,22 +10,31 @@ const getSocketHost = () => {
 
 console.log('here is the host server', getSocketHost());
 
-
 export const socket = io(getSocketHost(), {
-    transports: ['polling'],  // Start with polling only
-    reconnectionAttempts: 5,
+    transports: ['polling', 'websocket'],  // Allow both polling and websocket
+    reconnectionAttempts: 10,
     reconnectionDelay: 1000,
     reconnectionDelayMax: 5000,
     timeout: 20000,
     path: '/socket.io/',
     secure: window.location.hostname !== 'localhost',
-    withCredentials: true
+    withCredentials: true,
+    autoConnect: true,
+    forceNew: true
 });
 
-// // Log connection events for debugging
-// socket.on('connect', () => {
-//     console.log('Socket connected successfully');
-// });
+// Add connection event listeners for debugging
+socket.on('connect', () => {
+    console.log('Socket connected successfully');
+});
+
+socket.on('connect_error', (error) => {
+    console.error('Socket connection error:', error);
+});
+
+socket.on('disconnect', (reason) => {
+    console.log('Socket disconnected:', reason);
+});
 
 // to server
 export const sendMessage = (data) => {
