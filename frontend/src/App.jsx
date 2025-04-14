@@ -1,17 +1,33 @@
-import React from 'react';
+import React, { createContext, useState, useEffect } from 'react';
 import Login from './components/login';
 import Dashboard from './components/dashboard';
+import Chat from './components/chat';
 import './style/App.css';
-import { createContext } from 'react';
-import { useState } from 'react';
+
+
+// Create context outside of component to prevent recreation on each render
+export const userContext = createContext();
+
 function App() {
-  let userContext = createContext();
-  let [userInfo, setUserInfo] = useState(userContext);
-  //
+  // Initialize with an empty object that has the expected structure
+  const [userInfo, setUserInfo] = useState({
+    username: '',
+    id: '',
+    color: '',
+    roomName: '',
+    messages: [],
+    scratchPad: '',
+    connectedPlayersList: [],
+    playersList: [],
+    players: {},
+    password: '',
+    chatToggle: false
+  });
+  
 
   function app(){
     let display = ''
-    if(userInfo.username){
+    if(userInfo?.username){
       display = (
         <div className="pages">
           <Chat context={userContext} />

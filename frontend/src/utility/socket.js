@@ -1,17 +1,40 @@
-import openSocket from 'socket.io-client';
+import io from 'socket.io-client';
 
-let host
+const getSocketHost = () => {
+    if (window.location.hostname === 'localhost') {
+        return 'http://localhost:3001';
+    }
+    // For production, use the current hostname with HTTPS
+    return `https://${window.location.hostname}`;
+};
 
-if(window.origin.includes("herokuapp") && window.origin.includes("tie-breaker7")){
-    host = "https://tie-breaker7.herokuapp.com/"
-}else if(window.origin.includes("herokuapp")) {
-    host = "https://tie-breaker-1d45a4631458.herokuapp.com/" 
-} else {
-    host = "http://localhost:3001"
-}
+console.log('here is the host server', getSocketHost());
 
-console.log('here is the host server', host);
-export const  socket = openSocket(host);
+export const socket = io(getSocketHost(), {
+    transports: ['polling', 'websocket'],  // Allow both polling and websocket
+    reconnectionAttempts: 10,
+    reconnectionDelay: 1000,
+    reconnectionDelayMax: 5000,
+    timeout: 20000,
+    path: '/socket.io/',
+    secure: window.location.hostname !== 'localhost',
+    withCredentials: true,
+    autoConnect: true,
+    forceNew: true
+});
+
+// Add connection event listeners for debugging
+socket.on('connect', () => {
+    console.log('Socket connected successfully');
+});
+
+socket.on('connect_error', (error) => {
+    console.error('Socket connection error:', error);
+});
+
+socket.on('disconnect', (reason) => {
+    console.log('Socket disconnected:', reason);
+});
 
 // to server
 export const sendMessage = (data) => {

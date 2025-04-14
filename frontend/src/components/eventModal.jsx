@@ -1,51 +1,62 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
-import '../style/eventModal.css';
+ import React from "react";
+import {socket} from '../utility/socket.js';
+import '../style/tools.css';
+import '../style/style.css';
 
-const EventModal = ({ isOpen, onClose, event }) => {
-  const [isLoading, setIsLoading] = useState(false);
-  const { user } = useAuth();
-  const navigate = useNavigate();
+export default function EventModal({ showEvent, eventValue, modalType}) {
+  function rollDice(e){
+    e.preventDefault();
+    let diceType = e.target.innerHTML
+    socket.emit('roll dice', diceType);
+  }
 
-  if (!isOpen) return null;
+  function flipCoin(e){
+    e.preventDefault();
+    socket.emit('flip coin');
+  }
 
-  const handleJoinEvent = async () => {
-    setIsLoading(true);
-    try {
-      // API call to join event would go here
-      console.log('Joining event:', event.id);
-      // After successful join, navigate to dashboard
-      navigate('/dashboard');
-    } catch (error) {
-      console.error('Error joining event:', error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  function choosePlayer(e){
+    e.preventDefault();
+    socket.emit('choose player');
+  }
 
-  return (
-    <div className="modal-overlay">
-      <div className="modal-content">
-        <button className="close-button" onClick={onClose}>×</button>
-        <h2>{event.title}</h2>
-        <p>{event.description}</p>
-        <div className="event-details">
-          <p><strong>Date:</strong> {event.date}</p>
-          <p><strong>Time:</strong> {event.time}</p>
-          <p><strong>Location:</strong> {event.location}</p>
-          <p><strong>Players:</strong> {event.currentPlayers}/{event.maxPlayers}</p>
+  function modalRender(){
+    if(modalType === 'dice') {
+      return (
+        <div className={`${showEvent ? "modal" : "hidden"}`}>
+        <div className="dice divider outside">
+          <button className="modal-button dice" onClick={rollDice}> 4 </button>
+          <button className="modal-button dice" onClick={rollDice}> 6 </button>
+          <button className="modal-button dice" onClick={rollDice}> 8 </button>
         </div>
-        <button 
-          className="join-button" 
-          onClick={handleJoinEvent}
-          disabled={isLoading}
-        >
-          {isLoading ? 'Joining...' : 'Join Event'}
-        </button>
+        <div className="dice divider middle">
+          {eventValue}
+        </div>
+        <div className="dice divider outside">
+          <button className="modal-button dice" onClick={rollDice}> 10 </button>
+          <button className="modal-button dice" onClick={rollDice}> 12 </button>
+          <button className="modal-button dice" onClick={rollDice}> 20 </button>
+        </div>
       </div>
-    </div>
-  );
-};
+      );
+    }else if (modalType === 'flip') {
+      return (<div className={`${showEvent ? "column modal" : "hidden"}`}>
+                    <div className="tool-display">
+                     <div>{eventValue}</div>    
+                    </div>
+                    <button className="modal-button coin" onClick={flipCoin}> Flip Coin </button>
+              </div>);
+    } else{
+      return (<div className={`${showEvent ? "column modal" : "hidden"}`}>
+      <div className="tool-display">
+       <div>{eventValue}</div>    
+      </div>
+      <button className="modal-button chooser" onClick={choosePlayer}> Choose Player </button>
 
-export default EventModal; 
+</div>);
+    }
+  }
+    return (
+      <div id="modalBackground" className={`${showEvent ? "modal-background" : "hidden"}`}>{modalRender()}</div>
+  );
+}

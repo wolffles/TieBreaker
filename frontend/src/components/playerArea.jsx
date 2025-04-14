@@ -1,179 +1,146 @@
-import React, {useContext, useState, useEffect} from "react";
-import '../style/style.css';
+import React, {useState, useEffect} from "react";
 import {updatePlayers, socket} from '../utility/socket.js';
+import { FaTrash, FaPlus, FaMinus } from 'react-icons/fa';
+import { getUsernameColor } from "../utility/playerMisc.js";
 
-export default function PlayerArea({ players, roomName, playersList, context }) {
-    const [userInfo, setUserInfo] = useContext(context);
-    const [selectedPlayer, setSelectedPlayer] = useState(null);
-    const [isAddingPlayer, setIsAddingPlayer] = useState(false);
-    const [newPlayerName, setNewPlayerName] = useState('');
-    const [newPlayerPoints, setNewPlayerPoints] = useState('');
+export default function PlayersArea({ players, roomName, playersList }) {
+   const [localPlayers, setLocalPlayers] = useState(players);
+   const [playersArea, setPlayersArea] = useState([]);
+    function handleChange(e, username, index, changeType){
+      e.preventDefault();
 
-    function handlePlayerClick(player) {
-        setSelectedPlayer(player);
+      let newValue = e.target.value;
+      let updatedPlayers = Object.assign({}, localPlayers);
+
+      if(changeType === "points"){
+        updatedPlayers[username].points[index][1] = newValue;
+      } else{
+        updatedPlayers[username].points[index][0] = newValue;
+
+      }
+
+     updatePlayers({players:updatedPlayers, action:'setPoints', noRender: true});
+
     }
 
-    function handleAddPlayer() {
-        setIsAddingPlayer(true);
+    function adjustInputs(e, username, action){
+      e.preventDefault();
+      let updatedPlayers = Object.assign({}, localPlayers);
+
+      if(action === 'plus' && updatedPlayers[username].points.length < 4){
+        updatedPlayers[username].points.push(['Input title...','0'])
+      }else if (action === 'minus' && updatedPlayers[username].points.length > 1) {
+        updatedPlayers[username].points.pop()
+      } else{
+        return
+      }
+      setLocalPlayers(updatedPlayers);
+      updatePlayers({players:updatedPlayers, action: 'setPoints', noRender: true});
+      
     }
 
-    function handleCancelAdd() {
-        setIsAddingPlayer(false);
-        setNewPlayerName('');
-        setNewPlayerPoints('');
+    function deletePlayer(e, username){
+      e.preventDefault();
+      socket.emit('remove player', {username:username, roomName: roomName});
     }
 
-    function handleNewPlayerNameChange(e) {
-        setNewPlayerName(e.target.value);
+    function setPlayerClass(){
+      if(playersList.length <= 6){
+        return "player";
+      } else{
+        return "player2"
+      }
     }
 
-    function handleNewPlayerPointsChange(e) {
-        setNewPlayerPoints(e.target.value);
+    function setPlayerBodyClass(){
+      if(playersList.length <= 2){
+        return "player-area-body";
+      } else if (playersList.length <=6) {
+        return "player-area-body2"
+      }else {
+        return "player-area-body3"
+      }
     }
 
-    function handleAddPlayerSubmit(e) {
-        e.preventDefault();
-        if (!newPlayerName) return;
-
-        let updatedState = Object.assign({}, userInfo);
-        let points = newPlayerPoints ? [[newPlayerName, newPlayerPoints]] : [[newPlayerName, '0']];
-        
-        updatedState.players[newPlayerName] = {
-            points: points,
-            scratchPad: '',
-            messages: [],
-            chatToggle: false
-        };
-        
-        updatePlayers({players:updatedState.players, action:'addPlayer', noRender:false});
-        setIsAddingPlayer(false);
-        setNewPlayerName('');
-        setNewPlayerPoints('');
+    function setPointsClass(){
+      if(playersList.length <= 2){
+        return "points points-font-large";
+      } else if (playersList.length <=6){ 
+        return "points points-font-medium"
+      } else{
+        return "points points-font-small"
+      }
     }
 
-    function handleRemovePlayer(playerName) {
-        let updatedState = Object.assign({}, userInfo);
-        delete updatedState.players[playerName];
-        updatePlayers({players:updatedState.players, action:'removePlayer', noRender:false});
-        if (selectedPlayer === playerName) {
-            setSelectedPlayer(null);
-        }
+    function setPointsTitleFont() {
+      if(playersList.length <= 2){
+        return "points-title points-title-font-large";
+      } else {
+        return "points-title points-title-font-medium"
+      }
     }
 
-    function handleUpdatePoints(playerName, pointName, value) {
-        let updatedState = Object.assign({}, userInfo);
-        let player = updatedState.players[playerName];
-        let pointIndex = player.points.findIndex(p => p[0] === pointName);
-        
-        if (pointIndex !== -1) {
-            player.points[pointIndex][1] = value;
-        } else {
-            player.points.push([pointName, value]);
-        }
-        
-        updatePlayers({players:updatedState.players, action:'updatePoints', noRender:false});
+    function setPlayerAreaClass(){
+      if(playersList && playersList.length < 7){
+        return "playerArea"
+      } else {
+        return "playerArea playerAreaSpacing"
+      }
     }
 
-    function handleAddPoint(playerName) {
-        let updatedState = Object.assign({}, userInfo);
-        let player = updatedState.players[playerName];
-        let newPointName = `Point ${player.points.length + 1}`;
-        player.points.push([newPointName, '0']);
-        updatePlayers({players:updatedState.players, action:'addPoint', noRender:false});
-    }
+    useEffect(() => {
+      setPlayersArea(playersList.map((username, i) =>{
 
-    function handleRemovePoint(playerName, pointName) {
-        let updatedState = Object.assign({}, userInfo);
-        let player = updatedState.players[playerName];
-        player.points = player.points.filter(p => p[0] !== pointName);
-        updatePlayers({players:updatedState.players, action:'removePoint', noRender:false});
-    }
+      let player = players[username];
 
-    return (
-        <div className="playerArea">
-            <div className="playerList">
-                <h3>Players</h3>
-                <button onClick={handleAddPlayer}>Add Player</button>
-                <ul>
-                    {Object.keys(players).map(playerName => (
-                        <li 
-                            key={playerName} 
-                            className={selectedPlayer === playerName ? 'selected' : ''}
-                            onClick={() => handlePlayerClick(playerName)}
-                        >
-                            {playerName}
-                        </li>
-                    ))}
-                </ul>
-            </div>
-            
-            {isAddingPlayer && (
-                <div className="addPlayerForm">
-                    <h3>Add New Player</h3>
-                    <form onSubmit={handleAddPlayerSubmit}>
-                        <div className="form-group">
-                            <label htmlFor="playerName">Player Name</label>
-                            <input
-                                type="text"
-                                id="playerName"
-                                value={newPlayerName}
-                                onChange={handleNewPlayerNameChange}
-                                placeholder="Enter player name"
-                            />
-                        </div>
-                        <div className="form-group">
-                            <label htmlFor="playerPoints">Initial Points (Optional)</label>
-                            <input
-                                type="text"
-                                id="playerPoints"
-                                value={newPlayerPoints}
-                                onChange={handleNewPlayerPointsChange}
-                                placeholder="Enter initial points"
-                            />
-                        </div>
-                        <div className="form-actions">
-                            <button type="submit">Add</button>
-                            <button type="button" onClick={handleCancelAdd}>Cancel</button>
-                        </div>
-                    </form>
-                </div>
-            )}
-            
-            {selectedPlayer && (
-                <div className="playerDetails">
-                    <div className="playerHeader">
-                        <h3>{selectedPlayer}</h3>
-                        <button onClick={() => handleRemovePlayer(selectedPlayer)}>Remove Player</button>
-                    </div>
-                    
-                    <div className="pointsList">
-                        <h4>Points</h4>
-                        <button onClick={() => handleAddPoint(selectedPlayer)}>Add Point</button>
-                        <ul>
-                            {players[selectedPlayer].points.map((point, index) => (
-                                <li key={index}>
-                                    <input
-                                        type="text"
-                                        value={point[0]}
-                                        onChange={(e) => {
-                                            let updatedState = Object.assign({}, userInfo);
-                                            let player = updatedState.players[selectedPlayer];
-                                            player.points[index][0] = e.target.value;
-                                            updatePlayers({players:updatedState.players, action:'updatePointName', noRender:false});
-                                        }}
-                                    />
-                                    <input
-                                        type="text"
-                                        value={point[1]}
-                                        onChange={(e) => handleUpdatePoints(selectedPlayer, point[0], e.target.value)}
-                                    />
-                                    <button onClick={() => handleRemovePoint(selectedPlayer, point[0])}>×</button>
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
-                </div>
-            )}
+      let inputsArea = player.points.map((point,i) =>{
+        return (
+        <div key={i}>
+          <input 
+            className={setPointsTitleFont()} 
+            onChange={(e) => handleChange(e, username, i, 'title')} 
+            style={{backgroundColor:players[username] ? players[username].color : getUsernameColor(username)}} 
+            placeholder={player ? point[0] : "Input title..."}
+          />
+          <input 
+            className={setPointsClass()} 
+            maxLength="4" 
+            onChange={(e) => handleChange(e, username, i, 'points')} 
+            style={{backgroundColor:players[username] ? players[username].color : getUsernameColor(username)}} 
+            placeholder={point[1]}
+          />    
         </div>
-    );
-} 
+        );   
+      });
+        return( 
+          <div
+            className={setPlayerClass()}
+            id={username}
+            style={{
+              backgroundColor:players[username] ? players[username].color : getUsernameColor(username),
+              boxShadow: "0px 0px 10px 5px #b3b3b3"
+            }}
+            key={username}
+          >
+            <div className="player-area-header">
+              <div className="nickname">{username}</div>
+              <div className="player-area-buttons">
+              <div className={player.points.length >= 4 ? "no-press add-subtract" : "add-subtract"} onClick={(e) => adjustInputs(e, username, 'plus')}><FaPlus  size="2em" /></div>
+              <div className={player.points.length <= 1 ? "no-press add-subtract" : "add-subtract"} onClick={(e) => adjustInputs(e, username, 'minus')}><FaMinus  size="2em" /></div>
+              <div className="delete" onClick={(e) => deletePlayer(e, username)}><FaTrash  size="2em" /></div>
+              </div>
+            </div>
+            <div className={setPlayerBodyClass()}>
+              {inputsArea}
+            </div>
+          </div>
+          );
+        }));
+    }, [players, playersList])
+
+  return (
+    <div className={setPlayerAreaClass()}>
+          {playersArea}        
+    </div>
+  );
+}

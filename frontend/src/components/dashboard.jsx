@@ -1,14 +1,14 @@
-import React, {useContext, createContext, useState, useEffect} from "react";
+import React, {useContext, createContext, useState, useEffect, useRef} from "react";
 import PlayerArea from './playerArea.jsx'
 import EventModal from './eventModal.jsx'
 import '../style/style.css';
 import {updatePlayers, socket} from '../utility/socket.js';
+import {userContext} from '../App.jsx';
 
+export default function Dashboard() {
+    const [userInfo, setUserInfo] = useContext(userContext);
 
-export default function Dashboard({ context }) {
-    const [userInfo, setUserInfo] = useContext(context);
-
-    const [localUserInfo,setLocalUserInfo] = useState(userInfo)
+    const [localUserInfo, setLocalUserInfo] = useState(userInfo)
     let inputContext = createContext('');
 
     let [inputValue, setInputContext] = useState(inputContext);
@@ -18,6 +18,8 @@ export default function Dashboard({ context }) {
     let [eventValue, setEventValue] = useState('');
 
     let [modalType, setModalType] = useState('');
+
+    const hasSentReadyRef = useRef(false);
 
     function changeInput(e){
       e.preventDefault();
@@ -74,6 +76,12 @@ export default function Dashboard({ context }) {
     }
 
     useEffect(() => {
+      console.log("userInfo", userInfo)
+      if (!hasSentReadyRef.current) {
+        console.log("Sending playerDashboardReady signal");
+        socket.emit('playerDashboardReady');
+        hasSentReadyRef.current = true;
+      }
 
       window.onclick = function(event) {
       let modalElement = document.getElementById('modalBackground');
@@ -100,27 +108,24 @@ export default function Dashboard({ context }) {
         setModalType('choose');
         displayingEvent(flip, 'choose')
       });
-      
-      // socket.on('update player data', (data) =>{
-      //     let updatedState = Object.assign({}, userInfo);
-      //     updatedState.players = data.players;
-      //     setUserInfo(updatedState);
-      // });
 
+      // 'update game state' listener moved to App.js to ensure it's always active
       socket.on('update game state', (data) => {
-      let updatedState = Object.assign({},userInfo);
-      updatedState.connectedPlayersList = data.connectedPlayersList
-      updatedState.playersList = data.savedPlayersList
-      updatedState.players = data.savedPlayers
-      updatedState.password = data.password
-      updatedState.scratchPad = data.savedPlayers[userInfo.username].scratchPad
-      updatedState.messages = data.savedPlayers[userInfo.username].messages
-      updatedState.chatToggle = data.savedPlayers[userInfo.username].chatToggle
-      setUserInfo(updatedState)
-      if(data.broadcast){
-        socket.emit('request server messages', data)
-      }
-    })
+        console.log("client update game state", data)
+        let updatedState = Object.assign({},userInfo);
+        updatedState.connectedPlayersList = data.connectedPlayersList
+        updatedState.playersList = data.savedPlayersList
+        updatedState.players = data.savedPlayers
+        updatedState.password = data.password
+        updatedState.scratchPad = data.savedPlayers[userInfo.username].scratchPad
+        updatedState.messages = data.savedPlayers[userInfo.username].messages
+        updatedState.chatToggle = data.savedPlayers[userInfo.username].chatToggle
+        setUserInfo(updatedState)
+        if(data.broadcast){
+          console.log("requesting server messages")
+          socket.emit('request server messages', data)
+        }
+      })
 
      
       return function cleanup() {
@@ -148,7 +153,7 @@ export default function Dashboard({ context }) {
           </div>
           {/* <span className="roomName">Username: {userInfo.username} | Game Name: {userInfo.roomName} | Password: {userInfo.password}</span> */}
             <EventModal showEvent={showEvent} eventValue={eventValue} modalType={modalType}/>
-            <PlayerArea players={userInfo.players} roomName={userInfo.roomName} playersList={userInfo.playersList} context={context}/>
+            <PlayerArea players={userInfo.players} roomName={userInfo.roomName} playersList={userInfo.playersList}/>
       </div>
     );
-} 
+}

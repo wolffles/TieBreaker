@@ -1,22 +1,29 @@
-import React from 'react';
-import '../style/style.css';
+import React, {useEffect, useState} from "react";
+import {getUsernameColor, isLink} from '../utility/playerMisc'
 
-export default function MessageList({ messages }) {
-    if (!messages || messages.length === 0) {
-        return <div className="messageList empty">No messages yet</div>;
-    }
+export default function MessageList({ messages} ) {
+  const [messageList, setMessageList] = useState([]);
 
-    return (
-        <div className="messageList">
-            {messages.map((message, index) => (
-                <div key={index} className="message">
-                    <span className="messageUsername">{message.username}:</span>
-                    <span className="messageText">{message.message}</span>
-                    <span className="messageTime">
-                        {new Date(message.timestamp).toLocaleTimeString()}
-                    </span>
-                </div>
-            ))}
-        </div>
-    );
-} 
+  useEffect(() => {
+    console.log("messages", messages)
+    setMessageList(messages.map((message, i) =>{
+      if(isLink(message[0])){
+        return <li className="playerMessage"key={i}>
+          <span className="spanMessage" style={{color:getUsernameColor(message[1])}}>{message[1]}</span>: <a target="_blank"  rel='noopener noreferrer' href={message[0]}>{message[0]}</a>
+          </li>;
+      }else if (message[1]){
+        return <li className="playerMessage"key={i}>
+        <span className="spanMessage" style={{color:getUsernameColor(message[1])}}>{message[1]}</span>: {message[0]}
+        </li>;
+      }else {
+       return <li className="playerMessage"key={i}>
+          <div className="serverMessage">{message[0]}</div>
+        </li>;
+      }
+    }));
+  }, [messages])
+
+  return (
+      <ul className="messageList"> {messageList} </ul>
+  );
+}

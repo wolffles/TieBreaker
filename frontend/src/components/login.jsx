@@ -1,112 +1,143 @@
-import React, {useContext, useState, useEffect} from "react";
-import {useNavigate} from "react-router-dom";
+import React, {useContext, createContext, useState, useEffect} from "react";
+import '../style/login.css';
 import '../style/style.css';
-import {socket} from '../utility/socket.js';
+import { socket} from '../utility/socket.js';
+import { FaInfoCircle } from 'react-icons/fa';
+import AlertModal from './alertModal.jsx'
+import {userContext} from '../App.jsx';
 
-export default function Login({ context }) {
-    const [userInfo, setUserInfo] = useContext(context);
-    const [username, setUsername] = useState('');
-    const [roomName, setRoomName] = useState('');
-    const [password, setPassword] = useState('');
-    const [error, setError] = useState('');
-    const [isLoading, setIsLoading] = useState(false);
-    const navigate = useNavigate();
 
-    useEffect(() => {
-        socket.on('login success', (data) => {
-            let updatedState = Object.assign({}, userInfo);
-            updatedState.username = data.username;
-            updatedState.roomName = data.roomName;
-            updatedState.password = data.password;
-            updatedState.players = data.players;
-            updatedState.connectedPlayersList = data.connectedPlayersList;
-            updatedState.playersList = data.savedPlayersList;
-            updatedState.scratchPad = data.scratchPad;
-            updatedState.messages = data.messages;
-            updatedState.chatToggle = data.chatToggle;
-            setUserInfo(updatedState);
-            navigate('/dashboard');
-        });
 
-        socket.on('login error', (error) => {
-            setError(error);
-            setIsLoading(false);
-        });
+export default function Login() {
 
-        return function cleanup() {
-            socket.off('login success');
-            socket.off('login error');
-        };
-    }, [userInfo, navigate]);
+  let [userInfo, setUserInfo] = useContext(userContext);
 
-    function handleUsernameChange(e) {
-        setUsername(e.target.value);
+  let inputContext = createContext('');
+  let [inputValue, setInputContext] = useState(inputContext);
+
+  let gameContext = createContext('');
+  let [gameValue, setGameContext] = useState(gameContext);
+
+  let passwordContext = createContext('');
+  let [passwordValue, setPasswordContext] = useState(passwordContext);
+
+  let [reconnectingValue, setReconnectingContext] = useState(false);
+
+  let [showAlert, setShowAlert] = useState(false);
+
+  let [alertText, setAlertText] = useState('');
+
+  let hidden = false
+  if (userInfo?.username){
+    hidden = true
+  }
+  function changeInput(e){
+    setInputContext(e.target.value);
+  }
+
+  function changeGameInput(e){
+    setGameContext(e.target.value);
+  }
+
+  function changePasswordInput(e){
+    e.preventDefault();
+    setPasswordContext(e.target.value);
+  }
+
+  function changeReconnecting(e){
+    setReconnectingContext(!reconnectingValue)
+  }
+
+  function handleSubmit(e){
+    e.preventDefault();
+    if(inputValue.length > 0 && gameValue.length > 0 && passwordValue.length > 0){
+    let reconnecting = reconnectingValue
+    let username = inputValue;
+    let roomName = gameValue;
+    let password = passwordValue;
+    let data = {}
+    data = {
+      id: socket.id,
+      username: username,
+      roomName: roomName,
+      password: password,
+      reconnecting: reconnecting
     }
 
-    function handleRoomNameChange(e) {
-        setRoomName(e.target.value);
+    socket.emit('add user', data);
+    }else{
+      //alert('Please enter a username, game room name, and password');
+      setAlertText('Please enter a username, game room name, and password')
+      setShowAlert(true)
     }
+  }
 
-    function handlePasswordChange(e) {
-        setPassword(e.target.value);
-    }
+  function alertInfo(e) {
+    e.preventDefault();
+    alert("Please enter a nickname, the game room you would like to enter, and a password for the room. \n \n You must enter the correct password for game rooms that already exist. \n \n If you are reconnecting to a game room, please check the box right by the question on the screen")
+    setAlertText("Please enter a nickname, the game room you would like to enter, and a password for the room. You must enter the correct password for game rooms that already exist. If you are reconnecting to a game room, pease check the box right by the question on the screen")
+    setShowAlert(true)
 
-    function handleSubmit(e) {
-        e.preventDefault();
-        if (!username || !roomName) {
-            setError('Username and room name are required');
-            return;
+  }
+
+  useEffect(() => {
+    window.onclick = function(event) {
+      let modalElement = document.getElementById('alertModalBackground');
+      if (showAlert && event.target === modalElement) {
+          setShowAlert(false)
         }
+      }
 
-        setIsLoading(true);
-        setError('');
 
-        socket.emit('login', {
-            username: username,
-            roomName: roomName,
-            password: password
-        });
-    }
+    socket.on('update player state', (data) => {
+      console.log('update player state', data)
+      let updatedState = Object.assign({},userInfo);
+      updatedState.username = data.username
+      updatedState.id = data.id
+      updatedState.color = data.color
+      updatedState.roomName = data.roomName
+      updatedState.messages = updatedState.messages ? updatedState.messages.concat(data.messages) : data.messages
+      updatedState.scratchPad = data.scratchPad
+      setUserInfo(updatedState);
+    })
+
+    socket.on('wrong password',(roomName) =>{
+      setShowAlert(true)
+      setAlertText(`You entered the wrong password for existing room "${roomName}". Please enter the correct password, or try entering a room with a different name`);
+    });
+
+    socket.on('too many users',(roomName) =>{
+      setShowAlert(true)
+      setAlertText(`There are currently 12 users connected to room "${roomName}". Please connect to another room with less users`);
+    });
+
+    return function cleanup() {
+      //  socket.off('login');
+       socket.off('update player state')
+       socket.off('wrong password');
+       socket.off('too many users')
+       //  socket.off('update game state')
+      };
+  });
 
     return (
-        <div className="login">
-            <h1>TieBreaker</h1>
-            <form onSubmit={handleSubmit}>
-                <div className="form-group">
-                    <label htmlFor="username">Username</label>
-                    <input
-                        type="text"
-                        id="username"
-                        value={username}
-                        onChange={handleUsernameChange}
-                        placeholder="Enter your username"
-                    />
-                </div>
-                <div className="form-group">
-                    <label htmlFor="roomName">Room Name</label>
-                    <input
-                        type="text"
-                        id="roomName"
-                        value={roomName}
-                        onChange={handleRoomNameChange}
-                        placeholder="Enter room name"
-                    />
-                </div>
-                <div className="form-group">
-                    <label htmlFor="password">Password (Optional)</label>
-                    <input
-                        type="password"
-                        id="password"
-                        value={password}
-                        onChange={handlePasswordChange}
-                        placeholder="Enter password"
-                    />
-                </div>
-                {error && <div className="error">{error}</div>}
-                <button type="submit" disabled={isLoading}>
-                    {isLoading ? 'Joining...' : 'Join Room'}
-                </button>
+      <div className={`login page ${hidden ? "hidden" : ""}`}>
+        <span className="login-info" onClick={(e) => alertInfo(e)}><FaInfoCircle size="2em" /></span>
+        <div className="login-container">
+            <form id="loginForm" className="loginform" onSubmit={handleSubmit}>
+                <p className="title">What's your nickname?</p>
+                  <input id="nicknameInput" className="loginInput" type="text" maxLength="8" onChange={changeInput}/>
+                <p className="title">Enter a game room name: </p>
+                   <input id="gameInput" className="loginInput" type="text" maxLength="8" onChange={changeGameInput}/>
+                <p className="title">Enter a Password: </p>
+                   <input id="passwordInput" className="loginInput" type="text" maxLength="8" onChange={changePasswordInput}/>
+                <p className="title">Are you a reconnecting user?  <input className="reconnecting"  type="checkbox" onClick={changeReconnecting}/> </p>
+                   <input style={{display:"none"}}type="submit"></input>
+                   <br/>
+                   <button className="login-button"> Submit </button>
             </form>
         </div>
+        <AlertModal showAlert={showAlert} alertText={alertText}/>
+      </div>
     );
-} 
+  }
