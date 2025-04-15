@@ -1,10 +1,8 @@
 const express = require('express');
-const app = express();
-const path = require('path');
-const server = require('http').createServer(app);
+const http = require('http');
 const { Server } = require('socket.io');
+const path = require('path');
 const cors = require('cors');
-const port = process.env.PORT || 3001;
 const util = require('util')
 
 // leave me here as example on how to use
@@ -14,47 +12,26 @@ const util = require('util')
 const { newPlayerInRoom, createGameRoom, createPlayerObj, userConnectedToRoom, userDisconnected, deleteRoom, removeUser } = require('./gameRoom');
 const { choosePlayer, coinToss, diceToss, modifyUsername, isUsernameUnique, updateServerGameState } = require('./sourceCheck');
 
-// Enable CORS for all routes
-app.use(cors({
-    origin: ["http://localhost:3000", "http://localhost:3001", "http://localhost:5173", "https://simply-chat-app.fly.dev"],
-    methods: ["GET", "POST"],
-    credentials: true,
-    allowedHeaders: ["*"]
-}));
-
-// Configure Socket.IO with proper WebSocket handling
+const app = express();
+const server = http.createServer(app);
 const io = new Server(server, {
-    cors: {
-        origin: ["http://localhost:3000", "http://localhost:3001", "http://localhost:5173", "https://simply-chat-app.fly.dev"],
-        methods: ["GET", "POST"],
-        credentials: true,
-        allowedHeaders: ["*"]
-    },
-    path: '/socket.io/',
-    transports: ['polling', 'websocket'],
-    pingTimeout: 5000,
-    pingInterval: 25000,
-    upgradeTimeout: 10000,
-    maxHttpBufferSize: 1e6,
-    connectTimeout: 600000,
-    serverClient: false,
-    disconnectOnUnload: true,
-    allowEIO3: true,
-    allowUpgrades: true,
-    cookie: false
+  cors: {
+    origin: "*",
+    methods: ["GET", "POST"]
+  }
 });
+
+// Enable CORS for all routes
+app.use(cors());
+
+// Serve static files from the Vite build
+app.use(express.static(path.join(__dirname, 'frontend/dist')));
 
 // Add a test route to verify the server is running
 app.get('/test', (req, res) => {
     res.send('Server is running!');
 });
 
-app.use(express.static('frontend/build'));
-
-app.get('*', (req, res) => {
-    res.sendFile(path.resolve(__dirname, 'frontend', 'build', 'index.html'));
-});
-  
 // wake();
 let rooms = {}
 
@@ -265,8 +242,14 @@ const broadcastToRoom = (io, roomName, listenString, dataObj) => {
     console.log("Broadcast complete");
 }
 
-// Start the server after configuring everything
-server.listen(port, () => {
-    console.log(`Server listening at port: ${port}`);
-    console.log(`Socket.IO server is running on path: /socket.io/`);
+// Handle all other routes by serving the index.html
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'frontend/dist/index.html'));
+});
+
+// Use the PORT environment variable provided by Heroku
+const PORT = process.env.PORT || 3000;
+
+server.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });

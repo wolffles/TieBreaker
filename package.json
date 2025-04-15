@@ -7,7 +7,7 @@
     "client": "npm start --prefix ./frontend",
     "test": "cd frontend && npm test",
     "server": "node server.js",
-    "start": "cd frontend && npm start",
+    "start": "node server.js",
     "nodemon": "nodemon server.js",
     "dev": "concurrently \"npm run nodemon\" \"npm run start\"",
     "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix frontend --legacy-peer-deps && npm run build --prefix frontend",
