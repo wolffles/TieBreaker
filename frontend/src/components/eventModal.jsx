@@ -2,7 +2,7 @@
 import {socket} from '../utility/socket.js';
 import '../style/tools.css';
 import '../style/style.css';
-
+import CoinAnimation from './coinAnimation.jsx';
 export default function EventModal({ showEvent, eventValue, modalType, modalRef}) {
   function rollDice(e){
     e.preventDefault();
@@ -24,28 +24,30 @@ export default function EventModal({ showEvent, eventValue, modalType, modalRef}
     if(modalType === 'dice') {
       return (
         <div className={`${showEvent ? "modal" : "hidden"}`} ref={modalRef}>
-        <div className="dice divider outside">
-          <button className="modal-button dice" onClick={rollDice}> 4 </button>
-          <button className="modal-button dice" onClick={rollDice}> 6 </button>
-          <button className="modal-button dice" onClick={rollDice}> 8 </button>
+          <div className="dice divider outside">
+            <button className="modal-button dice" onClick={rollDice}> 4 </button>
+            <button className="modal-button dice" onClick={rollDice}> 6 </button>
+            <button className="modal-button dice" onClick={rollDice}> 8 </button>
+          </div>
+          <div className="dice divider middle">
+            {eventValue}
+          </div>
+          <div className="dice divider outside">
+            <button className="modal-button dice" onClick={rollDice}> 10 </button>
+            <button className="modal-button dice" onClick={rollDice}> 12 </button>
+            <button className="modal-button dice" onClick={rollDice}> 20 </button>
+          </div>
         </div>
-        <div className="dice divider middle">
-          {eventValue}
-        </div>
-        <div className="dice divider outside">
-          <button className="modal-button dice" onClick={rollDice}> 10 </button>
-          <button className="modal-button dice" onClick={rollDice}> 12 </button>
-          <button className="modal-button dice" onClick={rollDice}> 20 </button>
-        </div>
-      </div>
       );
     }else if (modalType === 'flip') {
-      return (<div className={`${showEvent ? "column modal" : "hidden"}`} ref={modalRef}>
-                    <div className="coin-display">
-                      {eventValue}
-                    </div>
-                    <button className="modal-button coin" onClick={flipCoin}> Flip Coin </button>
-              </div>);
+      return (
+        <div className={`${showEvent ? "column modal" : "hidden"}`} ref={modalRef}>
+          <div className="coin-display">
+            <CoinAnimation totalFlips={eventValue} />
+          </div>
+          <button className="modal-button coin" onClick={flipCoin}> Flip Coin </button>
+        </div>
+      );
     } else{
       return (
       <div className={`${showEvent ? "column modal" : "hidden"}`} ref={modalRef}>

@@ -60,7 +60,7 @@ export default function Dashboard() {
       }
   
     function flipCoin(numberOfFlips){
-      console.log('do nothing')
+      setEventValue(numberOfFlips)
     }
 
     function displayingEvent(roll, type) {

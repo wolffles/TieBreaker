@@ -16,16 +16,43 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: "*",
-    methods: ["GET", "POST"]
-  }
+    origin: process.env.CORS_ORIGIN || "http://localhost:3000",
+    methods: ["GET", "POST"],
+    credentials: true,
+    allowedHeaders: ["*"]
+  },
+  path: '/socket.io/',
+  transports: ['polling', 'websocket'],
+  pingTimeout: 5000,
+  pingInterval: 25000,
+  upgradeTimeout: 10000,
+  maxHttpBufferSize: 1e6,
+  connectTimeout: 600000,
+  serverClient: false,
+  disconnectOnUnload: true,
+  allowEIO3: true,
+  allowUpgrades: true,
+  cookie: false
 });
 
 // Enable CORS for all routes
-app.use(cors());
+// app.use(cors({
+//     origin: ["http://localhost:3000", "http://localhost:3001", "http://localhost:5173", ""],
+//     methods: ["GET", "POST"],
+//     credentials: true,
+//     allowedHeaders: ["*"]
+// }));
 
-// Serve static files from the Vite build
-app.use(express.static(path.join(__dirname, 'frontend/dist')));
+// Determine the environment
+const isProduction = process.env.NODE_ENV === 'production';
+
+// Serve static files from the appropriate directory
+if (isProduction) {
+  app.use(express.static(path.join(__dirname, 'frontend/dist')));
+} else {
+  app.use(express.static(path.join(__dirname, 'frontend/public')));
+}
+
 
 // Add a test route to verify the server is running
 app.get('/test', (req, res) => {
@@ -248,7 +275,7 @@ app.get('*', (req, res) => {
 });
 
 // Use the PORT environment variable provided by Heroku
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
 
 server.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);

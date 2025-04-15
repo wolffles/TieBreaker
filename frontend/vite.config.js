@@ -12,13 +12,10 @@ export default defineConfig({
   },
   server: {
     port: 3000, // Match the default React Scripts port
-    host: true, // Expose to all network interfaces
   },
   // Heroku-specific configuration
   build: {
-    outDir: 'dist',
-    assetsDir: 'assets',
-    emptyOutDir: true,
+    outDir: 'dist', // Change to 'dist' to match what the server.js expects
     sourcemap: false, // Disable sourcemaps for production
   },
   // Configure esbuild to handle JSX in .js files

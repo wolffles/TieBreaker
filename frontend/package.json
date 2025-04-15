@@ -12,7 +12,8 @@
     "react-dom": "^18.2.0",
     "react-icons": "^4.11.0",
     "react-test-renderer": "^18.2.0",
-    "socket.io-client": "^4.4.1"
+    "socket.io-client": "^4.4.1",
+    "three": "^0.175.0"
   },
     "overrides": {
     "nth-check": "^2.0.1",
@@ -23,6 +24,7 @@
 },
   "scripts": {
     "start": "vite",
+    "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
     "test": "node_modules/.bin/mocha --timeout 10000"
