@@ -3,7 +3,7 @@ import {socket} from '../utility/socket.js';
 import '../style/tools.css';
 import '../style/style.css';
 
-export default function EventModal({ showEvent, eventValue, modalType}) {
+export default function EventModal({ showEvent, eventValue, modalType, modalRef}) {
   function rollDice(e){
     e.preventDefault();
     let diceType = e.target.innerHTML
@@ -23,7 +23,7 @@ export default function EventModal({ showEvent, eventValue, modalType}) {
   function modalRender(){
     if(modalType === 'dice') {
       return (
-        <div className={`${showEvent ? "modal" : "hidden"}`}>
+        <div className={`${showEvent ? "modal" : "hidden"}`} ref={modalRef}>
         <div className="dice divider outside">
           <button className="modal-button dice" onClick={rollDice}> 4 </button>
           <button className="modal-button dice" onClick={rollDice}> 6 </button>
@@ -40,23 +40,31 @@ export default function EventModal({ showEvent, eventValue, modalType}) {
       </div>
       );
     }else if (modalType === 'flip') {
-      return (<div className={`${showEvent ? "column modal" : "hidden"}`}>
+      return (<div className={`${showEvent ? "column modal" : "hidden"}`} ref={modalRef}>
                     <div className="coin-display">
                       {eventValue}
                     </div>
                     <button className="modal-button coin" onClick={flipCoin}> Flip Coin </button>
               </div>);
     } else{
-      return (<div className={`${showEvent ? "column modal" : "hidden"}`}>
-      <div className="tool-display">
-       <div>{eventValue}</div>    
+      return (
+      <div className={`${showEvent ? "column modal" : "hidden"}`} ref={modalRef}>
+        <div className="tool-display">
+          <div>{eventValue}</div>    
+        </div>
+        <button className="modal-button chooser" onClick={choosePlayer}> Choose Player </button>
       </div>
-      <button className="modal-button chooser" onClick={choosePlayer}> Choose Player </button>
-
-</div>);
+      )
     }
   }
     return (
-      <div id="modalBackground" className={`${showEvent ? "modal-background" : "hidden"}`}>{modalRender()}</div>
+      <div id="modalBackground" className={`${showEvent ? "modal-background" : "hidden"}`}>
+         {
+            modalType === 'dice' ? modalRender() : 
+            modalType === 'flip' ? modalRender() : 
+            modalType === 'choose' ? modalRender() : 
+            null
+        }
+      </div>
   );
 }

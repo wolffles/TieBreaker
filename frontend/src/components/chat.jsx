@@ -51,7 +51,7 @@ export default function Chat() {
         if(!!div){
          div.scrollTop = div.scrollHeight - div.clientHeight;
         }
-        setLocalMessageList(userInfo.messages)
+
         socket.on('reconnect', () => {
             console.log("you've auto reconnected")
             if (userInfo.username) {
@@ -90,15 +90,16 @@ export default function Chat() {
 
         socket.on('server messages', (data) => {
             console.log("recieved server messages", data)
-            let updatedState = Object.assign({},userInfo);
-            if(data.toBroadcast.userJoined){updatedState.messages = [...updatedState.messages, data.toBroadcast.userJoined]}
-            if(data.toBroadcast.userLeft){updatedState.messages = [...updatedState.messages, data.toBroadcast.userLeft]}
-            if(data.toBroadcast.numUsers){updatedState.messages = [...updatedState.messages, data.toBroadcast.numUsers]}
-            if(data.toBroadcast.userRemoved){updatedState.messages = [...updatedState.messages, data.toBroadcast.userRemoved]}
-            if(data.toBroadcast.userRmovedError){updatedState.messages = [...updatedState.messages, data.toBroadcast.userRemovedError]}
-            setUserInfo(updatedState);
-            console.log("updatedState messages", updatedState.messages)
-            setLocalMessageList(updatedState.messages)
+            console.log("localMessageList", localMessageList)
+            let updatedMessages = localMessageList;
+            if(data.toBroadcast.userJoined){updatedMessages = [...updatedMessages, data.toBroadcast.userJoined]}
+            if(data.toBroadcast.userLeft){updatedMessages = [...updatedMessages, data.toBroadcast.userLeft]}
+            if(data.toBroadcast.numUsers){updatedMessages = [...updatedMessages, data.toBroadcast.numUsers]}
+            if(data.toBroadcast.userRemoved){updatedMessages = [...updatedMessages, data.toBroadcast.userRemoved]}
+            if(data.toBroadcast.userRmovedError){updatedMessages = [...updatedMessages, data.toBroadcast.userRemovedError]}
+            setUserInfo({...userInfo, messages: updatedMessages});
+            console.log("updatedMessages messages", updatedMessages)
+            setLocalMessageList(updatedMessages)
           });
         
         return function cleanup() {

@@ -18,7 +18,7 @@ export default function SocketUtility() {
 
     function addMessage(message, username){
         let updatedState = Object.assign({},userInfo);
-        updatedState.messages = updatedState.messages ? updatedState.messages.concat([message, username]) : [message, username]
+        updatedState.messages = updatedState.messages ? [...updatedState.messages, [message, username]] : [[message, username]]
         setUserInfo(updatedState);
     }
 

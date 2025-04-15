@@ -6,6 +6,8 @@ export default function MessageList({ messages} ) {
 
   useEffect(() => {
     console.log("messages", messages)
+    // let newMessageList = [...messageList, messages]
+    // console.log('newMessageList', newMessageList)
     setMessageList(messages.map((message, i) =>{
       if(isLink(message[0])){
         return <li className="playerMessage"key={i}>
@@ -21,6 +23,7 @@ export default function MessageList({ messages} ) {
         </li>;
       }
     }));
+
   }, [messages])
 
   return (

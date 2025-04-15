@@ -18,7 +18,7 @@ export default function Dashboard() {
     let [eventValue, setEventValue] = useState('');
 
     let [modalType, setModalType] = useState('');
-
+    const modalRef = useRef(null);
     const hasSentReadyRef = useRef(false);
 
     function changeInput(e){
@@ -59,7 +59,9 @@ export default function Dashboard() {
 
       }
   
-      
+    function flipCoin(numberOfFlips){
+      console.log('do nothing')
+    }
 
     function displayingEvent(roll, type) {
       roll.forEach((face, i) => {
@@ -89,7 +91,6 @@ export default function Dashboard() {
           setShowEvent(false)
         }
       }
-
       
       socket.on('dice is rolling', roll =>{
         if(!showEvent){setShowEvent(true)};
@@ -97,10 +98,10 @@ export default function Dashboard() {
         displayingEvent(roll)
       });
       
-      socket.on('coin is flipping', flip =>{
+      socket.on('coin is flipping', numberOfFlips =>{
         if(!showEvent){setShowEvent(true)};
         setModalType('flip');
-        displayingEvent(flip, 'flip')
+        flipCoin(numberOfFlips)
       });
       
       socket.on('choosing player', flip =>{
@@ -112,15 +113,16 @@ export default function Dashboard() {
       // 'update game state' listener moved to App.js to ensure it's always active
       socket.on('update game state', (data) => {
         console.log("client update game state", data)
-        let updatedState = Object.assign({},userInfo);
-        updatedState.connectedPlayersList = data.connectedPlayersList
-        updatedState.playersList = data.savedPlayersList
-        updatedState.players = data.savedPlayers
-        updatedState.password = data.password
-        updatedState.scratchPad = data.savedPlayers[userInfo.username].scratchPad
-        updatedState.messages = data.savedPlayers[userInfo.username].messages
-        updatedState.chatToggle = data.savedPlayers[userInfo.username].chatToggle
-        setUserInfo(updatedState)
+        setUserInfo(prevState => ({
+          ...prevState,
+          connectedPlayersList: [...data.connectedPlayersList],
+          playersList: [...data.savedPlayersList],
+          players: {...data.savedPlayers},
+          password: data.password,
+          scratchPad: [...data.savedPlayers[userInfo.username].scratchPad],
+          messages: [...data.savedPlayers[userInfo.username].messages],
+          chatToggle: data.savedPlayers[userInfo.username].chatToggle
+        }));
         if(data.broadcast){
           console.log("requesting server messages")
           socket.emit('request server messages', data)
@@ -135,9 +137,25 @@ export default function Dashboard() {
           socket.off('coin is flipping');
           socket.off('choosing player');
         };
-    });
+    },[]);
     
-  
+    useEffect(() => {
+      console.log('dashboard rerendered ', userInfo.players)
+    },[userInfo])
+
+    useEffect(() => {
+      function handleClickOutside(event) {
+        if (showEvent && modalRef.current && !modalRef.current.contains(event.target)) {
+          setShowEvent(false);
+        }
+      }
+      // Add event listener
+      document.addEventListener('mousedown', handleClickOutside);
+      // Cleanup
+      return () => {
+        document.removeEventListener('mousedown', handleClickOutside);
+      };
+    }, [showEvent])
 
     return (
         <div className="dashboard">
@@ -152,7 +170,7 @@ export default function Dashboard() {
             </div>
           </div>
           {/* <span className="roomName">Username: {userInfo.username} | Game Name: {userInfo.roomName} | Password: {userInfo.password}</span> */}
-            <EventModal showEvent={showEvent} eventValue={eventValue} modalType={modalType}/>
+            <EventModal showEvent={showEvent} eventValue={eventValue} modalType={modalType} modalRef={modalRef} />
             <PlayerArea players={userInfo.players} roomName={userInfo.roomName} playersList={userInfo.playersList}/>
       </div>
     );

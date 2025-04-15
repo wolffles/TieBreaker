@@ -96,7 +96,7 @@ export default function Login() {
       updatedState.id = data.id
       updatedState.color = data.color
       updatedState.roomName = data.roomName
-      updatedState.messages = updatedState.messages ? updatedState.messages.concat(data.messages) : data.messages
+      updatedState.messages = updatedState.messages ? [...updatedState.messages,data.messages] : data.messages
       updatedState.scratchPad = data.scratchPad
       setUserInfo(updatedState);
     })
