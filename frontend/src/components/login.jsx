@@ -128,7 +128,7 @@ export default function Login() {
             <form id="loginForm" className="loginform" onSubmit={handleSubmit}>
             <h1 style={{
               textAlign: 'center', 
-              fontSize: "clamp(1.5rem, 4vw, 4rem)", 
+              fontSize: "clamp(1.75rem, 4vw, 3rem)", 
               letterSpacing: "clamp(5px, 2vw, 10px)", 
               color: "aqua", 
               fontWeight: "bold", 
