@@ -37,11 +37,9 @@ export default function Dashboard() {
         //possible bug settting lifepoints to zero.
         var today = new Date();
         var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds() + ":" + today.getMilliseconds(); 
-        console.log('blank input was submitted ', time)
         input = '0';
         setInputContext(input);
       }
-      console.log('updatedState.players', updatedState.players)
       for (let username in updatedState.players){
         updatedState.players[username].points[0][1] = input;
       }
@@ -63,16 +61,14 @@ export default function Dashboard() {
       setEventValue(numberOfFlips)
     }
 
-    function displayingEvent(roll, type) {
-      roll.forEach((face, i) => {
-        let side;
-        if(type === 'flip') {
-          side = face === 1 ? 'Heads' : 'Tails'
-        }else{
-          side = face
-        }
+    function rollDice(serverResult) {
+      setEventValue(serverResult)
+    }
+
+    function choosePlayer(playerArray) {
+      playerArray.forEach((player, i) => {
         setTimeout(() => {
-          setEventValue(side)
+          setEventValue(player)
         }, i*i*10);
       });
     }
@@ -80,7 +76,6 @@ export default function Dashboard() {
     useEffect(() => {
       console.log("userInfo", userInfo)
       if (!hasSentReadyRef.current) {
-        console.log("Sending playerDashboardReady signal");
         socket.emit('playerDashboardReady');
         hasSentReadyRef.current = true;
       }
@@ -92,10 +87,10 @@ export default function Dashboard() {
         }
       }
       
-      socket.on('dice is rolling', roll =>{
+      socket.on('dice is rolling', rollObj =>{
         if(!showEvent){setShowEvent(true)};
         setModalType('dice');
-        displayingEvent(roll)
+        rollDice(rollObj)
       });
       
       socket.on('coin is flipping', numberOfFlips =>{
@@ -107,7 +102,7 @@ export default function Dashboard() {
       socket.on('choosing player', flip =>{
         if(!showEvent){setShowEvent(true)};
         setModalType('choose');
-        displayingEvent(flip, 'choose')
+        choosePlayer(flip, 'choose')
       });
 
       // 'update game state' listener moved to App.js to ensure it's always active
@@ -124,7 +119,6 @@ export default function Dashboard() {
           chatToggle: data.savedPlayers[userInfo.username].chatToggle
         }));
         if(data.broadcast){
-          console.log("requesting server messages")
           socket.emit('request server messages', data)
         }
       })
@@ -141,6 +135,7 @@ export default function Dashboard() {
     
     useEffect(() => {
       console.log('dashboard rerendered ', userInfo.players)
+      setLocalUserInfo(userInfo)
     },[userInfo])
 
     useEffect(() => {

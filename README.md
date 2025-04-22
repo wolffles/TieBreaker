@@ -79,4 +79,5 @@ rooms {
 ```
 
 # TODO
+* pass a player object for dice results and if a new dice roll happens remove result label
 * current bug: when a player closes coinflip, and the coin lands changes face the client that closed the coinflip is stuck with a different state. maybe force the player to watch the coin flip or keep the state in the backend....

@@ -3,7 +3,7 @@ import * as THREE from 'three';
 
 
 export default function CoinAnimation({ totalFlips }) {
-  console.log('CoinAnimation render - totalFlips:', totalFlips);
+  // console.log('CoinAnimation render - totalFlips:', totalFlips);
   
   const containerRef = useRef(null);
   const coinRef = useRef(null);
@@ -24,7 +24,7 @@ export default function CoinAnimation({ totalFlips }) {
   
   // Update refs when props/state change
   useEffect(() => {
-    console.log('Updating refs - StartingFace:', StartingFace, 'totalFlips:', totalFlips);
+    // console.log('Updating refs - StartingFace:', StartingFace, 'totalFlips:', totalFlips);
     startingFaceRef.current = StartingFace;
     totalFlipsRef.current = totalFlips;
   }, [StartingFace, totalFlips]);
@@ -38,14 +38,11 @@ export default function CoinAnimation({ totalFlips }) {
       return false;
     }
     const rect = containerRef.current.getBoundingClientRect();
-    console.log('Container dimensions:', rect.width, rect.height);
     return !(rect.width === 0 || rect.height === 0);
   };
 
 
   const flipCoin = useCallback(() => {
-    console.log('flipCoin function called with totalFlips:', totalFlipsRef.current);
-    
     setIsFlipping(true);
     if (animationStateRef.current.isAnimating || !coinRef.current) {
       console.log('Animation blocked:', {
@@ -55,7 +52,6 @@ export default function CoinAnimation({ totalFlips }) {
       return;
     }
     
-    console.log('Starting animation with totalFlips:', totalFlipsRef.current);
     animationStateRef.current.isAnimating = true;
     animationStateRef.current.flipCount = 0;
   
@@ -66,7 +62,6 @@ export default function CoinAnimation({ totalFlips }) {
     
     // Result is opposite of starting state if odd number of flips
     const willBeHeads = startingFaceRef.current === (totalFlipsRef.current % 2 === 0);
-    console.log('Will be heads:', willBeHeads);
     
     const animateFlip = () => {
       if (!isActiveRef.current) {
@@ -98,7 +93,6 @@ export default function CoinAnimation({ totalFlips }) {
         
         animationFrameRef.current = requestAnimationFrame(animateFlip);
       } else {
-        console.log('Animation complete, setting final rotation');
         // Set the final rotation to match the result
         // We use modulo to get the final position within a single rotation
         const finalRotation = willBeHeads ? 0 : Math.PI;
@@ -116,7 +110,6 @@ export default function CoinAnimation({ totalFlips }) {
   }, []); // No dependencies needed since we're using refs
 
   useEffect(() => {
-    console.log('Initial setup effect running');
     if (!containerRef.current) {
       console.log('No container ref, returning early');
       return;
@@ -124,12 +117,10 @@ export default function CoinAnimation({ totalFlips }) {
 
     // Store the container reference for cleanup
     const container = containerRef.current;
-    console.log('Container found, setting up scene');
 
     // Scene setup
     const scene = new THREE.Scene();
     scene.background = new THREE.Color(0x1a1a1a);
-    console.log('Scene created');
 
     // Camera setup
     const camera = new THREE.PerspectiveCamera(
@@ -141,13 +132,11 @@ export default function CoinAnimation({ totalFlips }) {
     camera.lookAt(0, -.5, 0);
     camera.position.set(0, 3, 0);
     camera.rotation.set(-1.57, 0, -1.5);
-    console.log('Camera setup complete');
 
     // Renderer setup
     const renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setSize(container.clientWidth, container.clientHeight);
     container.appendChild(renderer.domElement);
-    console.log('Renderer setup complete');
 
     // Lighting
     const ambientLight = new THREE.AmbientLight(0xffffff, 1);
@@ -170,13 +159,11 @@ export default function CoinAnimation({ totalFlips }) {
     const coin = new THREE.Mesh(coinGeometry, coinMaterial);
     scene.add(coin);
     coinRef.current = coin;
-    console.log('Coin created and added to scene');
 
     // Add textures for heads and tails
     const textureLoader = new THREE.TextureLoader();
     const headsTexture = textureLoader.load('/images/coin-heads.png');
     const tailsTexture = textureLoader.load('/images/coin-tails.png');
-    console.log('Textures loaded:', { headsTexture, tailsTexture });
     
     const headsMaterial = new THREE.MeshStandardMaterial({
       map: headsTexture,
@@ -195,7 +182,6 @@ export default function CoinAnimation({ totalFlips }) {
         headsMaterial,  // top face (heads)
         tailsMaterial   // bottom face (tails)
     ];
-    console.log('Materials applied to coin');
 
     // Handle window resize
     const handleResize = () => {
@@ -224,17 +210,14 @@ export default function CoinAnimation({ totalFlips }) {
     };
 
     animate();
-    console.log("Initial setup complete, animation loop started");
-    
+
     // Start the flip animation after a short delay to ensure everything is ready
     const startTimer = setTimeout(() => {
-      console.log('Starting initial flip');
       flipCoin();
     }, 100);
 
     // Cleanup
     return () => {
-      console.log('Cleanup function running');
       clearTimeout(startTimer);
       if (animationFrameRef.current) {
         cancelAnimationFrame(animationFrameRef.current);
@@ -249,7 +232,6 @@ export default function CoinAnimation({ totalFlips }) {
       headsMaterial.dispose();
       tailsMaterial.dispose();
       renderer.dispose();
-      console.log('Cleanup complete');
     };
   }, [flipCoin]);
 
@@ -258,17 +240,14 @@ export default function CoinAnimation({ totalFlips }) {
   useEffect(() => {
     // Only trigger if totalFlips has changed and component is already mounted
     if (prevTotalFlipsRef.current !== totalFlips && coinRef.current) {
-      console.log('totalFlips changed from', prevTotalFlipsRef.current, 'to', totalFlips);
       prevTotalFlipsRef.current = totalFlips;
       
       // Small delay to ensure the component is ready
       const timer = setTimeout(() => {
-        console.log('flipping coin due to totalFlips change');
         flipCoin();
       }, 100);
       
       return () => {
-        console.log('totalFlips change cleanup running');
         clearTimeout(timer);
       };
     }

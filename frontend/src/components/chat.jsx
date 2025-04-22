@@ -20,7 +20,6 @@ export default function Chat() {
   if (userInfo.username){
     hidden = false
   }
-//   console.log(localMessageList)
     function changeInput(e){
         e.preventDefault();
         setMessage(e.target.value);
@@ -89,8 +88,6 @@ export default function Chat() {
         });
 
         socket.on('server messages', (data) => {
-            console.log("recieved server messages", data)
-            console.log("localMessageList", localMessageList)
             let updatedMessages = localMessageList;
             if(data.toBroadcast.userJoined){updatedMessages = [...updatedMessages, data.toBroadcast.userJoined]}
             if(data.toBroadcast.userLeft){updatedMessages = [...updatedMessages, data.toBroadcast.userLeft]}
@@ -98,7 +95,6 @@ export default function Chat() {
             if(data.toBroadcast.userRemoved){updatedMessages = [...updatedMessages, data.toBroadcast.userRemoved]}
             if(data.toBroadcast.userRmovedError){updatedMessages = [...updatedMessages, data.toBroadcast.userRemovedError]}
             setUserInfo({...userInfo, messages: updatedMessages});
-            console.log("updatedMessages messages", updatedMessages)
             setLocalMessageList(updatedMessages)
           });
         

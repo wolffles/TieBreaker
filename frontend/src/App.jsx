@@ -3,7 +3,6 @@ import Login from './components/login';
 import Dashboard from './components/dashboard';
 import Chat from './components/chat';
 import './style/App.css';
-import Test from './components/test';
 
 // Create context outside of component to prevent recreation on each render
 export const userContext = createContext();

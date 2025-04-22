@@ -5,9 +5,7 @@ export default function MessageList({ messages} ) {
   const [messageList, setMessageList] = useState([]);
 
   useEffect(() => {
-    console.log("messages", messages)
     // let newMessageList = [...messageList, messages]
-    // console.log('newMessageList', newMessageList)
     setMessageList(messages.map((message, i) =>{
       if(isLink(message[0])){
         return <li className="playerMessage"key={i}>

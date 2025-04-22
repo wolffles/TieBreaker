@@ -3,25 +3,31 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
+    "@mui/icons-material": "^7.0.2",
+    "@mui/material": "^7.0.2",
     "@react-spring/three": "^9.4.0-alpha.0",
+    "@react-three/drei": "^10.0.6",
     "@react-three/fiber": "^9.0.0-alpha.8",
+    "@react-three/rapier": "^2.1.0",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
     "react-icons": "^4.11.0",
     "react-test-renderer": "^18.2.0",
     "socket.io-client": "^4.4.1",
     "three": "^0.175.0"
   },
-    "overrides": {
+  "overrides": {
     "nth-check": "^2.0.1",
     "css-select": "^4.0.0",
     "svgo": "^3.0.0",
     "@svgr/plugin-svgo": "^8.0.0",
     "@svgr/webpack": "^8.0.0"
-},
+  },
   "scripts": {
     "start": "vite",
     "dev": "vite",

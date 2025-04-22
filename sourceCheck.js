@@ -21,12 +21,8 @@ module.exports = {
         return username 
     },
     diceToss: (sides) => {
-        let array = [];
-        while (array.length < 13){
-          let num = Math.floor(Math.random() * sides) + 1
-          array.push(num)
-        }
-        return array
+        let num = Math.floor(Math.random() * sides) + 1
+        return {result: num, diceType: sides}
     }, coinToss: () => {
         return Math.floor(Math.random() * 6) + 5;
         //return number of flips from 5 to 10

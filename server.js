@@ -16,7 +16,7 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: process.env.CORS_ORIGIN || "http://localhost:3000",
+    origin: process.env.CORS_ORIGIN || "http://localhost:3000" || "http://localhost:4137",
     methods: ["GET", "POST"],
     credentials: true,
     allowedHeaders: ["*"]
@@ -211,8 +211,8 @@ io.on('connection', (socket) => {
     })
 
     socket.on('roll dice', (side) => {
-        let array = diceToss(side)
-        broadcastToRoom(io, socket.roomName, "dice is rolling", array)
+        let dataObject = diceToss(side)
+        broadcastToRoom(io, socket.roomName, "dice is rolling", dataObject)
         // emitDataToClient(socket, "dice is rolling", data)
         // broadcastRoomExcludeSender(socket, roomName,'someone rolling dice',data)
     })

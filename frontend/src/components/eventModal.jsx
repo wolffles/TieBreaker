@@ -3,12 +3,8 @@ import {socket} from '../utility/socket.js';
 import '../style/tools.css';
 import '../style/style.css';
 import CoinAnimation from './coinAnimation.jsx';
+import DiceAnimation from './DiceAnimation.jsx';
 export default function EventModal({ showEvent, eventValue, modalType, modalRef}) {
-  function rollDice(e){
-    e.preventDefault();
-    let diceType = e.target.innerHTML
-    socket.emit('roll dice', diceType);
-  }
 
   function flipCoin(e){
     e.preventDefault();
@@ -23,20 +19,8 @@ export default function EventModal({ showEvent, eventValue, modalType, modalRef}
   function modalRender(){
     if(modalType === 'dice') {
       return (
-        <div className={`${showEvent ? "modal" : "hidden"}`} ref={modalRef}>
-          <div className="dice divider outside">
-            <button className="modal-button dice" onClick={rollDice}> 4 </button>
-            <button className="modal-button dice" onClick={rollDice}> 6 </button>
-            <button className="modal-button dice" onClick={rollDice}> 8 </button>
-          </div>
-          <div className="dice divider middle">
-            {eventValue}
-          </div>
-          <div className="dice divider outside">
-            <button className="modal-button dice" onClick={rollDice}> 10 </button>
-            <button className="modal-button dice" onClick={rollDice}> 12 </button>
-            <button className="modal-button dice" onClick={rollDice}> 20 </button>
-          </div>
+        <div className={`${showEvent ? "modal" : "hidden"}`} style={{ width: '60%', height: '60%'}} ref={modalRef}>
+            <DiceAnimation eventResult={eventValue.result} diceType={eventValue.diceType}/>
         </div>
       );
     }else if (modalType === 'flip') {

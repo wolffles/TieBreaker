@@ -253,7 +253,7 @@ margin: 15px 10px 0px 10px;
 
 /* Login Page */
 
-.login.page{
+.login.page {
   background-image: url("../assets/forgedbyfire.png");
   background-size: cover;
   background-repeat: no-repeat;
@@ -268,27 +268,27 @@ margin: 15px 10px 0px 10px;
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 1rem;
 }
-
 
 .loginform {
   text-align: center;
   width: 100%;
 }
 
-.login-container{
-    background-color: #140c0cc6;
-    padding-bottom: 5vh;
-    border: 5px none;
-    border-radius: 25px;
-    width: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 10px 0px 40px 5px #992b23;
+.login-container {
+  background-color: #140c0cc6;
+  padding: 2rem;
+  border: 5px none;
+  border-radius: 25px;
+  width: min(90%, 500px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 10px 0px 40px 5px #992b23;
 }
 
-.login-info{
+.login-info {
   right: 0px;
   top: 0px;
   position: absolute;
@@ -298,81 +298,67 @@ margin: 15px 10px 0px 10px;
 .loginInput {
   background-color: transparent !important;
   border: none;
-  border-bottom: 2px solid #fff;
-  outline: none;
-  padding-bottom: 15px;
-  text-align: center;
-  width: 400px;
-  color: white;
-  font-weight: bold;
+  border-bottom: 2px solid #992b23;
+  color: #fff;
+  font-size: clamp(0.875rem, 2vw, 1rem);
+  width: 80%;
+  margin: 0.5rem 0;
+  padding: 0.5rem;
 }
 
-/* Override browser autofill styling */
-.loginInput:-webkit-autofill,
-.loginInput:-webkit-autofill:hover,
-.loginInput:-webkit-autofill:focus,
-.loginInput:-webkit-autofill:active {
-  -webkit-box-shadow: 0 0 0 30px transparent inset !important;
-  -webkit-text-fill-color: white !important;
-  background-color: transparent !important;
-  transition: background-color 5000s ease-in-out 0s;
+.title {
+  font-size: clamp(0.875rem, 2vw, 1rem);
+  margin: 0.5rem 0;
 }
 
-.login-button{
-  color: white;
-  background-color: black;
-  border: solid white 2px;
-  width: 7vw;
-  height: 5vh;
-  font-size: 1vw;
-  text-align: center;
-}
-
-button.login-button:hover{
-  color: black;
-  background-color: white;
+.login-button {
+  background-color: #992b23;
+  color: #fff;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 5px;
+  font-size: clamp(0.875rem, 2vw, 1rem);
   cursor: pointer;
+  margin-top: 1rem;
+  transition: background-color 0.3s ease;
 }
 
-.login-info:hover{
-  cursor:pointer;
+.login-button:hover {
+  background-color: #b83428;
 }
 
+/* Media Queries */
+@media screen and (max-width: 480px) {
+  .login-container {
+    padding: 1rem;
+    width: 95%;
+  }
 
-.reconnection:hover {
-  cursor: pointer;
+  .loginInput {
+    width: 90%;
+  }
+
+  .login-info {
+    margin: 10px 10px 0px 0px;
+  }
 }
 
+@media screen and (max-height: 600px) {
+  .login.page {
+    padding: 0.5rem;
+  }
 
+  .login-container {
+    padding: 1rem;
+  }
 
-.form2 {
-  height: 100px;
-  margin-top: -70px;
-  position: absolute;
-  text-align: center;
-  top: 50%;
-  width: 100%;
-}
+  .title {
+    margin: 0.25rem 0;
+  }
 
-
-.form3 {
-  height: 100px;
-  margin-top: 40px;
-  position: absolute;
-  text-align: center;
-  top: 50%;
-  width: 100%;
-}
-
-
-
-.title{
-  font-size: 2vw;
-}
-
-.loginInput {
-  font-size: 1.5vw;
-  letter-spacing: 3px;
+  .loginInput {
+    margin: 0.25rem 0;
+  }
 }
 
 /* Chat page */

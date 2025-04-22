@@ -74,7 +74,7 @@ export default function Login() {
 
   function alertInfo(e) {
     e.preventDefault();
-    alert("Please enter a nickname, the game room you would like to enter, and a password for the room. \n \n You must enter the correct password for game rooms that already exist. \n \n If you are reconnecting to a game room, please check the box right by the question on the screen")
+    alert("Please enter a nickname, the game room you would like to enter, and a password for the room. \n \n If you want to create a room, enter a room name that doesn't exist with a password you'd like to use. \n \n You must enter the correct password for game rooms that already exist. \n \n If you are reconnecting to a game room, please check the box right by the question on the screen")
     setAlertText("Please enter a nickname, the game room you would like to enter, and a password for the room. You must enter the correct password for game rooms that already exist. If you are reconnecting to a game room, pease check the box right by the question on the screen")
     setShowAlert(true)
 
@@ -90,16 +90,17 @@ export default function Login() {
 
 
     socket.on('update player state', (data) => {
-      console.log('update player state', data)
-      let updatedState = Object.assign({},userInfo);
-      updatedState.username = data.username
-      updatedState.id = data.id
-      updatedState.color = data.color
-      updatedState.roomName = data.roomName
-      updatedState.messages = updatedState.messages ? [...updatedState.messages,data.messages] : data.messages
-      updatedState.scratchPad = data.scratchPad
-      setUserInfo(updatedState);
+      setUserInfo(prevState => ({
+        ...prevState,
+        username: data.username,
+        id: data.id,
+        color: data.color,
+        roomName: data.roomName,
+        messages: data.messages ? [...prevState.messages,data.messages] : data.messages,
+        scratchPad: data.scratchPad
+      }));
     })
+
 
     socket.on('wrong password',(roomName) =>{
       setShowAlert(true)
@@ -121,10 +122,19 @@ export default function Login() {
   });
 
     return (
-      <div className={`login page ${hidden ? "hidden" : ""}`}>
+      <div className={`login page ${hidden ? "hidden" : ""}`} style={{display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center"}}>
         <span className="login-info" onClick={(e) => alertInfo(e)}><FaInfoCircle size="2em" /></span>
         <div className="login-container">
             <form id="loginForm" className="loginform" onSubmit={handleSubmit}>
+            <h1 style={{
+              textAlign: 'center', 
+              fontSize: "clamp(1.5rem, 4vw, 4rem)", 
+              letterSpacing: "clamp(5px, 2vw, 10px)", 
+              color: "aqua", 
+              fontWeight: "bold", 
+              padding: "clamp(0.5rem, 2vw, 1rem)",
+              margin: "0 0 1rem 0"
+            }}>TIEBREAKER</h1>
                 <p className="title">What's your nickname?</p>
                   <input id="nicknameInput" className="loginInput" type="text" maxLength="8" onChange={changeInput}/>
                 <p className="title">Enter a game room name: </p>
