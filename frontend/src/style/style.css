@@ -305,6 +305,16 @@ margin: 15px 10px 0px 10px;
   margin: 0.5rem 0;
   padding: 0.5rem;
 }
+/* Override browser autofill styling */
+.loginInput:-webkit-autofill,
+.loginInput:-webkit-autofill:hover,
+.loginInput:-webkit-autofill:focus,
+.loginInput:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 30px transparent inset !important;
+  -webkit-text-fill-color: white !important;
+  background-color: transparent !important;
+  transition: background-color 5000s ease-in-out 0s;
+}
 
 .title {
   font-size: clamp(0.875rem, 2vw, 1rem);
@@ -347,15 +357,12 @@ margin: 15px 10px 0px 10px;
   .login.page {
     padding: 0.5rem;
   }
-
   .login-container {
     padding: 1rem;
   }
-
   .title {
     margin: 0.25rem 0;
   }
-
   .loginInput {
     margin: 0.25rem 0;
   }
