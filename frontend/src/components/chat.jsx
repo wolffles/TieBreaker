@@ -131,7 +131,7 @@ export default function Chat({isMobile}) {
                             backgroundColor: 'black',
                             textAlign: 'center',
                             fontSize: '2rem',
-                            padding: '1rem 0'
+                            height: '50px'
                         }}
                     >
                         <FaChevronUp 

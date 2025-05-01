@@ -42,14 +42,6 @@ export default function PlayersArea({ players, roomName, playersList }) {
       socket.emit('remove player', {username:username, roomName: roomName});
     }
 
-    function setPlayerClass(){
-      if(playersList.length <= 6){
-        return "player";
-      } else{
-        return "player2"
-      }
-    }
-
     function setPlayerBodyClass(){
       if(playersList.length <= 2){
         return "player-area-body";
@@ -60,69 +52,46 @@ export default function PlayersArea({ players, roomName, playersList }) {
       }
     }
 
-    function setPointsClass(){
-      if(playersList.length <= 2){
-        return "points points-font-large";
-      } else if (playersList.length <=6){ 
-        return "points points-font-medium"
-      } else{
-        return "points points-font-small"
-      }
-    }
+  
 
-    function setPointsTitleFont() {
-      if(playersList.length <= 2){
-        return "points-title points-title-font-large";
-      } else {
-        return "points-title points-title-font-medium"
-      }
-    }
-
-    function setPlayerAreaClass(){
-      if(playersList && playersList.length < 7){
-        return "playerArea"
-      } else {
-        return "playerArea playerAreaSpacing"
-      }
-    }
 
     useEffect(() => {
       setLocalPlayers(players) 
     }, [players, playersList])
 
     return (
-      <div className={setPlayerAreaClass()}>
+      <div className="playerArea">
         {localPlayers && playersList.map((username, i) =>{ 
           return (
             <div
-              className={setPlayerClass()}
+              className="player-box"
               id={username}
               style={{
                 backgroundColor:players[username] ? players[username].color : getUsernameColor(username),
-                boxShadow: "0px 0px 10px 5px #b3b3b3"
+                boxShadow: "rgba(0, 0, 0, 0.3) 0px 3px 7px -3px, rgba(0, 0, 0, 0.25) 0px 6px 12px -2px"
               }}
               key={username}
             >
-              <div className="player-area-header">
+              <div className="player-box-header">
                 <div className="nickname">{username}</div>
-                <div className="player-area-buttons">
+                <div className="player-box-buttons">
                 <div className={players[username].points.length >= 4 ? "no-press add-subtract" : "add-subtract"} onClick={(e) => adjustInputs(e, username, 'plus')}><FaPlus  size="2em" /></div>
                 <div className={players[username].points.length <= 1 ? "no-press add-subtract" : "add-subtract"} onClick={(e) => adjustInputs(e, username, 'minus')}><FaMinus  size="2em" /></div>
                 <div className="delete" onClick={(e) => deletePlayer(e, username)}><FaTrash  size="2em" /></div>
                 </div>
               </div>
-              <div className={setPlayerBodyClass()}>
+              <div className="player-box-body">
                 {localPlayers && players[username].points.map((point,i) =>{
                   return (
-                  <div key={i}>
+                  <div key={i} className="points-box">
                     <input 
-                      className={setPointsTitleFont()} 
+                      className="points-title" 
                       onChange={(e) => handleChange(e, username, i, 'title')} 
                       style={{backgroundColor:players[username] ? players[username].color : getUsernameColor(username)}} 
                       placeholder={players[username] ? point[0] : "Input title..."}
                     />
                     <input 
-                      className={setPointsClass()} 
+                      className="points-input"
                       maxLength="4" 
                       onChange={(e) => handleChange(e, username, i, 'points')} 
                       style={{backgroundColor:players[username] ? players[username].color : getUsernameColor(username)}} 

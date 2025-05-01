@@ -1,10 +1,15 @@
 .modal { 
     position: fixed;
     display: flex;
+    flex-direction: column;
     width: 50%;
     justify-content: space-evenly;
     top: 25%;
     left: 35%;
+    background-color: white;
+    border: 5px black solid; 
+    margin: 0px;
+    padding: 0px;
 }
 
 .alert-modal{
@@ -109,17 +114,7 @@ cursor: pointer;
 }
 
 .column{
-    position: fixed;
-    display: flex;
-    flex-direction: column;
-    width: 50%;
 
-    top: 25%;
-    left: 35%;
-    background-color: white;
-    border: 5px black solid; 
-    margin: 0px;
-    padding: 0px;
 }
 
 .tool-display {
@@ -181,4 +176,13 @@ cursor: pointer;
       display:flex;
       justify-content: space-evenly;
       background-color: #31708E;
+  }
+
+  @media (max-width: 600px) {
+    .modal {
+        width: 100% !important;
+        min-height: 20%;
+        left: 0;
+        
+    }
   }
