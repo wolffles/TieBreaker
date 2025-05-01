@@ -178,11 +178,12 @@ cursor: pointer;
       background-color: #31708E;
   }
 
-  @media (max-width: 600px) {
+  @media (max-width: 768px) {
     .modal {
         width: 100% !important;
         min-height: 20%;
         left: 0;
         
     }
+
   }

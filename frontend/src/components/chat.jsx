@@ -141,8 +141,8 @@ export default function Chat({isMobile}) {
                 {/* <div className="chatArea"> */}
                     <div className="chat-toolbar">
                         <div className="button-box">
-                            <button className="button" id="chat-toggle" onClick={toggleDisplay}>chat</button>
-                            <button className="button" id="scratch-toggle" onClick={toggleDisplay}>scratch</button>
+                            <button className="button" id="chat-toggle" style={{color: "white"}} onClick={toggleDisplay}>chat</button>
+                            <button className="button" id="scratch-toggle" style={{color: "white"}} onClick={toggleDisplay}>scratch</button>
                         </div>
                         <div className="roomName">
                             Username: {userInfo.username}<br/>

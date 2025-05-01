@@ -134,7 +134,7 @@ export default function Login() {
               margin: "0 0 1rem 0"
             }}>TIEBREAKER</h1>
                 <p className="title">What's your nickname?</p>
-                  <input id="nicknameInput" className="loginInput" type="text" maxLength="8" onChange={changeInput}/>
+                  <input id="nicknameInput" className="loginInput" type="text" maxLength="15" onChange={changeInput}/>
                 <p className="title">Enter a game room name: </p>
                    <input id="gameInput" className="loginInput" type="text" maxLength="8" onChange={changeGameInput}/>
                 <p className="title">Enter a Password: </p>

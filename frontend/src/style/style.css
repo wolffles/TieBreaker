@@ -19,6 +19,7 @@ colors:
 html {
   font-weight: 300;
   -webkit-font-smoothing: antialiased;
+  overflow: hidden;
 }
 
 html, input {
@@ -50,13 +51,15 @@ html, body {
 
 .dashboard {
   height: 100%;
-  width: 100%;
-  overflow: visible;
+  width: 70%;
 }
 
 
 
 .playerArea {
+  overflow: scroll;
+  overscroll-behavior: contain;
+  overscroll-behavior-y: contain; 
   background-color: #282828;
   height: 95%;
   /* padding: 2.5%; */
@@ -65,7 +68,6 @@ html, body {
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
-  overflow-y: scroll;
   /* align-items: center;  centers the height of the boxes*/
   
 }
@@ -135,11 +137,14 @@ html, body {
 }
 
 .nickname {
+  padding-left: 15px;
   color:white;
-  padding-left: 25%;
-  margin: auto;
   font-size: 3rem;
   font-weight: 700;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 100%;
 }
 
 
@@ -347,7 +352,7 @@ margin: 15px 10px 0px 10px;
 /* Chat page */
 
 .chatPage {
-  width: 25%;
+  width: 30%;
   height: 100%;
   position: relative;
   display: flex;
@@ -376,11 +381,6 @@ margin: 15px 10px 0px 10px;
 .mobileChatPage.active .mobileChatToggle svg {
   transform: rotate(180deg);
 }
-
-.chatArea button{
-  color: aliceblue;
-}
-
 /* Font */
 
 .log {
@@ -587,9 +587,13 @@ margin: 15px 10px 0px 10px;
 .button-box .button{
   height: 100%;
 }
+@media (max-width: 1130px) {
+  .player-box {
+    width: 70%;
+  }
+}
 
-
-@media (max-width: 600px) {
+@media (max-width: 768px) {
   .dashboard {
     width: 100%;
   }
