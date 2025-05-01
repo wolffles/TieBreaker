@@ -1,6 +1,6 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
-import './style/index.css';
+import './style/style.css';
 import App from './App.jsx';
 import * as serviceWorker from './serviceWorker';
 

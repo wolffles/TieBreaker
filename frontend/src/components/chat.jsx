@@ -5,13 +5,15 @@ import '../style/style.css';
 import {sendMessage, socket, updatePlayerInfo} from '../utility/socket.js'; 
 import {userContext} from '../App.jsx';
 import ScratchPad from "./scratchPad.jsx";
+import { FaChevronUp } from 'react-icons/fa'
 
 
-export default function Chat() {
+export default function Chat({isMobile}) {
     const [userInfo, setUserInfo] = useContext(userContext);
 
     const [message, setMessage] = useState('');
     const [toggle, setToggle] = useState(userInfo.chatToggle ? userInfo.chatToggle : 'chat-toggle')
+    const [isOpen, setIsOpen] = useState(false);
 
     //local table conent gets saved on the server but is also saved here
     const [localMessageList, setLocalMessageList] = useState(userInfo.messages)
@@ -44,6 +46,16 @@ export default function Chat() {
         setToggle(e.target.id)
         updatePlayerInfo({chatToggle:e.target.id, username:userInfo.username,action:'chat-toggle'})
     }
+
+    function toggleMobileChat(){
+        setIsOpen(!isOpen)
+    }
+    useEffect(() => {
+       if(!isMobile){
+        setIsOpen(false)
+       }
+    }, [isMobile])
+
 
     useEffect(() => {
         var div = document.getElementById("chatDisplay");
@@ -109,8 +121,24 @@ export default function Chat() {
 
       
     return (
-        <div className={`chat page ${hidden ? "hidden" : ""}`}>
-            <div className="chatArea">
+
+            <div className={`${isMobile ? "mobileChatPage" : "chatPage"} ${hidden ? "hidden" : ""} ${isOpen ? "active" : ""}`}>
+                {isMobile && (
+                    <div className={`mobileChatToggle ${isOpen ? "active" : ""}`}
+                        style={{
+                            width: '100%',
+                            color: 'white',
+                            backgroundColor: 'black',
+                            textAlign: 'center',
+                            fontSize: '2rem',
+                            padding: '1rem 0'
+                        }}
+                    >
+                        <FaChevronUp 
+                    onClick={toggleMobileChat}/>
+                    </div>
+                    )}
+                {/* <div className="chatArea"> */}
                     <div className="chat-toolbar">
                         <div className="button-box">
                             <button className="button" id="chat-toggle" onClick={toggleDisplay}>chat</button>
@@ -122,18 +150,18 @@ export default function Chat() {
                             Password: {userInfo.password}<br/>
                         </div>
                     </div>
-                <div id='chatDisplay' className={`chatDisplay ${toggle === 'chat-toggle' ? "" : "hidden"}`}>
-                    <div id="messages" className="messages">
-                        <MessageList messages={localMessageList} />
+                    <ScratchPad toggle={toggle}/>
+                    <div id='chatDisplay' className={`chatDisplay ${toggle === 'chat-toggle' ? "" : "hidden"}`}>
+                        <div id="messages" className="messages">
+                            <MessageList messages={localMessageList} />
+                        </div>
+                        <form className="messageInput" onSubmit={handleSubmit}> 
+                            <input id="inputMessage" autoFocus className="inputMessage" placeholder="Type here..." onChange={changeInput} />
+                        </form>
                     </div>
-                    <form className="messageInput" onSubmit={handleSubmit}> 
-                        <input id="inputMessage" autoFocus className="inputMessage" placeholder="Type here..." onChange={changeInput} />
-                    </form>
-                </div>
-                <ScratchPad toggle={toggle}/>
-
+                {/* </div> */}
+                {/* <NotePad/> */}
             </div>
-            {/* <NotePad/> */}
-        </div>
+        // </>
     );
   }
