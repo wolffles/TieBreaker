@@ -133,9 +133,9 @@ export default function Chat({isMobile}) {
                             fontSize: '2rem',
                             height: '50px'
                         }}
+                        onClick={toggleMobileChat}
                     >
-                        <FaChevronUp 
-                    onClick={toggleMobileChat}/>
+                        <FaChevronUp />
                     </div>
                     )}
                 {/* <div className="chatArea"> */}
