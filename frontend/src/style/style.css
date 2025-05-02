@@ -291,7 +291,7 @@ margin: 15px 10px 0px 10px;
   border: none;
   border-bottom: 2px solid #992b23;
   color: #fff;
-  font-size: clamp(0.875rem, 2vw, 1rem);
+  font-size: 16px;
   width: 80%;
   margin: 0.5rem 0;
   padding: 0.5rem;
