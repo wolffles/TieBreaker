@@ -25,6 +25,7 @@ export default function Chat({isMobile}) {
     function changeInput(e){
         e.preventDefault();
         setMessage(e.target.value);
+        
     }
 
     function addMessage(message, username){
@@ -37,9 +38,13 @@ export default function Chat({isMobile}) {
 
     function handleSubmit(e){
         e.preventDefault();
+        if (message === ''){
+            return;
+        }
         sendMessage({message:message, username:userInfo.username});
         addMessage(message,userInfo.username);
-        e.target.children[0].value = ''
+        setMessage('');
+        document.getElementById('inputMessage').value = '';
     }
 
     function toggleDisplay(e){
@@ -131,7 +136,7 @@ export default function Chat({isMobile}) {
                             backgroundColor: 'black',
                             textAlign: 'center',
                             fontSize: '2rem',
-                            height: '50px'
+                            height: '40px'
                         }}
                         onClick={toggleMobileChat}
                     >
@@ -155,8 +160,18 @@ export default function Chat({isMobile}) {
                         <div id="messages" className="messages">
                             <MessageList messages={localMessageList} />
                         </div>
-                        <form className="messageInput" onSubmit={handleSubmit}> 
-                            <input id="inputMessage" autoFocus className="inputMessage" placeholder="Type here..." onChange={changeInput} />
+                        <form className="message-form" onSubmit={handleSubmit}> 
+                            <textarea id="inputMessage" autoFocus rows="6"
+                             className="inputMessage" placeholder="Type here..." 
+                             onChange={changeInput} 
+                             onKeyDown={e => {
+                                if (e.key === "Enter" && !e.shiftKey) {
+                                  e.preventDefault(); // Prevents new line
+                                  handleSubmit(e); 
+                                }
+                              }}
+                            />
+                            <button className="messageButton" id="send-button" style={{ backgroundColor: "#181818", color: "white"}} onClick={handleSubmit}>send</button>
                         </form>
                     </div>
                 {/* </div> */}

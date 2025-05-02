@@ -362,6 +362,7 @@ margin: 15px 10px 0px 10px;
 /* Chat page */
 
 .chatPage {
+
   width: 30%;
   height: 100%;
   position: relative;
@@ -398,6 +399,7 @@ margin: 15px 10px 0px 10px;
   font-size: 70%;
   margin: 5px;
   text-align: center;
+  align-items:normal;
 }
 
 /* Messages */
@@ -432,24 +434,14 @@ margin: 15px 10px 0px 10px;
   text-align: center;
   font-weight: 700;
   width:100%;
-  flex:.5;
 }
 
 .chatDisplay {
   display: flex;
   flex-direction: column;
-  flex: 9.5;
   background-color: #b3b3b3;
   overflow-y: scroll;
-}
-
-.messages {
-  width: 100%;
-  font-size: 150%;
-  word-break: break-word;
-  overflow-y:scroll;
-  flex:9;
-  padding-top: 10px;
+  height: 95%;
 }
 
 ::-webkit-scrollbar {
@@ -458,13 +450,22 @@ margin: 15px 10px 0px 10px;
 
 /* .messages::-webkit-scrollbar {
   display: none; 
-}*/
-
-/* Hide scrollbar for IE, Edge and Firefox */
-.messages {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
-}
+  }*/
+  
+  /* Hide scrollbar for IE, Edge and Firefox */
+  .messages {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+  
+  .messages {
+    height: 95%;
+    width: 100%;
+    font-size: 150%;
+    word-break: break-word;
+    overflow-y:scroll;
+    padding-top: 10px;
+  }
 
 .message.typing .messageBody {
   color: grey;
@@ -478,22 +479,43 @@ margin: 15px 10px 0px 10px;
 }
 
 /* Input */
-.messageInput {
-  flex: 1;
+.send-box{
+  height: 20%;
   width: 100%;
+  background-color: #181818;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
 }
-.messageInput .inputMessage {
+
+.messageButton{
+  height: 100%;
+  width: 20%;
+  color: white;
+  border: none;
+}
+
+.message-form {
+  height: 10%;
+  width: 100%;
+  background-color: #181818;
+  display: flex;
+  flex-direction: row;
+}
+.inputMessage {
   padding-left: 10px;
+  font-weight: 600;
+  height: 100%;
   width: 100%;
   background-color: #181818;
   color: white;
-  font-weight: 600;
-  min-height: 60px;
-  height: 100%;
+  border: none;
 }
 
-.messageInput:focus {
+.message-form:focus {
   color: white;
+  
 }
 
 
@@ -618,7 +640,10 @@ margin: 15px 10px 0px 10px;
     background-color: #0f0f0f;
   }
   .messages{
-    height: 90%;
+    height: 80%;
+  }
+  .message-form{
+    height:15%
   }
   .chatDisplay{
     height: 90%;
