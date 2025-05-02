@@ -27,17 +27,17 @@ function App() {
   const orientation = () => {
     if(isMobile){
       return (
-        <>
+        <div className="app-container">
           <Dashboard context={userContext} />
           <Chat context={userContext} isMobile={isMobile}/>
-        </>
+        </div>
       )
     }else{
       return (
-        <>
+        <div className="app-container">
           <Chat context={userContext} />
           <Dashboard context={userContext} />
-        </>
+        </div>
       )
     }
   }

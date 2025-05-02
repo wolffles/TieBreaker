@@ -12,9 +12,9 @@ colors:
 */
 
 
-/* * {
+* {
   box-sizing: border-box;
-} */
+}
 
 html {
   font-weight: 300;
@@ -39,6 +39,16 @@ html, body {
   padding: 0;
   background-color: #3e423d;
 
+}
+
+.app-container {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+  padding: 5px;
+  gap: 0;
+  width: 100%;
 }
 
 .playerMessage {
@@ -594,6 +604,9 @@ margin: 15px 10px 0px 10px;
 }
 
 @media (max-width: 768px) {
+  .menubar {
+    font-size: 12px;
+  }
   .dashboard {
     width: 100%;
   }
@@ -602,8 +615,7 @@ margin: 15px 10px 0px 10px;
     width: 100%;
   }
   .pages {
-    display:flex;
-    flex-direction: column;
+    background-color: #0f0f0f;
   }
   .messages{
     height: 90%;
